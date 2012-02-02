@@ -1,0 +1,578 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>		
+		<title>Service update now &#124; Transport for London</title>
+		<!-- Transport for London website template version 1.7 -->
+
+<!-- Global head start -->
+	<!-- Meta data -->
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="revisit-after" content="1 days" />
+	<meta name="copyright" content="2009" />
+
+	<meta name="distribution" content="Global" />
+	<meta name="rating" content="General" />
+	<meta name="robots" content="Index, Follow" />
+	<meta http-equiv="content-language" content="en" />
+	<meta http-equiv="pics-label" content='(pics-1.1 "http://www.icra.org/ratingsv02.html" l gen true for "http://www.tfl.gov.uk" r (nz 1 vz 1 lz 1 oz 1 cz 1))' />
+	<meta name="DC.language" scheme="ISO639-2" content="eng" /> 
+	<meta name="DC.coverage" content="UK; United Kingdom" /> 
+	<meta name="DC.creator" content="Transport for London, Windsor House, 42-50 Victoria Street, London SW1H 0TL, enquire@tfl.gov.uk" /> 
+	<meta name="DC.publisher" content="Transport for London, Windsor House, 42-50 Victoria Street, London SW1H 0TL, enquire@tfl.gov.uk" /> 
+	<meta name="DC.rights.copyright" content="http://www.tfl.gov.uk/tfl/tandc.shtml" />
+	<meta name="DC.subject" scheme="eGMS.IPSV" content="Public transport"/>
+
+	
+	<script type="text/javascript" src="/tfl-global/scripts/frameworks/jquery/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/tfl-global/scripts/frameworks/jquery/tfl-extras.js"></script>
+	<script type="text/javascript" src="/tfl-global/scripts/stats-config-ltn.js" language="javascript"></script>
+	<script type="text/javascript" src="/tfl-global/scripts/stats.js" language="JavaScript1.1" defer="defer"></script>
+	
+	<link type="text/css" rel="stylesheet" href="/tfl-global/css/default.css" media="all" />
+
+	<link type="text/css" rel="alternate stylesheet" href="/tfl-global/css/large-text.css" title="Large text" media="screen" />
+	<link type="text/css" rel="alternate stylesheet" href="/tfl-global/css/hi-contrast.css" title="Hi-contrast" media="screen" />
+
+	
+	<link type="text/css" rel="stylesheet" href="/tfl-global/css/print.css" media="print" />
+	
+	<!--[if lte IE 7]>
+		<link type="text/css" rel="stylesheet" href="/tfl-global/css/IE-bugs.css" media="all" />
+	<![endif]-->
+	<!--[if IE 5]>
+		<link type="text/css" rel="stylesheet" href="/tfl-global/css/IE-5-bugs.css" media="all"  />
+	<![endif]-->
+	<!--[if IE 5.000]>
+		<link type="text/css" rel="stylesheet" href="/tfl-global/css/IE-5-000-bugs.css" media="all" />
+	<![endif]-->
+	<!--[if IE 6]>
+		<link type="text/css" rel="stylesheet" href="/tfl-global/css/IE-6-bugs.css" media="all"  />
+	<![endif]-->
+	
+<!-- Global head end -->
+		<link media="screen" href="/tfl/livetravelnews/css/tube.css" rel="stylesheet" type="text/css" />
+		<link media="screen" href="/tfl-global/css/related-tools.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="/tfl/livetravelnews/realtime/scripts/default.js"></script>
+
+		<script type="text/javascript" src="/tfl-global/scripts/ufo.js"></script>
+	</head>	
+	<body class="template-6">
+		<!-- <lm>Sat, 27 Feb 2010 17:24:21 GMT</lm> -->
+
+		<!-- Container start -->		
+		<div id="container" class="live-travel-news">
+			<a href="#main-content" class="structural-label"><strong>Go to:</strong> Main Content</a>
+
+<a href="#navigation-start" class="structural-label"><strong>Go to:</strong> Navigation</a>
+<div id="branding">
+<p><a href="/" title="Go to the Transport for London homepage"><img src="/tfl-global/images/roundel.gif" alt="" />Transport for London</a></p>
+</div>
+	
+			<div id="main-content">
+				<h1>Live travel news</h1>
+
+				<p class="timestamp" id="last-update">Last updated 5:24pm</p>
+
+				<ul class="tabs">
+					<li class="selected"><a href="/tfl/livetravelnews/realtime/tube/default.html">Tube</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/buses/default.html">Buses</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/dlr/default.html">DLR</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/road/default.asp">Road</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/river/default.html">River</a></li>
+
+					<li><a href="/tfl/livetravelnews/realtime/coaches/default.asp">Coaches</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/trams/default.html">Trams</a></li>
+					<li><a href="/tfl/livetravelnews/realtime/rail/default.html">Rail</a></li>
+				</ul>
+
+				<form id="date-select" action="/tfl/livetravelnews/realtime/by-date.aspx" method="get">
+					<ul>
+						<li class="selected">
+
+							<a href="/tfl/livetravelnews/realtime/tube/default.html">Today</a>
+						</li>
+						<li>
+							<a href="/tfl/livetravelnews/realtime/by-date.aspx?offset=weekend">This weekend</a>
+						</li>
+						<li>
+							<label for="offset">This date:</label>
+
+							<select name="offset" id="offset">
+								<option value="">Select date</option>
+								<optgroup label="">
+								<option value="1" class="weekend">Sun 28 Feb</option><option value="2">Mon 1 Mar</option><option value="3">Tue 2 Mar</option><option value="4">Wed 3 Mar</option><option value="5">Thu 4 Mar</option><option value="6">Fri 5 Mar</option><option value="7" class="weekend">Sat 6 Mar</option><option value="8" class="weekend">Sun 7 Mar</option><option value="9">Mon 8 Mar</option><option value="10">Tue 9 Mar</option><option value="11">Wed 10 Mar</option><option value="12">Thu 11 Mar</option><option value="13">Fri 12 Mar</option><option value="14" class="weekend">Sat 13 Mar</option><option value="15" class="weekend">Sun 14 Mar</option><option value="16">Mon 15 Mar</option><option value="17">Tue 16 Mar</option><option value="18">Wed 17 Mar</option><option value="19">Thu 18 Mar</option><option value="20">Fri 19 Mar</option><option value="21" class="weekend">Sat 20 Mar</option><option value="22" class="weekend">Sun 21 Mar</option><option value="23">Mon 22 Mar</option><option value="24">Tue 23 Mar</option><option value="25">Wed 24 Mar</option><option value="26">Thu 25 Mar</option><option value="27">Fri 26 Mar</option><option value="28" class="weekend">Sat 27 Mar</option>
+
+								</optgroup>
+							</select>
+							<input type="submit" id="date-button" class="button-default-2" value="Go" />
+						</li>
+						<li class="sixmonth">The next 6 months: 
+							<ul>
+								<li><a title="View planned station closures for the next six months (PDF)" href="/assets/livetravelnews/realtime/tube/station-closures.pdf">Station closures</a></li>
+								<li class="last"><a title="View planned track closures for the next six months (PDF)" href="/assets/livetravelnews/realtime/tube/track-closures.pdf">Track closures</a></li>
+
+							</ul>
+						</li>
+					</ul>
+				</form>
+
+				<h2>Service update at 5:24pm
+					<a href="/tfl/livetravelnews/realtime/tube/later.html" id="works_later" class="alert">View engineering works planned for <strong>later today</strong></a>
+					
+				</h2>
+		
+				<div id="service-board">
+
+  <ul class="tabs">
+    <li id="lines-tab" class="selected"><a href="#lines">Tube lines</a></li>
+    <li id="stations-tab"><a href="#stations">Tube stations</a></li>
+  </ul>
+  <div id="message-detail">
+    <div id="message"><a href="#" class="close-message" id="close-top" title="close this message"><img src="/tfl/livetravelnews/realtime/images/message-close-1.gif" alt="close this message"></a><span></span><a href="#" class="close-message">Close message</a></div>
+  </div>
+
+  <h2>Tube lines</h2>
+  <dl id="lines">
+    <dt class="bakerloo">Bakerloo</dt>
+    <dd>Good service</dd>
+    <dt class="central">Central</dt>
+    <dd class="problem">
+      <h3>Part closure</h3>
+
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, suspended between Marble Arch and West Ruislip and between Marble Arch and Ealing Broadway. Rail replacement bus services operate.</p><P>Service A: between Willesden Junction and Northolt, calling at North Acton, Park Royal, Hanger Lane, Perivale and Greenford.</P>
+<P>Service B: between Willesden Junction and West Ruislip, calling at North Acton, Northolt, South Ruislip and Ruislip Gardens.</P>
+<P>Service C: between Shepherds Bush and Ealing Broadway, calling at White City, East Acton, North Acton and West Acton.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+
+    <dt class="circle">Circle</dt>
+    <dd class="problem">
+      <h3>Planned closure</h3>
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, suspended.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dt class="district">District</dt>
+    <dd class="problem">
+      <h3>Part closure</h3>
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, suspended eastbound from Tower Hill to Upney and westbound from Barking to Tower Hill. Rail replacement bus services operate.</p><P>Service A: between Stratford and Whitechapel, calling at Plaistow, Canning Town, Bromley-by-Bow, Bow Road, Mile End and Stepney.</P>
+
+<P>Service B: westbound from&nbsp;Upney&nbsp;to Tower Hill, calling at Barking, East Ham, Upton Park, Canning Town, Mile End, Stepney Green,&nbsp;Whitechapel, Aldgate East and Aldgate and eastbound from&nbsp;Tower Hill&nbsp;to Upney, calling at Aldgate, Aldgate East, Whitechapel, Stepney Green, Mile End, Canning Town, Upton Park, East Ham and Barking.</P>
+<P>Service D: between East Ham and Stratford, calling at Upton Park.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dt class="hammersmithandcity">H'smith &amp; City</dt>
+
+    <dd class="problem">
+      <h3>Part closure</h3>
+      <div class="message">
+        <p>Saturday 27 February, suspended between Edgware Road and Barking.</p><P>Service A: between Stratford and Tower Hill, calling at Plaistow, Canning Town, Bromley-by-Bow, Bow Road, Mile End,&nbsp;Stepney Green, Whitechapel, Aldgate East and Aldgate.</P>
+<P>Service B: westbound from Barking&nbsp;to Tower Hill,&nbsp;calling at East Ham, Upton Park, Canning Town, Mile End,&nbsp;Stepney Green, Whitechapel, Aldgate East and Aldgate and eastbound from Tower Hill to&nbsp;Upney, calling at Aldgate, Aldgate East, Whitechapel, Stepney Green, Mile End, Canning Town, Upton Park, East Ham and Barking.</P>
+
+<P>Service D: between East Ham and Stratford, calling at Upton Park.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dt class="jubilee">Jubilee</dt>
+    <dd class="problem">
+      <h3>Part closure</h3>
+
+      <div class="message">
+        <p>Saturday 27 February, suspended between Stanmore and West Hampstead. Rail replacement bus services operate.</p><P>Service C: between Stanmore and Stonebridge Park, calling at Canons Park, Queensbury, Kingsbury and Wembley Park.</P>
+<P>Service D:between Wembley Park and Finchley Road, calling at Neasden, Dollis Hill, Willesden Green, Kilburn and West Hampstead.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dt class="metropolitan">Metropolitan</dt>
+
+    <dd class="problem">
+      <h3>Part closure</h3>
+      <div class="message">
+        <p>Saturday 27 February, suspended between Aldgate and Harrow-on-the-Hill. Rail replacement bus services operate.</p><P>Service A: between Harrow-on-the-Hill and Wembley Park, calling at Northwick Park and Preston Road.</P>
+<P>Service B (early morning and late night only): between Harrow-on-the-Hill and Stonebridge Park.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+
+    </dd>
+    <dt class="northern">Northern</dt>
+    <dd>Good service</dd>
+    <dt class="piccadilly">Piccadilly</dt>
+    <dd>Good service</dd>
+    <dt class="victoria">Victoria</dt>
+
+    <dd class="problem">
+      <h3>Planned closure</h3>
+      <div class="message">
+        <p>Saturday 27 February, suspended. Rail replacement bus services operate.</p><P>Service A: between Brixton and Victoria, calling at Stockwell, Vauxhall and Pimlico.</P>
+<P>Service B: between Walthamstow Central and Manor House (for the Piccadilly line), calling at Blackhorse Road, Tottenham Hale and&nbsp;Seven Sisters.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dt class="waterlooandcity">Waterloo &amp; City</dt>
+    <dd>Good service</dd>
+  </dl>
+  <h2>Tube stations</h2>
+
+  <dl id="stations">
+    <dt>Closed stations</dt>
+    <dd>
+      <h3>Archway</h3>
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, closed.</p><P>London Underground tickets are valid on London Bus routes 43 134 263 390 and N20 between Tufnell Park and Highgate.</P>
+<P>Journey times may be increased by up to 15 minutes.</P><p><a href="/transform">
+
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dd>
+      <h3>Blackfriars</h3>
+      <div class="message">
+        <p>Closed until late 2011. District and Circle line trains do not serve the station. Please bear this in mind if purchasing a season ticket or registering your Oystercards.</p><P>&nbsp;</P><A href="http://www.tfl.gov.uk/corporate/projectsandschemes/11207.aspx">
+
+<P>Click for further information.</P></A><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dd>
+      <h3>Clapham South</h3>
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, closed.</p><P>Balham and Clapham Common are the nearest alternative stations.</P>
+
+<P>London Underground&nbsp;tickets are valid on London Bus routes 50 155 249 355 and N155 between Balham and Clapham Common.</P>
+<P>Journey times&nbsp;may be extended by up to 15 minutes.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+    <dd>
+      <h3>Warren Street</h3>
+
+      <div class="message">
+        <p>Saturday 27 and Sunday 28 February, closed.</p><P>The nearest alternative stations are Euston, Goodge Street, Oxford Circus, Euston Square, Great Portland Street and Regents Park.</P>
+<P>London Underground tickets are valid for travel on reasonable London Bus routes between Euston, Tottenham Court Road and Oxford Circus.</P>
+<P>Journey times may be increased by up to 15 minutes.</P><p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+      </div>
+    </dd>
+
+    <dt>Station maintenance</dt>
+    <dd>
+      <h3>Canary Wharf</h3>
+      <div class="message">
+        <p>Reduced escalator service until mid May 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Covent Garden</h3>
+      <div class="message">
+        <p>GOING TO COVENT GARDEN? Covent Garden station gets very busy at weekends and in the evenings, but you can avoid the crowds by walking there from Leicester Square (6 minutes) or Holborn (9 minutes). The short walk is clearly signposted above ground and maps are on display at both stations.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Holland Park</h3>
+      <div class="message">
+        <p>Reduced lift service until further notice.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>King's Cross St.Pancras</h3>
+      <div class="message">
+        <p>Reduced escalator service until further notice.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Leicester Square</h3>
+      <div class="message">
+        <p>Reduced escalator service until mid March 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>London Bridge Station</h3>
+      <div class="message">
+        <p>Reduced escalator service until mid May 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Monument</h3>
+      <div class="message">
+        <p>Reduced escalator service until further notice.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Oxford Circus</h3>
+      <div class="message">
+        <p>Until further notice, due to escalator work Central line passengers travelling to Oxford Street are strongly advised to avoid exiting at Oxford Circus station. Use Bond Street or Tottenham Court Road stations instead. Access to the Central line and interchange with the Bakerloo and Victoria lines is not affected.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Piccadilly Circus</h3>
+      <div class="message">
+        <p>Reduced escalator service until further notice.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>South Kensington</h3>
+      <div class="message">
+        <p>Reduced escalator service until late March 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Swiss Cottage</h3>
+      <div class="message">
+        <p>Reduced escalator service until late May 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+    <dd>
+      <h3>Waterloo</h3>
+      <div class="message">
+        <p>Reduced escalator service until late April 2010.</p>
+        <p><a href="/transform">
+					See how we are transforming the Tube
+				</a></p>
+
+      </div>
+    </dd>
+  </dl>
+</div>
+				
+				<div id="tube-map"><div id="tube-map-flash"></div></div>
+				<script type="text/javascript" language="Javascript">//<![CDATA[
+					var FO = {
+						movie:			"/tfl/common/maps/swf/map-wrapper.swf",
+						width:			"504",
+						height:			"360",
+						majorversion:	"6",
+						build:			"0",
+						flashvars:		"offset=now"
+					};
+					UFO.create(FO, "tube-map-flash");
+				//]]>
+				</script>
+
+				<ul id="othersections" class="linklist">
+<li>
+		<a href="/tfl/livetravelnews/departureboards/">Live departure boards</a>
+
+		<p>On selected Tube lines and river routes</p>
+</li>
+<li>
+		<a href="http://alerts.tfl.gov.uk/">Mobile travel alerts</a>
+		<p>Free personalised text alerts for Tube and DLR</p>
+</li>
+<li>
+		<a href="/tfl/livetravelnews/plannedworks/default.aspx">Weekend closures email</a>
+		<p>Get advance warning with our free weekly email</p>
+
+</li>
+</ul>
+
+		<div class="small-promotions">
+				<div>
+					<a href="/corporate/projectsandschemes/10127.aspx" class="left"><img src="/tfl/traveltools/images/editorial-image.gif" alt="" width="79" height="79" class="border" /></a>
+					<h2><a href="/corporate/projectsandschemes/10127.aspx">We are transforming your Tube</a></h2>
+					<p>The Tube upgrade programme will deliver nearly 30 per cent more capacity across the network. Find out what improvements are being made to your line.</p>
+				</div>
+
+			</div>
+
+
+			</div>	
+	
+			<!-- Supporting content start -->
+			<div id="supporting-content"></div>
+			<!-- Supporting content end -->
+
+			
+	<h2 class="structural-label">Navigation</h2>
+    <ul class="keyboard-nav">
+
+      <li><a class="structural-label" id="navigation-start" href="#help-and-search" title="Search this website, get help or contact us"><strong>Go to: </strong>Search &amp; help</a></li>
+      <li><a class="structural-label" href="#nav-home" title="Go to one of the main sections on this website"><strong>Go to: </strong>Main site navigation</a></li>
+	  <li><a class="structural-label" href="#current-section-start" title="Go somewhere in this section"><strong>Go to: </strong> Current section navigation</a></li>
+      <li><a class="structural-label" href="#corporate-links" title="Terms and conditions, privacy etc."><strong>Go to: </strong> Corporate information</a></li>
+
+      <li><a class="structural-label" href="#main-content" title="Go back to the main content of this page"><strong>Back to: </strong>Main page content</a></li>
+    </ul><div id="bug-fix-1"></div>
+
+<!-- Global navigation start -->
+      <dl id="global-navigation">
+      	<dt>Main site sections:</dt>
+        <dd id="nav-home"><a href="/" title="" accesskey="1">Home</a></dd>
+        <dd id="nav-live-travel-news"><a href="/livetravelnews/default.aspx" title="Service updates, Mobile services, Traffic news&hellip;">Live travel news</a></dd>
+
+        <dd id="nav-getting-around"><a href="/gettingaround/default.aspx" title="Journey Planner, Maps, Transport accessibility&hellip;">Getting around</a></dd>
+        <dd id="nav-tickets"><a href="/tickets/default.aspx" title="Fares guide, Oyster, Where to buy tickets&hellip;">Tickets</a></dd>
+        <dd id="nav-road-users"><a href="/roadusers/default.aspx" title="Congestion Charge, Cycling, Fines and regulations&hellip;">Road users</a></dd>
+        <dd id="nav-corporate"><a href="/corporate/default.aspx" title="About TfL, Jobs, Media, Projects and schemes&hellip;">Corporate</a></dd>
+        <dd id="nav-business-and-partners"><a href="/businessandpartners/default.aspx" title="Bus operators, Coach drivers, PCO licensing, Procurement&hellip;">Business &amp; partners</a></dd>
+
+      </dl>
+<!-- Global navigation end -->
+			<div id="help-and-search">
+<!-- Help and search start -->
+  <dl class="linklist">
+	<dt>Site help</dt>
+	<dd><a href="/accessibility">Accessibility</a></dd>
+	<dd><a href="/helpandcontact">Help &amp; Contact</a></dd>
+
+	<dd><a href="/sitemap">Sitemap</a></dd>
+  </dl>
+  <form action="/tfl/search/" method="get">
+	<label for="main-search-input">Search: </label><input id="main-search-input" name="keywords" type="text" /> <input type="submit" value="Search" class="button-default-2" />
+  </form>
+<!-- Help and search end -->
+</div><div class="bottom-banner" id="related-tools">
+<!-- Related Tools start -->
+<h2>Not what you were looking for? <span>Try these related Travel Tools</span></h2>
+
+<p class="view-all"><a href="/traveltools">View all Travel Tools</a></p>
+<ul>
+	<li>
+		<a href="/cabwise" title="Go to Cabwise" class="iconlnk"><img src="/tfl-global/images/traveltools/cabwise-icon.png" alt=" " border="0" /></a>
+		<a href="/cabwise" title="Go to Cabwise">Cabwise</a>
+		<p>Text CAB to 60835 and we'll use GPS to text your three nearest cab numbers</p>
+	</li>
+	<li>
+
+		<a href="http://alerts.tfl.gov.uk/" title="Go to Free mobile travel alerts" class="iconlnk"><img src="/tfl-global/images/traveltools/mobile-travel-alerts-icon.png" alt=" " border="0" /></a>
+		<a href="http://alerts.tfl.gov.uk/" title="Go to Free mobile travel alerts">Free mobile travel alerts</a>
+		<p>Find out about any delays to your Tube or DLR journey with free, personalised text alerts</p>
+	</li>
+	<li>
+		<a href="/tfl/livetravelnews/mobileservices/sms.asp" title="Go to Journey Planner by text" class="iconlnk"><img src="/tfl-global/images/traveltools/journey-planner-by-txt-icon.png" alt=" " border="0" /></a>
+		<a href="/tfl/livetravelnews/mobileservices/sms.asp" title="Go to Journey Planner by text">Journey Planner by text</a>
+
+		<p>Plan on the move &#45; Text us your location and destination, and we'll do the rest</p>
+	</li>	
+</ul>
+<!-- Related Tools end -->
+</div><div id="site-map">
+	<h2>Elsewhere on tfl.gov.uk</h2>
+		
+			<ul>
+			<li><a href="/journeyplanner" title="Journey Planner&hellip;">Journey Planner</a></li>
+
+			<li><a href="/livetravelnews/default.aspx" title="Service updates, Mobile services, Traffic news&hellip;">Live travel news</a></li>
+			<li><a href="/gettingaround/default.aspx" title="Journey Planner, Maps, Transport accessibility&hellip;">Getting around</a></li>
+			<li><a href="/tickets/default.aspx" title="Fares guide, Oyster, Where to buy tickets&hellip;">Tickets</a></li>
+			<li><a href="/roadusers/default.aspx" title="Congestion Charge, Cycling, Fines and regulations&hellip;">Road users</a></li>
+			<li><a href="/corporate/default.aspx" title="About TfL, Jobs, Media, Projects and schemes&hellip;">Corporate</a></li>
+			<li><a href="/businessandpartners/default.aspx" title="Bus operators, Coach drivers, PCO licensing, Procurement&hellip;">Business &amp; partners</a></li>
+
+		</ul>
+		<ul>	
+			<li><a href="/accessibility">Accessibility</a></li>
+			<li><a href="/helpandcontact">Help &amp; Contact</a></li>
+			<li><a href="/foi">Freedom of information</a></li>
+			<li><a href="/terms">Terms and conditions</a></li>
+
+			<li><a href="/jobs">Jobs</a></li>
+			<li><a href="/media">Media</a></li>
+		</ul>
+		<ul>	
+			<li><a href="/modalpages/2625.aspx">Tube</a></li>
+			<li><a href="/modalpages/2688.aspx">Rail</a></li>
+			<li><a href="/modalpages/2605.aspx">Buses</a></li>
+
+			<li><a href="/modalpages/2632.aspx">DLR</a></li>
+			<li><a href="/modalpages/2674.aspx">Trams</a></li>
+			<li><a href="/modalpages/2669.aspx">Assisted travel</a></li>
+		</ul>
+		<ul>	
+			<li><a href="/modalpages/2694.aspx">Walking</a></li>
+			<li><a href="/modalpages/2663.aspx">Cycling</a></li>
+
+			<li><a href="/modalpages/2648.aspx">River</a></li>
+			<li><a href="/modalpages/2716.aspx">Coaches</a></li>
+			<li><a href="/modalpages/2656.aspx">Driving</a></li>
+			<li><a href="/modalpages/2680.aspx">Taxis and minicabs</a></li>
+		</ul>
+		
+</div>
+
+<div id="corporate-links">
+<!-- Corporate links start -->
+  <a href="http://www.london.gov.uk" title="Visit the Mayor of London's website, www.london.gov.uk"><img src="/tfl-global/images/mayor-logo.gif" alt="Mayor of London" /></a>
+  <dl class="linklist">
+	<dt>Corporate information</dt>
+	<dd><a href="/foi">Freedom of information</a></dd>
+	<dd><a href="/jobs">Jobs</a></dd>
+	<dd><a href="/media">Media</a></dd>
+
+	<dd><a href="/terms">Terms and conditions</a></dd>
+  </dl>
+  <p>&copy; Transport for London</p>
+<!-- Corporate links end -->
+</div>
+<!-- global -->
+		</div>
+	  	<!-- Container end --> 
+ 	 	<!-- Global footer start -->
+
+	
+<!-- Global footer end -->
+	</body>
+</html>

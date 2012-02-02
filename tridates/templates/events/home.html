@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>
+                {{ h_user.get_profile.full_name }}
+            </h1>
+            <div id='vital_stats'>
+                <h3>Events by region</h3>
+                {% for place in active_regions %}
+                    <p><a href="/regions/{{ place.id }}">
+                        {{ place.name }}
+                        <span style="color:#625D5D">
+                            [{{ place.region_events }}]
+                        </span>
+                    </a></p>
+                {% endfor %}
+            </div>
+        </div>
+        <div id='content'>
+            <p>&nbsp;</p>
+            <div id='booking_summ'>
+                <h2><a href="/events/year/2010">2010 calendar</a> -
+                    {{ event_count_2010 }} races remaining
+                </h2>
+                <p>&nbsp;</p>
+                <h2><a href="/events/year/2011">2011 calendar</a> - 
+                    {{ event_count_2011 }} races entered
+                </h2>
+                <p>&nbsp;</p>
+                {% if event_count_2012 %}
+                    <h2><a href="/events/year/2012">2012 calendar</a> - 
+                        {{ event_count_2012 }} races entered
+                    </h2>
+                    <p>&nbsp;</p>
+                {% endif %}
+            </div>
+            <h3>Next tri date: <a href="/events/{{ next_event.id }}">
+                {{ next_event.start_date|date:"j M Y" }}</a> 
+                ({{ next_event_wait }} days to go...)
+            </h3>
+            <p>&nbsp;</p>
+            <h3>Recently added</h3>
+            <div id='profile_news'>
+                {% for e in last_added %}
+                    <div class='profile_news_item'>
+                        <p>
+                            <span>
+                                <a href="/events/{{ e.id }}">{{ e.name }}</a>
+                            </span>
+                            <span style='font-size:11px;' class='news_info'>
+                            {{ e.start_date|date:"j F Y" }}
+                            </span>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

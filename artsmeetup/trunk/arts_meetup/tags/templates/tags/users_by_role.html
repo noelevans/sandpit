@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+
+    <h2>Users tagged {{ role }}</h2>
+    <ul>
+        {% for user in object_list %}
+            <li><a href='/users/{{ user.user.username }}'>{{ user.user.username }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

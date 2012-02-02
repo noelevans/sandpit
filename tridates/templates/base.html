@@ -1,0 +1,66 @@
+<html>
+<head>
+    <!-- script type="text/javascript" src="http://noelevans.webfactional.com/media/js/jquery.js"></script>
+    <script type="text/javascript" src="http://noelevans.webfactional.com/media/js/jquery-ui.js"></script -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-9960860-4']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    
+    </script>
+    <meta name="google-site-verification" content="6ved-RhELuKRBpwrICYqRQH1EIpWTfu1_hg0J93rHCA" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
+    <link rel="stylesheet"
+          type="text/css"
+          href='http://noelevans.webfactional.com/media/style.css'>
+    </link>
+    <title>
+        {% block title %}{% endblock %} - Tri Dates
+    </title>
+    <meta name="language" content="English" />
+    <meta name="keywords" content="uk triathlon calendar 2011, uk triathlon calendar 2010, uk triathlon calendar 2012, uk triathlon schedule, triathlon itinerary" />
+    <meta name="description" content="Welcome to Tri Calendar. UK triathlon events" />
+
+</head>
+<body>
+{% autoescape on %}
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+<div id='all'>
+    <div id='masthead'><a href='/'><img src='http://noelevans.webfactional.com/media/banner.png' /></a></div>
+    <div id='logging_id'>
+        <div id='findActor' style='float:left'
+            {% if no_menu_search %}
+                style='visibility:hidden;'
+            {% endif %}
+            >
+        </div>
+        {% if user.is_authenticated %}
+            <p>Logged in as {{ user.username|escape }}. (Not you? Please <a href="/accounts/logout">re-login</a>)</p>
+        {% else %}
+            <p>Hi, this is a user driven site. To add more events, please click <a href="/events/create">here</a></p>
+        {% endif %}
+        &nbsp;
+    </div>
+    <div id='main'>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+    <div id='footer'>&copy; Tri Dates</div>
+</div>
+{% endautoescape %}
+</body>
+</html>

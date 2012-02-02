@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Create a message{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+
+        <div id='default_content'>
+            <div id='min_banner'><h2>Create a message</h2></div>
+            <div id='info_bar'>
+                <p style='padding-top:1em; padding-bottom:1em'></p>
+            </div>
+
+            {% if errors %}
+                <ul>
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+
+            <div id='booking_summ'>
+                <form action="." method="POST">
+                    <table>
+                        <tr>
+                            <td>To: </td>
+                            <td><input type="text"
+                                       name="recipients"
+                                       value='{{init_recipients}}'
+                                />
+                            (Enter usernames seperated by commas eg. "noel, lalayn")</td>
+                        </tr>
+                        <tr>
+                            <td style='vertical-align:top'>Message: </td>
+                            <td>
+                                <textarea rows="3"
+                                    cols="70"
+                                    name="body"
+                                    value=""></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <p style='padding-top:1.5em'><input type="submit" value="Send"/></p>
+
+                </form>
+            </div>
+            &nbsp;
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

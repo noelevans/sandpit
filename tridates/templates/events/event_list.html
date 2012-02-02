@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+    Events
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>Triathlon Calendar</h1>
+        </div>
+        <div id='content'>
+            <div id='profile_news'>
+				{% for o in object_list %}
+					<div class='profile_news_item'>
+						<p><a href="/events/{{ o.id }}">{{ o.name }}</a></p>
+						<p style='font-size:11px;' class='news_info'>
+							<a href="/regions/{{ o.region.id }}">
+                            {{ o.region.name }}</a>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            {{ o.start_date }}
+						</p>&nbsp;
+					</div>
+                {% empty %}
+					<div class='profile_news_item'>
+						<p>[ No events listed yet.]</p>&nbsp;
+					</div>                
+				{% endfor %}
+            </div>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

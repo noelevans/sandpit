@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+    Create a message
+{% endblock %}
+
+{% block content %}
+
+    {% if object %}
+        <h1>Update message</h1>
+    {% else %}
+        <h1>Create a message</h1>
+    {% endif %}
+
+    {% if form.has_errors %}
+        <h2>Please correct the following error{{ form.errors|pluralize }}:</h2>
+    {% endif %}
+
+    <form method="post" action=".">
+        <p><label for="id_sender">Sender:</label> {{ user }}
+        {% if form.sender.errors %}*** {{ form.sender.errors|join:", " }}{% endif %}</p>
+        <p><label for="id_recipient">To:</label> {{ form.recipient }}
+        {% if form.recipient.errors %}*** {{ form.recipient.errors|join:", " }}{% endif %}</p>
+        <p><label for="id_is_public">Public?:</label> {{ form.is_public }}
+        {% if form.is_public.errors %}*** {{ form.is_public.errors|join:", " }}{% endif %}</p>
+        <p><label for="id_body">Message:</label> {{ form.body }}
+        {% if form.body.errors %}*** {{ form.body.errors|join:", " }}{% endif %}</p>
+        <input type="submit" />
+    </form>
+    <!--
+    This is a lifesaver when debugging!
+    <p> {{ form.error_dict }} </p>
+    -->
+
+{% endblock %}

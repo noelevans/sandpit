@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+    Itineraries
+{% endblock %}
+
+{% block content %}
+    <h2>Itinerary-canaries</h2>
+    <ul>
+        {% for booking in object_list %}
+            <li><a href=''>()</a>{{booking}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

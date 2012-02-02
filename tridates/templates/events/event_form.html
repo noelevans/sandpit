@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ object.name }}
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>Add an event</h1>
+        </div>
+        <div id='content'>        
+            <form action="" method="post">
+                {% csrf_token %}
+                <table>
+                    {% for row in form %}
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td style="color:red">{{ row.errors }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ row.label_tag }}</td>
+                            <td>{{ row }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <p><input type="submit" value="Add event"</p>
+            </form>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

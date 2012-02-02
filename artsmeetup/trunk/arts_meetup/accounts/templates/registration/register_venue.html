@@ -1,0 +1,73 @@
+{% extends "base_simple.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+<div id='default_content'>
+    <h1>Create an account</h1>
+
+    <form action="." method="POST">
+        <table>
+            <tr><td>{{ form.name.errors }}</td></tr>
+            <tr>
+                <td>Venue name</td>
+                <td>*</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr><td>{{ form.username.errors }}</td></tr>
+            <tr>
+                <td>screen name</td>
+                <td>*</td>
+                <td>{{ form.username }}</td>
+                <td>
+                    <p style='color:#666666'>
+                        (No spaces or special charaters)
+                    </p>
+                </td>
+            </tr>
+            <tr><td>{{ form.city.errors }}</td></tr>
+            <tr>
+                <td>City</td>
+                <td>*</td>
+                <td>{{ form.city }}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr><td>{{ form.email.errors }}</td></tr>
+            <tr>
+                <td>Contact email</td>
+                <td>*</td>
+                <td>{{ form.email }}</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>*</td>
+                <td>{{ form.password1 }}</td>
+            </tr>
+            <tr><td>{{ form.password2.errors }}</td></tr>
+            <tr>
+                <td>Password (again)</td>
+                <td>*</td>
+                <td>{{ form.password2 }}</td>
+            </tr>
+        </table>
+        <p>&nbsp;</p>
+        <table>
+            <tr>
+                <td>{{ form.email_news }}</td>
+                <td>Send occassional updates as new features appear</td>
+            </tr>
+            <tr><td>{{ form.tandcs.errors }}</td></tr>
+            <tr>
+                <td>{{ form.tandcs }}</td>
+                <td>On behalf of the organisation,
+                    I agree to the <a href='/media/tandcs.html'>T&and;Cs of ArtsTent</a> *</td>
+            </tr>
+        </table>
+        <p style='float:right'>( * required )</p>
+        <p><input type="submit" value="Submit"/></p>
+    </form>
+</div>
+{% endblock %}
+

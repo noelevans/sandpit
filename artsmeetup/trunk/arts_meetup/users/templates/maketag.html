@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Make a tag{% endblock %}
+
+{% block content %}
+
+<div id='default_content'>
+    <div id='min_banner'><h1>Create a new tag</h1></div>
+    <div id='info_bar'>
+        <h3>Tags can be roles you perform or styles
+            of performances you are suited to
+        </h3>
+    </div>
+    <div id='booking_summ' style='padding-top:1em;'>
+
+        <p style='padding-bottom:2em'>
+            Tags have to be one word. So, enter "Neo gothic" as a tag
+            name and it will be made in to the tag "neogothic"
+        </p>
+
+        {% if no_more_tags %}
+            <p style='padding-bottom:2em; color:red'>
+                You are already have 10 tags. If you want to
+                tag yourself with this new tag,
+                <a href='/users/remove_roles/'>select one to
+                remove</a> and then return here
+            </p>
+        {% endif %}
+
+        <form action="." method="POST">
+            <table>
+                {% for field in form %}
+                    {% if field.errors %}
+                        <tr>{{ field.errors }}</tr>
+                    {% endif %}
+                    <tr>
+                        <td>{{ field.label }}&nbsp;&nbsp;</td>
+                        <td>{{ field }}&nbsp;&nbsp;</td>
+                        <td>{{ field.help_text }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p style='padding-top: 1em;'><input type="submit" value="Done"/></p>
+        </form>
+
+    </div>
+    &nbsp;
+</div>
+&nbsp;
+
+{% endblock %}

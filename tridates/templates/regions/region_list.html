@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+    Regions
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>Races by region</h1>
+        </div>
+        <div id='content'>
+            <div id='profile_news'>
+				{% for o in object_list %}
+					<div class='profile_news_item'>
+						<p>
+                            <span>
+                                <a href="/regions/{{ o.id }}">
+                                    {{ o.name }}
+                                </a>
+                            </span>
+                            <span style='font-size:11px;' class='news_info'>
+                                {{ o.event_set.all.count }} events
+                            </span>
+						</p>
+					</div>
+				{% endfor %}
+            </div>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}
