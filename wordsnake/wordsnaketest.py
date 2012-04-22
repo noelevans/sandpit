@@ -1,8 +1,10 @@
-from wordsnake import *
+from wordsnake import flattern, getLeaves, listOfMapsToMap 
+from wordsnake import possibleSingleShift, snake, targetFound, validWord
+
 import unittest
 
 class WordSnakeTest( unittest.TestCase ):
-	
+		
 	def setup( self ):
 		pass
 	
@@ -32,7 +34,24 @@ class WordSnakeTest( unittest.TestCase ):
 				'hello': { 'bye':         {} }, 
 				'salut': { 'aufwidersen': { 'hippo':   {} } } } ) )
 		self.assertEquals(
-			['s'], getLeaves( ['cat' ] ) )
+			[ 'uno', 'due' ],
+			getLeaves( {
+				'alpha': [ 'uno', 'due' ],
+				'beta':  { 'dos' : {} } } ) )
+		self.assertEquals(
+			[ 'uno', 'due' ],
+			getLeaves( {
+				'beta':  { 'dos' : {} },
+				'alpha': [ 'uno', 'due' ] } ) )
+		
+	def test_flattern( self ):
+		self.maxDiff = None
+		self.assertEquals( sorted( [ 'hi', 'ciao', 'giraffe', 'hello', 'bye', 'salut', 'aufwidersen', 'hippo' ] ), 
+						   sorted( flattern( { 
+								'hi':    { 'ciao':        { 'giraffe': {} } },
+								'hello': { 'bye':         {} }, 
+								'salut': { 'aufwidersen': { 'hippo':   {} } } 
+						   } ) ) )
 
 	def test_possibleSingleShift( self ):
 		self.assertEquals( 
@@ -41,8 +60,11 @@ class WordSnakeTest( unittest.TestCase ):
 			  'cab', 'cad', 'cal', 'cam', 'can', 'cap', 'car', 'caw', 'cay'], 
 			possibleSingleShift( 'cat' ) )
 	
-#	def test_targetFound( self ):	
-#		self.assertEquals()
+	def test_targetFound( self ):	
+		self.assertTrue( targetFound( { 'hi':    { 'bye':  {} }, 
+                                        'hello': { 'ciao': { 'giraffe': {} } },
+                                        'salut': {} 
+                                      }, 'giraffe' ) )
 		
 	def test_snake( self ):
 		self.assertEquals( 
