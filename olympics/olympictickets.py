@@ -64,15 +64,10 @@ def available_tickets():
                         costs = map(lambda x : re.findall('[0-9.]+', x)[0], cost_texts)
                         min_cost = min(map(lambda x : float(x), costs))
                         if min_cost <= 80:
-                            result.append((sport, date, time))
+                            result.append((sport, date, time, details_url))
     return result
 
 if __name__ == "__main__":
-    while True:
-        time.sleep(2)
-        print datetime.datetime.now().time()
-        result = available_tickets()
-        if result:
-            break
+    result = available_tickets()
     pprint.pprint(result) if result else None
     os.system('cvlc /usr/share/sounds/gnome/default/alerts/glass.ogg')
