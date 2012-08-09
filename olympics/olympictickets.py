@@ -68,6 +68,12 @@ def available_tickets():
     return result
 
 if __name__ == "__main__":
-    result = available_tickets()
+    while True:
+        time.sleep(2)
+        print datetime.datetime.now().time()
+        result = available_tickets()
+        if result:
+            break
+        break
     pprint.pprint(result) if result else None
-    os.system('cvlc /usr/share/sounds/gnome/default/alerts/glass.ogg')
+    os.system('cvlc /usr/share/sounds/gnome/default/alerts/glass.ogg vlc://quit')
