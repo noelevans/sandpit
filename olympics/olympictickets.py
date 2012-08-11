@@ -17,33 +17,42 @@ def make_soup(url):
         print 'x ',
     return BeautifulSoup(html)
     
-def available_tickets():
+def available_tickets(paralympics=False):
     result = []
-    sports = {
-            'athletics'             : 8194,
-            'basketball'            : 8198,
-            'canoe slalom'          : 8202,
-            'cycling - track'       : 8209,
-            'diving'                : 8210,
-            'gymnastics - artistic' : 8216,
-            'gymnastics - rhythmic' : 8217,
-            'hockey'                : 8219,
-            'olympic park'          : 8269,
-            'swimming'              : 8225,
-            'volleyball'            : 8232,
-            'waterpolo'             : 8233,
+    sports = { 
+        'olympics' : {
+                'Athletics'             : 8194,
+                'Basketball'            : 8198,
+                'Canoe slalom'          : 8202,
+                'Cycling - track'       : 8209,
+                'Diving'                : 8210,
+                'Gymnastics - artistic' : 8216,
+                'Gymnastics - rhythmic' : 8217,
+                'Hockey'                : 8219,
+                'Olympic park'          : 8269,
+                'Swimming'              : 8225,
+                'Volleyball'            : 8232,
+                'Waterpolo'             : 8233,
+            },
+        'paralympics' : {
+                'Athletics'             : 8247,
+                'Closing ceremony'      : 8267,
+                'Opening ceremony'      : 8266,
+            }
         }
 
     summary_template_url = 'http://www.tickets.london2012.com/browse?' + \
-            'form=search&tab=oly&sport=%d&event=&venue=&fromDate=&' + \
+            'form=search&tab=%s&sport=%d&event=&venue=&fromDate=&' + \
             'toDate=&morning=1&afternoon=1&evening=1&' + \
             'show_available_events=1'
     details_template_url = 'http://www.tickets.london2012.com/' + \
             'eventdetails?id=%s'
+    lookup = 'paralympics' if paralympics else 'olympics'
     now = datetime.datetime.now()
+    tab = 'para' if paralympics else 'oly'
 
-    for sport, code in sports.iteritems():
-        url    = summary_template_url % code
+    for sport, code in sports[lookup].iteritems():
+        url    = summary_template_url % (tab, code)
         soup   = make_soup(url)
         if soup.find('h2') and soup.find('h2').text == 'Search results':
             table = soup.find('table')
@@ -63,8 +72,13 @@ def available_tickets():
                         cost_texts = map(lambda x : x.text, option_tags)
                         costs = map(lambda x : re.findall('[0-9.]+', x)[0], cost_texts)
                         min_cost = min(map(lambda x : float(x), costs))
-                        if min_cost <= 80:
-                            result.append((sport, date, time, details_url))
+                        result.append({
+                                'sport' : sport, 
+                                'date'  : date, 
+                                'time'  : time, 
+                                'url'   : details_url, 
+                                'cost'  : min_cost
+                            })
     return result
 
 if __name__ == "__main__":
