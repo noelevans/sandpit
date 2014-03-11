@@ -1,0 +1,53 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://noelevans.webfactional.com/media/js/jquery.js"></script>
+    <script type="text/javascript" src="http://noelevans.webfactional.com/media/js/jquery-ui.js"></script>
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-9960860-2");
+            pageTracker._trackPageview();
+        } catch(err) {}
+    </script>
+    <meta name="verify-v1" content="/ynBf3xXCYsznW1bhfUb3tB4YWIFaCTiLTov4vvhilg=" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
+    <link rel="stylesheet"
+          type="text/css"
+          href='http://noelevans.webfactional.com/media/style.css'>
+    </link>
+    <title>Tri Calendar {% block title %}{% endblock %}</title>
+
+</head>
+<body>
+{% autoescape on %}
+<div id='all'>
+    <div id='masthead'><a href='/'><img src='http://noelevans.webfactional.com/media/banner.png' /></a></div>
+<!--
+    <div id='menu'>
+        <ul class="righthand">
+        </ul>
+        <ul class="lefthand">
+        </ul>
+    </div>
+-->
+    <div id='logging_id'>
+        <div id='findActor' style='float:left'>
+                &nbsp;
+        </div>
+        &nbsp;
+    </div>
+    <div id='main'>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+    <div id='footer'>&copy; Tri Dates</div>
+</div>
+{% endautoescape %}
+</body>
+</html>

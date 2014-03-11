@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+    <h1>Register to add more triathlon dates</h1>
+    <p>&nbsp;</p>
+    <form action="/accounts/register" method="post">
+	{% csrf_token %}
+        <p>{{ form.errors }}</p>
+        <table style='padding: 0 2em 1em 2em'>
+            <tr><td>{{ form.username.errors }}</td></tr>
+            <tr>
+                <td>username</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr><td>{{ form.username.errors }}</td></tr>
+            <tr>
+                <td>email address</td>
+                <td>{{ form.email }}</td>
+            </tr>
+            <tr><td>{{ form.username.errors }}</td></tr>
+            <tr>
+                <td>password</td>
+                <td>{{ form.password1 }}</td>
+            </tr>
+            <tr>
+                <td>re-type password</td>
+                <td>{{ form.password2 }}</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <input type="hidden" name="next" value="{{ next|escape }}" />
+            <tr><td>&nbsp;</td><td><input type="submit" value="Create account" /></td></tr>
+        </table>
+    </form>
+
+
+{% endautoescape %}
+{% endblock %}

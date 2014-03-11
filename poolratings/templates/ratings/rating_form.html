@@ -1,0 +1,59 @@
+{% extends "base_simple.html" %}
+
+{% block title %}Write a review{% endblock %}
+
+{% block content %}
+<div id='default_content'>
+    <h1>Write a review...{{ form.errors }}</h1>
+
+    <form action="." method="POST">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        <table>
+            <tr><td>{{ form.review.errors }}</td></tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>*</td>
+                <td>{{ form.review }}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr><td>{{ form.stars.errors }}</td></tr>
+            <tr>
+                <td>Stars</td>
+                <td>*</td>
+                <td>
+                    {{ form.stars|add_class:"star required {half:true}" }}
+                </td>
+            </tr>
+            <tr>
+                <td>Pros</td>
+                <td>&nbsp;</td>
+                <td>{{ form.pro_tags }}</td>
+            </tr>
+            <tr><td>{{ form.con_tags.errors }}</td></tr>
+            <tr>
+                <td>Cons</td>
+                <td>&nbsp;</td>
+                <td>{{ form.con_tags }}</td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td>Reviewer's name</td>
+                <td>&nbsp;</td>
+                <td>{{ form.name }}</td>
+            </tr>
+            <tr>
+                <td>Email address</td>
+                <td>&nbsp;</td>
+                <td>{{ form.email }}&nbsp;&nbsp;(Never disclosed to anyone)</td>
+            </tr>
+        </table>
+        <p>&nbsp;</p>
+        <p style='float:right'>( * required )</p>
+        <p><input type="submit" value="Submit"/></p>
+    </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,885 @@
+[
+  {
+    "pk": 4, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_group", 
+      "name": "Can add group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_message", 
+      "name": "Can add message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_permission", 
+      "name": "Can add permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_user", 
+      "name": "Can add user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_group", 
+      "name": "Can change group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_message", 
+      "name": "Can change message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_permission", 
+      "name": "Can change permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_user", 
+      "name": "Can change user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_group", 
+      "name": "Can delete group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_message", 
+      "name": "Can delete message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_permission", 
+      "name": "Can delete permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_user", 
+      "name": "Can delete user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_comment", 
+      "name": "Can add comment", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_commentflag", 
+      "name": "Can add comment flag", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "can_moderate", 
+      "name": "Can moderate comments", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_comment", 
+      "name": "Can change comment", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_commentflag", 
+      "name": "Can change comment flag", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_comment", 
+      "name": "Can delete comment", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_commentflag", 
+      "name": "Can delete comment flag", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_contenttype", 
+      "name": "Can add content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_contenttype", 
+      "name": "Can change content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_contenttype", 
+      "name": "Can delete content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_discipline", 
+      "name": "Can add discipline", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_discipline", 
+      "name": "Can change discipline", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_discipline", 
+      "name": "Can delete discipline", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_event", 
+      "name": "Can add event", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_event", 
+      "name": "Can change event", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_event", 
+      "name": "Can delete event", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_region", 
+      "name": "Can add region", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_region", 
+      "name": "Can change region", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_region", 
+      "name": "Can delete region", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_session", 
+      "name": "Can add session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_session", 
+      "name": "Can change session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_session", 
+      "name": "Can delete session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_site", 
+      "name": "Can add site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_site", 
+      "name": "Can change site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_site", 
+      "name": "Can delete site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "noel", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2008-09-04 14:25:29", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "[e1pk]", 
+      "email": "noel@gmail.com", 
+      "date_joined": "2010-10-07 22:57:00"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "lali", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:16:37", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$c90e1$445a9bc713bc57e58b4fa0eaf1645f44c27f4895", 
+      "email": "lali@aol.com", 
+      "date_joined": "2010-10-25 15:16:37"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "barry", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:31:18", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$3f65d$94742b1db1554fbc2df3de551ad4e9d066ac7f7d", 
+      "email": "barry@hotmail.com", 
+      "date_joined": "2010-10-25 15:25:43"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "chris", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:27:46", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$aef4e$e2d29d8c98a85ba3b1595e299c10a25f937ee48f", 
+      "email": "chris@hotmail.com", 
+      "date_joined": "2010-10-25 15:27:46"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "phil", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:32:10", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$97e99$5c0f3df399fa159c93026e57832277c99fedb01e", 
+      "email": "phil@hotmail.com", 
+      "date_joined": "2010-10-25 15:32:10"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "dan", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:33:08", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$81851$65293ed67aad1c711d0a47ed5a5d6f485b9ed7fd", 
+      "email": "dan@hotmail.com", 
+      "date_joined": "2010-10-25 15:33:08"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "boris", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:35:07", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$720b4$7cc5820cfbc5f7038983e29aa07629c55f8f07a4", 
+      "email": "boris@hotmail.com", 
+      "date_joined": "2010-10-25 15:35:07"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "ken", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 15:36:56", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$faf01$fca46aa6ad1c647c4347fca842774bb11db84f23", 
+      "email": "kenboris@hotmail.com", 
+      "date_joined": "2010-10-25 15:36:56"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "larry", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 16:02:25", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$40e55$6b9958af5f958146ddbbed2de93ded8458c9af27", 
+      "email": "larry@hotmail.com", 
+      "date_joined": "2010-10-25 16:02:25"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "pat", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2010-10-25 16:23:29", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$e8b91$32a052f13d2d8aabb9c49efd03b6ecc11f5a7776", 
+      "email": "pat@hotmail.com", 
+      "date_joined": "2010-10-25 16:17:59"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "comment", 
+      "name": "comment", 
+      "app_label": "comments"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "commentflag", 
+      "name": "comment flag", 
+      "app_label": "comments"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "contenttype", 
+      "name": "content type", 
+      "app_label": "contenttypes"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "discipline", 
+      "name": "discipline", 
+      "app_label": "disciplines"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "event", 
+      "name": "event", 
+      "app_label": "events"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "group", 
+      "name": "group", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "message", 
+      "name": "message", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "permission", 
+      "name": "permission", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "region", 
+      "name": "region", 
+      "app_label": "regions"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "session", 
+      "name": "session", 
+      "app_label": "sessions"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "site", 
+      "name": "site", 
+      "app_label": "sites"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "user", 
+      "name": "user", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": "e5a28fc5c720cfadbe0b6a8e769623f1", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2010-11-08 16:23:29", 
+      "session_data": "gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEESwp1Ljc5OTJjZTE1ZTlmMDc4MWM2NjEw\nOWVlNjRkMTNiZDZk\n"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "sites.site", 
+    "fields": {
+      "domain": "example.com", 
+      "name": "example.com"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Super sprint", 
+      "description": "0.4 x 10 x 2.5 km"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Sprint", 
+      "description": "0.75 x 20 x 5 km"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Olympic", 
+      "description": "1.5 x 40 x 10 km"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Olympic plus", 
+      "description": "1.5 x 80 x 10 km"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Half-Ironman", 
+      "description": "1.93 x 90 x 21.09 km"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "disciplines.discipline", 
+    "fields": {
+      "parent_discipline": null, 
+      "name": "Full-Ironman", 
+      "description": "3.86 x 180 x 42.2 km"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "events.event", 
+    "fields": {
+      "website": "", 
+      "status": "B", 
+      "locked": false, 
+      "name": "Cardiff Bay Tri", 
+      "disciplines": [], 
+      "date_confirmed": null, 
+      "region": 8, 
+      "confirmed_by": null, 
+      "address": "", 
+      "duration": 1, 
+      "date_added": "2010-10-25", 
+      "start_date": "2010-12-12", 
+      "added_by": 8, 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "events.event", 
+    "fields": {
+      "website": "", 
+      "status": "F", 
+      "locked": false, 
+      "name": "Channel Dash", 
+      "disciplines": [], 
+      "date_confirmed": null, 
+      "region": 7, 
+      "confirmed_by": null, 
+      "address": "", 
+      "duration": 1, 
+      "date_added": "2010-10-25", 
+      "start_date": "2010-12-31", 
+      "added_by": 8, 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "events.event", 
+    "fields": {
+      "website": null, 
+      "status": "Individual entrant & charity positions", 
+      "locked": false, 
+      "name": "Dextro Energy Triathlon London", 
+      "disciplines": [], 
+      "date_confirmed": null, 
+      "region": 1, 
+      "confirmed_by": null, 
+      "address": null, 
+      "duration": 2, 
+      "date_added": "2010-10-25", 
+      "start_date": "2011-08-06", 
+      "added_by": 1, 
+      "description": null
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "events.event", 
+    "fields": {
+      "website": null, 
+      "status": "Individual entrant & charity positions", 
+      "locked": false, 
+      "name": "Mazda Triathlon", 
+      "disciplines": [
+        2, 
+        3
+      ], 
+      "date_confirmed": "2010-10-10", 
+      "region": 1, 
+      "confirmed_by": 1, 
+      "address": null, 
+      "duration": 2, 
+      "date_added": "2010-10-25", 
+      "start_date": "2011-08-08", 
+      "added_by": 1, 
+      "description": null
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "events.event", 
+    "fields": {
+      "website": "", 
+      "status": "C", 
+      "locked": false, 
+      "name": "Hereford Storm", 
+      "disciplines": [
+        1, 
+        2, 
+        3, 
+        4
+      ], 
+      "date_confirmed": null, 
+      "region": 2, 
+      "confirmed_by": null, 
+      "address": "", 
+      "duration": 1, 
+      "date_added": "2010-10-25", 
+      "start_date": "2011-10-01", 
+      "added_by": 10, 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "events.event", 
+    "fields": {
+      "website": "", 
+      "status": "B", 
+      "locked": false, 
+      "name": "Llanelli Charge", 
+      "disciplines": [], 
+      "date_confirmed": null, 
+      "region": 8, 
+      "confirmed_by": null, 
+      "address": "", 
+      "duration": 1, 
+      "date_added": "2010-10-25", 
+      "start_date": "2012-01-01", 
+      "added_by": 10, 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "London"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "Midlands"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "North East"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "North West"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "Scotland"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "South East"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "South West"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "regions.region", 
+    "fields": {
+      "parent_region": null, 
+      "name": "Wales"
+    }
+  }
+]

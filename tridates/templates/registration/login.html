@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>{{ h_user.get_profile.full_name }}</h1>
+            <div id='vital_stats'>
+                <h3>Log in</h3>
+            </div>
+        </div>
+        <div id='content'>
+            <p>&nbsp;</p>
+            <div id='booking_summ'>   
+                <p>To make an account, please 
+                    <a href="/accounts/register/?next={{ next }}">
+                    register</a> here
+                </p>
+                <form action="." method="post">
+
+                    {% csrf_token %}
+                    <div id='min_banner'></div>
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+
+                    <input type="hidden" name="next" value="{{ next|escape }}" />
+                    <p><input type="submit" value="Login" /></p>
+                </form>
+
+        
+        
+            </div>
+        </div>
+        <p>&nbsp;</p>
+
+
+{% endautoescape %}
+{% endblock %}

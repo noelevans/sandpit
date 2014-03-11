@@ -1,0 +1,113 @@
+from math import sqrt, exp, pi, log
+
+def compute(form):
+
+  rem_time = form.rem.value / 365
+  strike = form.strike.value
+  price = form.price.value
+  vol = form.vol.value /100
+  int_rate = form.intr.value / 100
+  B_S_c = B_S_call(price,strike,rem_time,vol,int_rate)
+  B_S_p = B_S_put(price,strike,rem_time,vol,int_rate)
+  form.call.value = roundToPennies(B_S_c)
+  form.put.value = roundToPennies(B_S_p)
+
+
+def compute_derivatives(form):
+  rem_time = form.rem.value / 365
+  strike = form.strike.value
+  price = form.price.value
+  vol = form.vol.value / 100
+  int_rate = form.intr.value / 100
+  compute(form)
+  d1 = ( log( price / strike) + ( int_rate + vol*vol / 2 ) * rem_time ) / ( vol * sqrt( rem_time) )
+  d2 = d1 - vol * sqrt( rem_time )
+  erfprimed1 = exp( -(d1*d1)/2 ) / sqrt( 2*pi )
+  delta_c = erf(d1)
+  delta_p = erf(d1) - 1
+  theta_c = - price * erfprimed1 * vol / ( 2 * sqrt( rem_time ) ) - int_rate * strike * exp( - int_rate * rem_time ) * erf(d2)
+  theta_c = theta_c / 365
+  theta_p = - price * erfprimed1 * vol / ( 2 * sqrt( rem_time ) ) + int_rate * strike * exp( - int_rate * rem_time ) * erf(-d2)
+  theta_p = theta_p / 365
+  rho_c =   strike * rem_time * exp( - int_rate * rem_time ) * erf(d2)
+  rho_c = rho_c / 100
+  rho_p = - strike * rem_time * exp( - int_rate * rem_time ) * erf(-d2)
+  rho_p = rho_p / 100
+  vega = price * sqrt( rem_time ) * erfprimed1
+  vega = vega / 100
+  gamma = erfprimed1 / ( price * vol * sqrt( rem_time) )
+  form.delta_call.value = roundToPennies(delta_c)
+  form.delta_put.value = roundToPennies(delta_p)
+  form.theta_call.value = roundToPennies(theta_c)
+  form.theta_put.value = roundToPennies(theta_p)
+  form.rho_call.value = roundToPennies(rho_c)
+  form.rho_put.value = roundToPennies(rho_p)
+  form.vega.value = roundToPennies(vega)
+  form.gamma.value = roundToPennies(gamma)
+
+
+class Operator():
+
+  def roundToPennies(n):
+    pennies = n*10000
+    pennies = round(pennies)
+    return pennies / 10000
+
+  def erf(d):
+    step = 0.01
+    sum = 0
+    x = -5 + step / 2
+    while ( (x < d) && (x < 4) ):
+      sum = sum + exp(- x * x / 2) * step
+      x = x + step
+    return sum / sqrt(2 * pi)
+
+  def B_S_call(price, strike, rem_time, vol, int_rate):
+    d1 = ( log( price / strike) + ( int_rate + vol*vol / 2 ) * rem_time ) / ( vol * sqrt( rem_time) )
+    d2 = d1 - vol * sqrt( rem_time )
+    return price * erf(d1) - strike * exp( - (int_rate*rem_time) ) * erf(d2)
+
+  def B_S_put(price, strike, rem_time, vol, int_rate):
+    d1 = ( log( price / strike) + ( int_rate + vol*vol / 2 ) * rem_time ) / ( vol * sqrt( rem_time) )
+    d2 = d1 - vol * sqrt( rem_time )
+    return strike * exp( - (int_rate*rem_time) ) * erf(-d2) - price * erf(-d1)
+
+  def calc():
+    d1 = ( log( price / strike) + ( int_rate + vol*vol / 2 ) * rem_time ) / ( vol * sqrt( rem_time) )
+    d2 = d1 - vol * sqrt( rem_time )
+    erfprimed1 = exp( -(d1*d1)/2 ) / sqrt( 2*pi )
+
+
+class DeltaCall(Operator):
+  calc():
+    return erf(d1)
+
+class DeltaPut(Operator):
+  calc():
+    return erf(d1) - 1
+
+class ThetaCall(Operator):
+  calc():
+    theta_c = - price * erfprimed1 * vol / ( 2 * sqrt( rem_time ) ) - int_rate * strike * exp( - int_rate * rem_time ) * erf(d2)
+    return theta_c / 365
+
+class ThetaPut(Operator):
+  calc():
+  theta_p = - price * erfprimed1 * vol / ( 2 * sqrt( rem_time ) ) + int_rate * strike * exp( - int_rate * rem_time ) * erf(-d2)
+  return theta_p = theta_p / 365
+
+class RhoCall(Operator):
+  calc():
+    return strike * rem_time * exp( - int_rate * rem_time ) * erf(d2) / 100
+
+class RhoPut(Operator):
+  calc():
+    return - strike * rem_time * exp( - int_rate * rem_time ) * erf(-d2) / 100
+
+class Vega(Operator):
+  calc():
+    return price * sqrt( rem_time ) * erfprimed1 / 100
+
+class Gamma(Operator):
+  calc():
+    return erfprimed1 / ( price * vol * sqrt( rem_time) )

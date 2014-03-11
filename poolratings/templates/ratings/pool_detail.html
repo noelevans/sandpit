@@ -1,0 +1,40 @@
+{% extends "base_simple.html" %}
+{% block title %}{{ object.name }}{% endblock %}
+{% block content %}
+
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.address }}</p>
+    <p><a href="{{ object.website }}">{{ object.website }}</a></p>
+    <p>{{ object.blurb }}</p>
+    <p>{% if object.is_public %}Public{% else %}private{% endif %} pool
+    </p>
+    <h2>Reviews</h2>
+    <ul>
+        {% for r in object.rating_set.all %}
+            <li>{{r.name}}: "{{ r.review|truncatewords:100 }}"
+                ( {{ r.stars }} / 5 stars )
+                <!-- a href='/'>
+                more</a --></li>
+        {% endfor %}
+    </ul>
+    <p>&nbsp;</p>
+    <p>Do you swim at {{object.name}}? 
+        <a href='/rating/create/{{object.name}}/'>Add a review</a>!</p>
+    <h3>Tags added by swimmers...</h3>
+    <p>The good:
+        {% for pt in object.pros %}
+            {{ pt.description }}
+        {% endfor %}
+    </p>
+    <p>The bad:&nbsp;&nbsp;
+        {% for pt in object.cons %}
+            {{ pt.description }}&nbsp;&nbsp;&nbsp;
+        {% endfor %}
+    </p>
+    <p>
+        {% if not object.pros and not object.cons %}
+            No tags for this pool!
+        {% endif %}
+    </p>
+
+{% endblock %}

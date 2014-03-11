@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ object.name }}
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>{{ object.name }}</h1>
+        </div>
+        <div id='content'>
+            <div id='profile_news'>
+				{% for e in events %}
+					<div class='profile_news_item'>
+						<p><a href="/events/{{ e.id }}">{{ e.name }}</a></p>
+						<p style='font-size:11px;' class='news_info'>
+						    {% if e.disciplines %}
+								{{ e.disciplines.all|join:", " }}
+							{% endif %}
+							&nbsp;&nbsp;|&nbsp;&nbsp;
+							{{ e.status }}
+							&nbsp;&nbsp;|&nbsp;&nbsp;
+							{{ e.start_date|date:"j F Y" }}
+						</p>&nbsp;
+					</div>
+                {% empty %}
+					<div class='profile_news_item'>
+						<p>[ No events listed yet. If you know of some, 
+                        please <a href="/events/create">register them<a>]</p>&nbsp;
+					</div>
+				{% endfor %}
+            </div>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

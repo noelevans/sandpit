@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Register a venue{% endblock %}
+
+{% block content %}
+    <h2>Register your venue</h2>
+    <p>Your Turpsicle account will be registered as a contact for the venue. 
+Please enter the information below so people can find you.</p>
+
+    <form action="." method="POST">
+        <table>
+            {% for field in form %}
+                <tr>
+                    <td>{{ field.label_tag }}</td> 
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+
+{% endblock %}
+
+{% comment %}
+{{ form.as_table }}
+{% endcomment %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ object.name }}
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+       <div id='side'>
+            <h1 style='width:200px'>{{ object.name }}</h1>
+        </div>
+        <div id='content'>
+				<p>
+                    {% ifequal object.start_date object.get_end_date %}
+                        {{ object.start_date|date:"j F Y" }}
+                    {% else %}
+                        {{ object.start_date|date:"j M" }} -
+                        {{ object.get_end_date|date:"j M Y" }} 
+                    {% endifequal %}
+
+                </p>
+                <p>{{ object.address|default:""|linebreaks }}</p>
+                <p>{{ object.region.name }}</p>
+                <p>{{ object.website|default:""|urlize }}</p>
+                <p>{{ object.get_status_display|default:"" }}</p>
+                <p>{{ object.disciplines.all|join:", " }}</p>
+            <div id='profile_news'>
+				{% for e in events %}
+					<div class='profile_news_item'>
+						<p><a href="/events/{{ e.id }}">{{ e.name }}</a></p>
+						<p style='font-size:11px;' class='news_info'>
+						    {% if e.disciplines %}
+								{% for d in e.disciplines.all %}
+									{{ d }}{% if not forloop.last %}, {% endif %}
+								{% endfor %}
+							{% endif %}
+							&nbsp;&nbsp;|&nbsp;&nbsp;
+							{{ e.status }}
+							&nbsp;&nbsp;|&nbsp;&nbsp;
+							{{ e.start_date|date:"j F Y" }}
+						</p>&nbsp;
+					</div>
+				{% endfor %}
+            </div>
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+    <h2>Tags for roles</h2>
+    <ul>
+        {% for roletag in object_list %}
+            <li><a href='./{{ roletag.name }}'>{{ roletag.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

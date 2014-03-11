@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Links to my work
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+        <div id='default_content'>
+            <div id='min_banner'><h1>Links to my work</h1></div>
+            <div id='info_bar'>
+                <h3 style='padding-top:1em; padding-bottom:1em'>
+                    {{ h_user.full_name }}
+                    <span style='float: right'><a href='/links/add/'>Add more</a></span>
+                </h3>
+            </div>
+            <div id='booking_summ'>
+                {% for link in my_links %}
+                    <div class='single_booking_summ'>
+                        <p>
+                            <a href='{{ link.other_profile }}'>
+                                {{ link.name }}
+                            </a> <img src='http://localhost/media/ext-link.png'>
+                            <span style='float:right'>
+                                {% ifequal h_user.name user.get_profile.name %}
+                                    <a
+                                        href='/links/delete/{{ link.id }}/'
+                                        onclick="return confirm('Are you sure you want to delete the post?')">
+                                        Delete
+                                    </a>
+                                {% endifequal %}
+                            </span>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+            &nbsp;
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}
+

@@ -1,0 +1,10 @@
+{% extends "base_simple.html" %}
+{% block title %}Swimming pools{% endblock %}
+{% block content %}
+    <h2>Swimming pools</h2>
+    <ul>
+        {% for o in object_list %}
+            <li><a href='/pool/{{ o.name }}'>{{ o.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
