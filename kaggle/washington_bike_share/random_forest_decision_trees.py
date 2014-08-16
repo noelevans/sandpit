@@ -1,8 +1,10 @@
+import logging
 import random
 import pickle
 import numpy  as np
 import pandas as pd
 
+logging.basicConfig(level=logging.INFO)
 
 INPUT_FIELDS = ['season', 'holiday', 'workingday', 'weather', 'temp', 
                 'atemp', 'humidity', 'windspeed', 'month', 'hour' ]
@@ -89,7 +91,8 @@ def choose_branch(value, options, pivot_name):
 def traverse_tree(tree, test):
     if tree.leaves:
         return np.mean(tree.leaves.values())
-    branch = tree.branches[choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)]
+    key = choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)
+    branch = tree.branches[key]
     return traverse_tree(branch, test)
     
 def grade_tree(tree, train_test):
@@ -103,9 +106,9 @@ def grade_tree(tree, train_test):
     
 def make_forest():
     training   = load_and_munge_training_data('train.csv')
-    evaluation = load_and_munge_training_data('test.csv')
-    
-    tree_count               = int(0.1 * len(training))
+    logging.info('Load of input data complete')
+     
+    tree_count               = 20 #int(0.1 * len(training))
     training_count_per_tree  = int(0.7 * len(training))
     training_fields_per_tree = int(0.5 * len(INPUT_FIELDS))
     
@@ -117,14 +120,22 @@ def make_forest():
                          for tt in tree_training]
                      
     forest = [make_tree(i, f) for i, f in zip(tree_input_fields, tree_training)]
+    logging.info('Forest filled')
+    
     scores = [grade_tree(t, tt) for t, tt in zip(forest, tree_tests)]
+    logging.info('All trees scored')
 
-    pickle.dump(forest, open( "forest.p", "wb"))
-
-    pickle.dump(scores, open( "scores.p", "wb"))
-
- 
-
+    pickle.dump(forest, open('forest.p', 'wb'))
+    pickle.dump(scores, open('scores.p', 'wb'))
+    logging.info('Forest pickled')
+    
+    return forest, scores
+    
+    
+def evaluate_test_data(forest, scores):
+    evaluation = load_and_munge_training_data('test.csv')
+    logging.info('Load of test data complete')
+    
     for e in evaluation.iterrows():
         predictions = []
         for tree, score in zip(forest, scores):
@@ -136,10 +147,16 @@ def make_forest():
     
    
 def main():
-    make_forest()
-    # training = load_and_munge_training_data('train.csv')
-    # t = make_tree(['workingday', 'hour'], training)
-    # print t
+    use_cached_forest = True
+    if use_cached_forest:
+        forest = pickle.load(open('forest.p'))
+        scores = pickle.load(open('scores.p'))
+        logging.info('Used cached forest and scores')
+    else:
+        forest, scores = make_forest()
+    
+    evaluate_test_data(forest, scores)
+
 
 if __name__ == '__main__':
     main()
