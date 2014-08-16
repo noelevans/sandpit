@@ -1,13 +1,13 @@
 import logging
 import random
 import pickle
-import numpy  as np
+import numpy as np
 import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 
 INPUT_FIELDS = ['season', 'holiday', 'workingday', 'weather', 'temp', 
-                'atemp', 'humidity', 'windspeed', 'month', 'hour' ]
+                'atemp', 'humidity', 'windspeed', 'month', 'hour']
 
 
 class DecisionTree(object):
@@ -25,7 +25,7 @@ class DecisionTree(object):
         
     def __str__(self):
         return '{pivot = %s, branches = %s, leaves = %s}' % tuple(
-                    str(s) for s in (self.pivot, self.branches, self.leaves))
+            str(s) for s in (self.pivot, self.branches, self.leaves))
 
 
 def load_and_munge_training_data(filename):
@@ -33,28 +33,28 @@ def load_and_munge_training_data(filename):
     parse_month = lambda dt: int(dt.split('-')[1])
     parse_hour  = lambda dt: int(dt.split()[1].split(':')[0])
     df['month'] = map(parse_month, df['datetime'])
-    df['hour']  = map(parse_hour,  df['datetime'])
+    df['hour']  = map(parse_hour, df['datetime'])
     return df
     
 
 def select_n_of(inputs, n):
     available       = range(len(inputs))
-    chosen_indicies = random.sample(available, n)
+    chosen_indices = random.sample(available, n)
     if hasattr(inputs, 'irow'):
-        return inputs.irow(chosen_indicies)
+        return inputs.irow(chosen_indices)
     else:
-        return [inputs[i] for i in chosen_indicies]
+        return [inputs[i] for i in chosen_indices]
         
         
 def make_tree(fields, training):    
         
-    def homogenity(field): 
+    def homogeneity(field):
         return training.groupby(field)['count'].apply(np.std).sum()
     
-    def average_use_count(training):
-        return training['count'].mean(1)
+    def average_use_count(train):
+        return train['count'].mean(1)
         
-    most_influential = sorted((homogenity(f), f) for f in fields)[0][1]
+    most_influential = sorted((homogeneity(f), f) for f in fields)[0][1]
     
     options = list(training[most_influential].unique())
     tree = DecisionTree(pivot=most_influential)
@@ -79,11 +79,11 @@ def choose_branch(value, options, pivot_name):
     if value in options:
         return value
     if pivot_name == 'hour':
-        f = lambda value, opt: (value-opt) % 24
+        f = lambda v, opt: (v - opt) % 24
     elif pivot_name == 'month':
-        f = lambda value, opt: (value-opt) % 12
+        f = lambda v, opt: (v - opt) % 12
     else:
-        f = lambda value, opt: abs(value-opt)
+        f = lambda v, opt: abs(v - opt)
     nearest = sorted((f(value, opt), opt) for opt in options)
     return nearest[0][1]
 
@@ -91,10 +91,17 @@ def choose_branch(value, options, pivot_name):
 def traverse_tree(tree, test):
     if tree.leaves:
         return np.mean(tree.leaves.values())
-    key = choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)
+    try:
+        key = choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)
+    except:
+        logging.error('pivot: [%s]', tree.pivot)
+        logging.error('keys : [%s]', tree.branches.keys())
+        logging.error('test : [%s]', test)
+        raise
     branch = tree.branches[key]
     return traverse_tree(branch, test)
-    
+
+
 def grade_tree(tree, train_test):
     diffs = []
     for _, test in train_test.iterrows():
@@ -105,10 +112,10 @@ def grade_tree(tree, train_test):
         
     
 def make_forest():
-    training   = load_and_munge_training_data('train.csv')
+    training = load_and_munge_training_data('train.csv')
     logging.info('Load of input data complete')
      
-    tree_count               = 20 #int(0.1 * len(training))
+    tree_count               = int(0.1 * len(training))
     training_count_per_tree  = int(0.7 * len(training))
     training_fields_per_tree = int(0.5 * len(INPUT_FIELDS))
     
@@ -136,18 +143,18 @@ def evaluate_test_data(forest, scores):
     evaluation = load_and_munge_training_data('test.csv')
     logging.info('Load of test data complete')
     
-    for e in evaluation.iterrows():
+    for _, e in evaluation.iterrows():
         predictions = []
         for tree, score in zip(forest, scores):
             prediction = traverse_tree(tree, e)
             predictions.append((prediction, score))
-        weighted_scores = sum(p*s for p, s in predictions)
+        weighted_scores = sum(p * s for p, s in predictions)
         weights = sum(s for _, s in predictions)
         print e['datetime'], round(weighted_scores / weights)
     
    
 def main():
-    use_cached_forest = True
+    use_cached_forest = False
     if use_cached_forest:
         forest = pickle.load(open('forest.p'))
         scores = pickle.load(open('scores.p'))
