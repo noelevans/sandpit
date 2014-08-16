@@ -1,10 +1,11 @@
 import random
+import pickle
 import numpy  as np
 import pandas as pd
 
 
-INPUT_FIELDS = set(['season', 'holiday', 'workingday', 'weather', 'temp', 
-                    'atemp', 'humidity', 'windspeed', 'month', 'hour' ])
+INPUT_FIELDS = ['season', 'holiday', 'workingday', 'weather', 'temp', 
+                'atemp', 'humidity', 'windspeed', 'month', 'hour' ]
 
 
 class DecisionTree(object):
@@ -50,7 +51,7 @@ def make_tree(fields, training):
     
     def average_use_count(training):
         return training['count'].mean(1)
-    
+        
     most_influential = sorted((homogenity(f), f) for f in fields)[0][1]
     
     options = list(training[most_influential].unique())
@@ -67,16 +68,42 @@ def make_tree(fields, training):
     return tree
 
 
-def train_decision_tree(training, fields_to_use):
-    return make_tree(fields_to_use, training)
-    
-
 def not_set(training, selected_training):
-    return get_all_in_training_not_in_selected_training_by_datetime
+    missing = set(training['datetime']) - set(selected_training['datetime'])
+    return training[training['datetime'].isin(missing)]
+
+
+def choose_branch(value, options, pivot_name):
+    if value in options:
+        return value
+    if pivot_name == 'hour':
+        f = lambda value, opt: (value-opt) % 24
+    elif pivot_name == 'month':
+        f = lambda value, opt: (value-opt) % 12
+    else:
+        f = lambda value, opt: abs(value-opt)
+    nearest = sorted((f(value, opt), opt) for opt in options)
+    return nearest[0][1]
+
+
+def traverse_tree(tree, test):
+    if tree.leaves:
+        return np.mean(tree.leaves.values())
+    branch = tree.branches[choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)]
+    return traverse_tree(branch, test)
+    
+def grade_tree(tree, train_test):
+    diffs = []
+    for _, test in train_test.iterrows():
+        prediction = traverse_tree(tree, test)
+        actual     = test['count']
+        diffs.append(abs(actual - prediction))
+    return 1.0 / sum(diffs)
         
     
 def make_forest():
-    training = load_and_munge_training_data('train.csv')
+    training   = load_and_munge_training_data('train.csv')
+    evaluation = load_and_munge_training_data('test.csv')
     
     tree_count               = int(0.1 * len(training))
     training_count_per_tree  = int(0.7 * len(training))
@@ -89,10 +116,24 @@ def make_forest():
     tree_tests        = [not_set(training, tt)
                          for tt in tree_training]
                      
-    forest = [make_tree(f, i) for f, i in zip(tree_training, tree_input_fields)]
-    
+    forest = [make_tree(i, f) for i, f in zip(tree_input_fields, tree_training)]
     scores = [grade_tree(t, tt) for t, tt in zip(forest, tree_tests)]
-   
+
+    pickle.dump(forest, open( "forest.p", "wb"))
+
+    pickle.dump(scores, open( "scores.p", "wb"))
+
+ 
+
+    for e in evaluation.iterrows():
+        predictions = []
+        for tree, score in zip(forest, scores):
+            prediction = traverse_tree(tree, e)
+            predictions.append((prediction, score))
+        weighted_scores = sum(p*s for p, s in predictions)
+        weights = sum(s for _, s in predictions)
+        print e['datetime'], round(weighted_scores / weights)
+    
    
 def main():
     make_forest()
