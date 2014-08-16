@@ -91,13 +91,7 @@ def choose_branch(value, options, pivot_name):
 def traverse_tree(tree, test):
     if tree.leaves:
         return np.mean(tree.leaves.values())
-    try:
-        key = choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)
-    except:
-        logging.error('pivot: [%s]', tree.pivot)
-        logging.error('keys : [%s]', tree.branches.keys())
-        logging.error('test : [%s]', test)
-        raise
+    key = choose_branch(test[tree.pivot], tree.branches.keys(), tree.pivot)
     branch = tree.branches[key]
     return traverse_tree(branch, test)
 
