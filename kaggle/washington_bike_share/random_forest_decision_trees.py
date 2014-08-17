@@ -1,6 +1,6 @@
 import logging
 import random
-import pickle
+import cPickle
 import numpy as np
 import pandas as pd
 
@@ -126,37 +126,40 @@ def make_forest():
     scores = [grade_tree(t, tt) for t, tt in zip(forest, tree_tests)]
     logging.info('All trees scored')
 
-    pickle.dump(forest, open('forest.p', 'wb'))
-    pickle.dump(scores, open('scores.p', 'wb'))
+    # cPickle.dump(forest, open('forest.p', 'wb'))
+    # cPickle.dump(scores, open('scores.p', 'wb'))
     logging.info('Forest pickled')
     
     return forest, scores
     
     
-def evaluate_test_data(forest, scores):
+def evaluate_test_data(forest, scores, file_obj):
     evaluation = load_and_munge_training_data('test.csv')
     logging.info('Load of test data complete')
     
+    file_obj.write('datetime,count\n')
     for _, e in evaluation.iterrows():
         predictions = []
         for tree, score in zip(forest, scores):
             prediction = traverse_tree(tree, e)
             predictions.append((prediction, score))
         weighted_scores = sum(p * s for p, s in predictions)
-        weights = sum(s for _, s in predictions)
-        print e['datetime'], round(weighted_scores / weights)
+        weights  = sum(s for _, s in predictions)
+        estimate = round(weighted_scores / weights)
+        file_obj.write('%s,%i\n' % (e['datetime'], estimate))
     
    
 def main():
     use_cached_forest = False
     if use_cached_forest:
-        forest = pickle.load(open('forest.p'))
-        scores = pickle.load(open('scores.p'))
+        forest = cPickle.load(open('forest.p'))
+        scores = cPickle.load(open('scores.p'))
         logging.info('Used cached forest and scores')
     else:
         forest, scores = make_forest()
     
-    evaluate_test_data(forest, scores)
+    with open('submission2.csv', 'w') as file_obj:
+        evaluate_test_data(forest, scores, file_obj)
 
 
 if __name__ == '__main__':
