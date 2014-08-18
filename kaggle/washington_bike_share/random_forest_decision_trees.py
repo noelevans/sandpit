@@ -9,6 +9,7 @@ logging.basicConfig(level=logging.INFO)
 INPUT_FIELDS = ['season', 'holiday', 'workingday', 'weather', 'temp', 
                 'atemp', 'humidity', 'windspeed', 'month', 'hour']
 
+RESULT_FIELD = 'registered'
 
 class DecisionTree(object):
     
@@ -49,10 +50,10 @@ def select_n_of(inputs, n):
 def make_tree(fields, training):    
         
     def homogeneity(field):
-        return training.groupby(field)['count'].apply(np.std).sum()
+        return training.groupby(field)[RESULT_FIELD].apply(np.std).sum()
     
     def average_use_count(train):
-        return train['count'].mean(1)
+        return train[RESULT_FIELD].mean(1)
         
     most_influential = sorted((homogeneity(f), f) for f in fields)[0][1]
     
@@ -100,7 +101,7 @@ def grade_tree(tree, train_test):
     diffs = []
     for _, test in train_test.iterrows():
         prediction = traverse_tree(tree, test)
-        actual     = test['count']
+        actual     = test[RESULT_FIELD]
         diffs.append(abs(actual - prediction))
     return 1.0 / sum(diffs)
         
@@ -158,7 +159,8 @@ def main():
     else:
         forest, scores = make_forest()
     
-    with open('submission2.csv', 'w') as file_obj:
+    filename = 'submission3-%s.csv' % RESULT_FIELD
+    with open(filename, 'w') as file_obj:
         evaluate_test_data(forest, scores, file_obj)
 
 
