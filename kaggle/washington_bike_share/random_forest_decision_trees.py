@@ -11,6 +11,7 @@ INPUT_FIELDS = ['season', 'holiday', 'workingday', 'weather', 'temp',
 
 RESULT_FIELD = 'registered'
 
+
 class DecisionTree(object):
     
     def __init__(self, pivot=None):

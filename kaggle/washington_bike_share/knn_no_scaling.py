@@ -7,9 +7,9 @@ import math
 import pandas as pd
 
 
-INPUT_FIELDS = set(['season', 'holiday', 'workingday', 'weather',
-                    'temp', 'atemp', 'humidity', 'windspeed'])
-INPUT_FIELDS = set(['temp', 'humidity', 'windspeed'])
+INPUT_FIELDS = {'season', 'holiday', 'workingday', 'weather',
+                    'temp', 'atemp', 'humidity', 'windspeed'}
+INPUT_FIELDS = {'temp', 'humidity', 'windspeed'}
 
 
 def load_and_munge_training_data(filename):
