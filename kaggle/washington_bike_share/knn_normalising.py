@@ -54,7 +54,7 @@ def shuffle(df):
     return df.irow(chosen_indices)
         
     
-def knn(vector, neighbours, k=5):
+def knn(vector, neighbours, k=3):
     ds = [(euclidean_dist(vector, n), n) for _, n in neighbours.iterrows()]
     return sorted(ds, key=lambda a: a[0])[:k]
 
@@ -86,7 +86,7 @@ def main():
         train = all_train
         test  = load_and_munge_training_data('test.csv')
             
-    filename = 'knn-normalising-4.csv'
+    filename = 'knn-normalising.csv'
     with open(filename, 'w') as f:
         f.write('datetime,count\n')
         for n, t in test.iterrows():
