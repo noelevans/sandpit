@@ -52,7 +52,14 @@ def shuffle(df):
     length = len(df)
     chosen_indices = random.sample(range(length), length)
     return df.irow(chosen_indices)
-        
+
+
+def most_influential(training, fields):
+    
+    def homogeneity(field):
+        return training.groupby(field)[RESULT_FIELD].apply(np.std).sum()
+    
+    return sorted((homogeneity(f), f) for f in fields)[0][1]
     
 def knn(vector, neighbours, k=3):
     ds = [(euclidean_dist(vector, n), n) for _, n in neighbours.iterrows()]
@@ -79,9 +86,9 @@ def main():
         train_on  = 0.6
     
         all_train = shuffle(all_train)
-        slice = int(train_on * len(all_train))
-        train = all_train[: slice]
-        test  = all_train[slice+1:]
+        split = int(train_on * len(all_train))
+        train = all_train[: split]
+        test  = all_train[split+1:]
     else:
         train = all_train
         test  = load_and_munge_training_data('test.csv')
