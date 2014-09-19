@@ -1,0 +1,14 @@
+18146
+39184
+341.7
+nano + pico
+crypto
+5004
+pe      + chl_small
+0.8556618
+0.9225368
+pe + chl_small
+0.9201316
+ultra is mistaken for pico
+fsc_big
+0.0511927
