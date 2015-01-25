@@ -3,7 +3,20 @@ import pandas as pd
 from scipy import interpolate, poly1d
 import matplotlib.pyplot as plt
  
- 
+"""
+def seasonal_curve(train_xs, train_ys):
+    choice = 2
+    if choice == 1:
+        coefficients = np.polyfit(train_xs, train_ys, 1)
+        return poly1d(coefficients)
+    elif choice == 2:
+        alpha = 0.2
+        weights = [alpha * math.pow(1 - alpha, n) for n in range(len(train_ys))]
+        weighted_sum = sum(t * w for t, w in zip(train_ys, reversed(weights)))
+        average = weighted_sum / sum(weights)
+        return lambda t: average
+"""
+
 def rmse(targets, predictions):
     return np.sqrt(((targets - predictions) ** 2).mean())
    
