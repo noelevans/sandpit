@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Links to my work
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+        <div id='default_content'>
+            <div id='min_banner'><h1>Links</h1></div>
+            <div id='info_bar'>
+                <h3 style='padding-top:1em; padding-bottom:1em'>
+                    {{ user.get_profile.full_name }}
+                </h3>
+            </div>
+            <div id='booking_summ'>
+                {%
+                {% for link in links %}
+                    <div class='single_booking_summ'>
+                        <p>View my full <a href=''>itinerary</a><span style='float:right'>Add more bookings <a href=''>here</a></span></p>
+                    </div>
+                {% endfor %}
+
+                <form action="." method="POST">
+                    <table cellpadding=11px>
+                        <tr>
+                            <td>Title for link</td><td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.lab1 }}</td><td>{{ form.url1 }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.lab2 }}</td><td>{{ form.url2 }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.lab3 }}</td><td>{{ form.url3 }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.lab4 }}</td><td>{{ form.url4 }}</td>
+                        </tr>
+                    </table>
+                    <p style='padding-top:1.5em'><input type="submit" value="Save"/></p>
+
+                </form>
+            </div>
+            &nbsp;
+        </div>
+        &nbsp;
+
+{% endautoescape %}
+{% endblock %}
+

@@ -1,0 +1,12 @@
+v.name='Tricycle'
+v.venue_type='T'
+v.address_line_1='438 K H R'
+v.city='NW'
+v.capacity=124
+v.producing=True
+v.recieving=True
+
+v.save()
+
+
+contact

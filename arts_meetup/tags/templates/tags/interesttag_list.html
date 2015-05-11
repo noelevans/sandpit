@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+    <h2>Tags for interests</h2>
+    <ul>
+        {% for interesttag in object_list %}
+            <li><a href='./{{ interesttag.name }}'>{{ interesttag.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

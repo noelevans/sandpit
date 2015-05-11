@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Tags{% endblock %}
+{% block content %}
+<div id='default_content'>
+    <h2>Contacts for {{ h_user.full_name }}</h2>
+    <ul>
+        {% for c in h_user.contacts.all %}
+            <li>
+                <a href='/users/{{ c.name }}/'>{{ c.full_name }}</a>
+                &nbsp;
+                [
+                <a
+                    href='/users/{{ h_user.name }}/contacts/remove/{{ c.name }}/'
+                    onclick="return confirm('Are you sure you want to delete this contact?')">
+                    Remove</a>
+                ]
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
