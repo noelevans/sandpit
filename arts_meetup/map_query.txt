@@ -1,0 +1,17 @@
+>>> def nothing(role, up_role=[]):
+...   if not role in up_role:
+...     return role
+... 
+>>> 
+>>> map(nothing(up_role=list(up_r)), RoleTag.objects.all())
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+TypeError: nothing() takes at least 1 non-keyword argument (0 given)
+
+
+
+filter(func, seq)  ???
+
+
+
+[i for i in RoleTag.objects.all() if i not in up_r]

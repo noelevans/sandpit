@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Remove contacts{% endblock %}
+
+{% block content %}
+
+<p>Select friends to remove:</p>
+
+<form action="." method="POST">
+    {{form.to_go_friends}}
+    <p><input type="submit" value="Done"/></p>
+</form>
+
+{% endblock %}

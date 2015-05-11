@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Find a user{% endblock %}
+{% block content %}
+{% autoescape on %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".add_contact").click(function() {
+            $(this).parent().hide()
+            var params = {};
+            jQuery.ajax({
+                type:'POST',
+                dataType:'xml',
+                url: $(this).attr('id'),
+                data: params
+            })
+        });
+    });
+</script>
+
+<div id='default_content'>
+    <div id='min_banner'><h2>Search</h2></div>
+    <div id='info_bar'>
+        <p style='padding-top:1em; padding-bottom:1em'>
+            Enter a valid email address or name of the person or organisation
+        </p>
+    </div>
+    <div id='booking_summ'>
+
+    <form action="." method="GET">
+        <!--
+        person:<input type="radio" name="type" value="user">
+        venue:<input type="radio" name="type" value="venue">
+        organisation:<input type="radio" name="type" value="org">
+        <br/>
+        -->
+        <input type="text" name="q" value="{{ query }}">
+        <input type="submit" value="Search">
+    </form>
+
+    {% if query %}
+        <h2 style='padding-top: 2em'>Results for "{{ query }}"</h2>
+        <div id='booking_summ'>
+            {% if zip %}
+                <table>
+                    {% for r, f in zip %}
+                        <tr>
+                            <td>
+                                <a href='/users/{{ r.name }}/'>
+                                    <img
+                                        {% if r.picture %}
+                                            src='{{ r.picture.thumbnail.url }}'
+                                        {% else %}
+                                            src='/media/whoami_thumbnail.png'
+                                        {% endif %}
+                                        style='padding: 0 1.5em 1em 0'>
+                                </a>
+                            </td>
+                            <td>
+                                <a href='/users/{{ r.name }}/' style='padding: 0 1.5em 1em 0'>{{ r.name }}</a>
+                            </td>
+                            <td>
+                                {% if not f %}
+                                    {% ifnotequal user.get_profile.name r.name %}
+                                        <span style='padding: 0 1.5em 1em 0'>
+                                            [ <a
+                                                  class='add_contact'
+                                                  id='/users/{{ user.get_profile.name }}/contacts/add/{{ r.name }}/'
+                                                  href='javascript:void(0)'
+                                                  >Add to contacts</a> ]
+                                        </span>
+                                    {% endifnotequal %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    &nbsp;
+                </table>
+            {% else %}
+                <div class='single_booking_summ'>
+                    <p>No users found</p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% endautoescape %}
+{% endblock %}

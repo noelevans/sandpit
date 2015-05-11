@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ booking.name }}
+{% endblock %}
+{% block content %}
+
+<div id='default_content'>
+    <div id='min_banner'><h1>{{ booking.profile.full_name }}</h1></div>
+    <div id='info_bar'>
+        <h3>
+            {{ booking.name }}
+        </h3>
+    </div>
+    <div id='booking_summ'>
+
+        <p>From:&nbsp;&nbsp;&nbsp;{{ booking.start|date:"j M Y" }}</p>
+        <p>Until:&nbsp;&nbsp;&nbsp;&nbsp;{{ booking.end|date:"j M Y" }}</p>
+        {% if booking.location %}
+        <p>Where:&nbsp;&nbsp;{{ booking.location }}</p>
+        {% endif %}
+
+        <h3>{{ booking.more|linebreaks }}</h3>
+
+        {% ifequal user.get_profile booking.profile %}
+            <p style='float:right; padding-right:2em;'>
+                <a href='/booking/mod_booking/?id={{ booking.id }}'>Edit details</a> |
+                <a
+                    href='/booking/delete/{{ booking.id }}/'
+                    onclick="return confirm('Are you sure you want to delete?')">
+                        Delete
+                </a>
+            </p>
+        {% endifequal %}
+
+    </div>
+    &nbsp;
+</div>
+&nbsp;
+
+{% endblock %}

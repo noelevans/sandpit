@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Search for an actor, a director ...
+{% endblock %}
+
+{% block content %}
+{% autoescape on %}
+
+    <script type="text/javascript">
+        $(function() {
+            /*$("input").datepicker({dateFormat: 'dd/mm/yy'});*/
+        });
+        $(document).ready(function() {
+            $("#selectAll").click(function() {
+                $('.contact').attr('checked', true);
+                $('#doneBtn').removeAttr("disabled");
+            });
+            $("#selectNone").click(function() {
+                $('.contact').attr('checked', false);
+                $('#doneBtn').attr("disabled", true);
+            });
+            $(".contact").click(function() {
+                isOneChecked = false;
+                $('.contact').each(function() {
+                    if($(this).is(":checked")){
+                        isOneChecked = true;
+                        /* can't seem to break here */
+                    }
+                });
+                if(isOneChecked) {
+                    $('#doneBtn').removeAttr("disabled");
+                } else {
+                    $('#doneBtn').attr("disabled", true);
+                }
+            });
+        });
+    </script>
+
+    <div id='default_content'>
+        <div id='min_banner'><h1>Find me a ...</h1></div>
+        <div id='booking_summ'>
+            <form action="." method="GET">
+                <table cellpadding=11px>
+                    <tr>
+                        <td>{{ form.tag.label }}</td>
+                        <td>{{ form.tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.where.label }}</td>
+                        <td>{{ form.where }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.start.label }}</td>
+                        <td>{{ form.start }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.until.label }}</td>
+                        <td>{{ form.until }}</td>
+                    </tr>
+                </table>
+                <p style='padding-top:1.5em'><input type="submit" value="Search"/></p>
+            </form>
+        </div>
+        &nbsp;
+
+        <div>
+            {% if results %}
+                <h1 style='padding-bottom:0.5em'>Results...</h1>
+                <p style='padding-bottom:1em'>Select people to contact
+                    [<a id='selectAll'  href='javascript:void(0)'>all</a>]
+                    [<a id='selectNone' href='javascript:void(0)'>none</a>]
+                </p>
+                <form action="/msging/create_msg/" method="GET">
+                    <table>
+                        {% for r in results %}
+                            <tr>
+                                <td>
+                                    <a href="/users/{{ r|escape }}">
+                                        <img
+                                            {% if r.get_profile.picture %}
+                                                src='{{ r.get_profile.picture.thumbnail.url }}'
+                                            {% else %}
+                                                src='/media/whoami_thumbnail.png'
+                                            {% endif %}
+                                            style='padding: 0 1.5em 1em 0'>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/users/{{ r|escape }}"
+                                       style='padding: 0 1.5em 1em 0'>
+                                        {{ r|escape }}</a>
+                                    <!--[
+                                    <a href='/users/{{ user.get_profile.name }}/contacts/add/{{ r.username }}/'>Add to contacts</a>
+                                    ]-->
+                                </td>
+                                <td>
+                                    <input type="checkbox"
+                                           class='contact'
+                                           name='contact'
+                                           value="{{ r|escape }}"
+                                           style='padding: 0 1.5em 1em 0'
+                                    />
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    Click to write a message to the selected users
+                    <input type='submit' value='Done' id='doneBtn' disabled=''/>
+                </form>
+            {% else %}
+                {% if do_search %}
+                    <p>No users found, please try different dates</p>
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+    &nbsp;
+
+{% endautoescape %}
+{% endblock %}
