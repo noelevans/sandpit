@@ -1,5 +1,10 @@
 join_table <- read.csv("key.csv")
 weather <- read.csv("weather.csv", stringsAsFactors=T, na.strings=c("M", "  T"))
+weather$sunrise <- as.numeric(weather$sunrise)
+weather$sunset  <- as.numeric(weather$sunset)
+
+# hack while working with linear model
+weather$codesum <- NULL
 
 format_input <- function(filename) {
   units_per_day <- read.csv(filename, stringsAsFactors=F)
