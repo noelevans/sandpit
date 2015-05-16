@@ -1,3 +1,8 @@
+library(rpart)
+
+# Not going to save output in Git so make this as deterministic as possible
+set.seed(85464)
+
 join_table <- read.csv("key.csv")
 weather <- read.csv("weather.csv", stringsAsFactors=T, na.strings=c("M", "  T"))
 weather$sunrise <- as.numeric(weather$sunrise)
@@ -13,13 +18,20 @@ format_input <- function(filename) {
   return(units_per_day)
 }
 
-train_units_per_day <- format_input("train-small.csv")
+train_units_per_day <- format_input("train.csv")
 test_units_per_day  <- format_input("test.csv")
 
 train <- merge(x=train_units_per_day, y=weather, by=c("station_nbr", "date"), all.x=TRUE)
 tests <- merge(x=test_units_per_day,  y=weather, by=c("station_nbr", "date"), all.x=TRUE)
 
-model <- lm(units ~ ., data=train)
+model <- rpart(units ~ ., data=train, method="anova")
 
-predict(model, newdata=tests)
+sales <- predict(model, newdata=tests)
+result <- data.frame(tests$store_nbr, tests$item_nbr, tests$date, round(sales))
+kaggle_fmt <- data.frame(id=paste(result$tests.store_nbr, 
+                                  result$tests.item_nbr, 
+                                  result$tests.date, 
+                                  sep="_"), 
+                         units=result$round.sales)
 
+write.csv(kaggle_fmt, "submission-decision-tree.csv", quote=F, row.names=F)
