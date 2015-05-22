@@ -29,7 +29,7 @@ test_units_per_day  <- format_input("test.csv")
 train <- merge(x=train_units_per_day, y=weather, by=c("station_nbr", "date"), all.x=TRUE)
 tests <- merge(x=test_units_per_day,  y=weather, by=c("station_nbr", "date"), all.x=TRUE)
 
-model <- randomForest(units ~ ., data=train, method="anova")
+model <- randomForest(units ~ ., data=train, ntree=100, method="anova")
 
 sales <- predict(model, newdata=tests)
 result <- data.frame(tests$store_nbr, tests$item_nbr, tests$date, round(sales))
