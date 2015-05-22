@@ -13,6 +13,8 @@ format_input <- function(filename) {
 
 fit_for_weather_stn <- function(train_set) {
   print(train_set$station_nbr[1])
+  print(summary(train_set$station_nbr))
+  print(dim(train_set))
   model <- svm(units ~ ., data=train_set)
   weather_stn_tests <- subset(tests, station_nbr == train_set$station_nbr[1])
   sales <- predict(model, newdata=weather_stn_tests)
@@ -20,8 +22,11 @@ fit_for_weather_stn <- function(train_set) {
                        item_nbr=weather_stn_tests$item_nbr, 
                        date=weather_stn_tests$date, 
                        sales=round(sales))
+  print(dim(result))
   return(result)
 }
+
+args <- commandArgs(trailingOnly = TRUE)
 
 join_table <- read.csv("key.csv")
 weather <- read.csv("weather.csv", stringsAsFactors=T, na.strings=c("M", "  T"))
@@ -35,6 +40,13 @@ weather$cool <- NULL
 
 # assume NAs to be zero to start
 weather[is.na(weather)] <- 0
+
+if(length(args) > 0){
+  start_and_end <- as.numeric(unlist(strsplit(args, " ")))
+  start_end_seq <- seq(start_and_end[1], start_and_end[2])
+  weather <- weather[weather$station_nbr %in% start_end_seq, ]
+  print(dim(weather))
+}
 
 train_units_per_day <- format_input("train.csv")
 test_units_per_day  <- format_input("test.csv")
@@ -53,4 +65,8 @@ kaggle_fmt <- data.frame(id=paste(result$store_nbr,
                                   sep="_"), 
                          units=result$sales)
 
-write.csv(kaggle_fmt, "submission-svm.csv", quote=F, row.names=F)
+out_file <- paste("submission-svm", 
+                  gsub(" ", "_", args),
+                  ".csv", sep="")
+print(out_file)
+write.csv(kaggle_fmt, out_file, quote=F, row.names=F)
