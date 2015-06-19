@@ -5,9 +5,9 @@ from collections import Counter
 
 class Homogeneity(object):
 
-    SAME = 1    # eg "b b b b"
-    MIX  = 2    # eg "a b a a"
-    DIFF = 3    # eg "a b c d"
+    SAME = 's'    # eg "b b b b"
+    MIX  = 'm'    # eg "a b a a"
+    DIFF = 'd'    # eg "a b c d"
 
     @staticmethod
     def categorise(ul):
@@ -57,8 +57,9 @@ for h in set(handles):
             category_similarities.setdefault(s, list()).append(similarity)
             category_strengths.setdefault(s, list()).append(strength)
 
-    # if len(category_similarities) > 10:
-    #     break
+# Order categories by influence
+distributions = [Counter(category_similarities[c]) for c in categories]
 
-
-
+# Because of the output I don't think this process will work.
+from pprint import pprint
+pprint(sorted([d.most_common() for d in distributions], key=lambda x: x[1]))
