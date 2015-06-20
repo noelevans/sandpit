@@ -9,18 +9,18 @@ class Homogeneity(object):
     MIX  = 'm'    # eg "a b a a"
     DIFF = 'd'    # eg "a b c d"
 
-    @staticmethod
-    def categorise(ul):
+    @classmethod
+    def categorise(cls, ul):
         if len(ul) == len(set(ul)):
-            return DIFF
+            return cls.DIFF
         if len(set(ul)) == 1:
-            return SAME
-        return MIX
+            return cls.SAME
+        return cls.MIX
 
-    @staticmethod
-    def strength(ul):
-        cat = Homogeneity.categorise(ul)
-        if cat in (DIFF, SAME):
+    @classmethod
+    def strength(cls, ul):
+        cat = cls.categorise(ul)
+        if cat in (cls.DIFF, cls.SAME):
             return len(ul)
         most_common_freq = Counter(ul).most_common()[0][1]
         return len(ul) - most_common_freq
