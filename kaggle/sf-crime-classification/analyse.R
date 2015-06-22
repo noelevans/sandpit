@@ -6,13 +6,27 @@ require(randomForest)
 # Not going to save output in Git so make this as deterministic as possible
 set.seed(782629)
 
+out_col_names <- c("Id", "ARSON", "ASSAULT", "BAD CHECKS", "BRIBERY", 
+                   "BURGLARY", "DISORDERLY CONDUCT", 
+                   "DRIVING UNDER THE INFLUENCE", "DRUG/NARCOTIC", 
+                   "DRUNKENNESS", "EMBEZZLEMENT", "EXTORTION", 
+                   "FAMILY OFFENSES", "FORGERY/COUNTERFEITING", "FRAUD", 
+                   "GAMBLING", "KIDNAPPING", "LARCENY/THEFT", "LIQUOR LAWS", 
+                   "LOITERING", "MISSING PERSON", "NON-CRIMINAL", 
+                   "OTHER OFFENSES", "PORNOGRAPHY/OBSCENE MAT", "PROSTITUTION", 
+                   "RECOVERED VEHICLE", "ROBBERY", "RUNAWAY", "SECONDARY CODES", 
+                   "SEX OFFENSES FORCIBLE", "SEX OFFENSES NON FORCIBLE", 
+                   "STOLEN PROPERTY", "SUICIDE", "SUSPICIOUS OCC", "TREA", 
+                   "TRESPASS", "VANDALISM", "VEHICLE THEFT", "WARRANTS", 
+                   "WEAPON LAWS")
+
 day_hours <- function(datetime_raw) {
     datetime <- as.numeric(as.POSIXct(datetime_raw, format="%Y-%m-%d %H:%M:%S"))
     date_only <- as.numeric(as.POSIXct(datetime_raw, format="%Y-%m-%d"))
     return((datetime - date_only) / (60 * 60))
 }
 
-feature_engine <- function(filename) {
+feature_engineer <- function(filename) {
     df <- read.csv(filename, stringsAsFactors=T)
     df$Date <- as.Date(df$Dates, format ='%Y-%m-%d')
     df$Time <- day_hours(df$Dates)
@@ -33,5 +47,8 @@ feature_engine <- function(filename) {
     return(df)
 }
 
-train <- feature_engine('train.small.csv')
-fit <- randomForest(Category ~ ., data=train)
+train <- feature_engineer('train.small.csv')
+test <- feature_engineer('test.csv')
+fit <- randomForest(Category ~ ., data=train, ntrees=50)
+
+out_df <- predict(fit, test[1:10, ])
