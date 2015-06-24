@@ -25,13 +25,15 @@ hours_decimalised <- function(datetime_raw) {
     return((datetime - date_only) / (60 * 60))
 }
 
-feature_engineering <- function(filename) {
+feature_engineering <- function(filename, is_training=FALSE) {
     df <- read.csv(filename, stringsAsFactors=T)
     df$Date <- as.Date(df$Dates, format ='%Y-%m-%d')
     df$Time <- hours_decimalised(df$Dates)
 
     # Omit when df$Y == 90 - seems to be a NA value
-    df <- subset(df, Y != 90)
+    if(is_training) {
+      df <- subset(df, Y != 90)
+    }
 
     # Scaling coordinates so they are "prettier" to human-interpret
     df$X <- (df$X + 122) * 100
@@ -46,7 +48,7 @@ feature_engineering <- function(filename) {
     return(df)
 }
 
-train <- feature_engineering('train.small.csv')
+train <- feature_engineering('train.small.csv', TRUE)
 test <- feature_engineering('test.small.csv')
 
 districts <- unique(train$PdDistrict)
