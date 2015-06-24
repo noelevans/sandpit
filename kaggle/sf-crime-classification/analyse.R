@@ -47,9 +47,34 @@ feature_engineering <- function(filename) {
 }
 
 train <- feature_engineering('train.small.csv')
-test <- feature_engineering('test.csv')
-fit <- randomForest(Category ~ ., data=train, ntrees=50)
-ys <- predict(fit, test[1:10, ])
+test <- feature_engineering('test.small.csv')
+
+districts <- unique(train$PdDistrict)
+district_ys <- NULL
+district_idxs <- NULL
+
+# Grow forest and predict separately for each district's records
+for (d in districts) {
+    district_train <- subset(train, PdDistrict=d)
+    district_test <- subset(test, PdDistrict=d)
+    # fit <- randomForest(Category ~ ., data=district_train, ntrees=1)
+    fit <- randomForest(Category ~ DayOfWeek, data=district_train, ntrees=1)
+    district_ys[[d]] <- predict(fit, district_test)
+    district_idxs[[d]] <- 1
+    print(paste("Finished", d))
+}
+
+print("All predictions made")
+
+ys <- NULL
+for (i in 1:nrow(test)) {
+    t <- test[i, ]
+    d_ys <- district_ys[[t$PdDistrict]]
+    d_idx <- district_idxs[d]
+    next_val <- d_ys[d_idx]
+    district_idxs[d] <- district_idxs[d] + 1
+    ys <- c(ys, next_val)
+}
 
 index_of_result <- function(x) match(x, out_col_names)
 result_row <- function(pos) replace(rep(0, length(out_col_names)), pos, 1)
