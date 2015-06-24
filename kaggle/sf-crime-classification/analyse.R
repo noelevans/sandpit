@@ -3,13 +3,14 @@ require(randomForest)
 # Address -> Break somehow
 # Resolution ???
 
-is_full_run <- FALSE
-if (is_full_run) {
+if("--full" %in% commandArgs(trailingOnly=TRUE)) {
+    print("Running full execution of training/test data")
     train_filename <- "train.csv"
     test_filename <- "test.csv"
     formula <- Category ~ .
     n_trees <- 80
 } else {
+    print("Running with a subset of training/test data")
     train_filename <- "train.small.csv"
     test_filename <- "test.small.csv"
     formula <- Category ~ DayOfWeek
