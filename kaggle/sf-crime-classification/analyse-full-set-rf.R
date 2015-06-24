@@ -25,13 +25,15 @@ hours_decimalised <- function(datetime_raw) {
     return((datetime - date_only) / (60 * 60))
 }
 
-feature_engineering <- function(filename) {
+feature_engineering <- function(filename, is_training=FALSE) {
     df <- read.csv(filename, stringsAsFactors=T)
     df$Date <- as.Date(df$Dates, format ='%Y-%m-%d')
     df$Time <- hours_decimalised(df$Dates)
 
     # Omit when df$Y == 90 - seems to be a NA value
-    df <- subset(df, Y != 90)
+    if(is_training) {
+      df <- subset(df, Y != 90)
+    }
 
     # Scaling coordinates so they are "prettier" to human-interpret
     df$X <- (df$X + 122) * 100
@@ -46,10 +48,34 @@ feature_engineering <- function(filename) {
     return(df)
 }
 
-train <- feature_engineering('train.csv')
+train <- feature_engineering('train.csv', TRUE)
 test <- feature_engineering('test.csv')
-fit <- randomForest(Category ~ ., data=train, ntrees=50)
-ys <- predict(fit, test)
+
+districts <- unique(train$PdDistrict)
+district_ys <- NULL
+district_idxs <- NULL
+
+# Grow forest and predict separately for each district's records
+for (d in districts) {
+    district_train <- subset(train, PdDistrict=d)
+    district_test <- subset(test, PdDistrict=d)
+    fit <- randomForest(Category ~ ., data=district_train, ntrees=80)
+    district_ys[[d]] <- predict(fit, district_test)
+    district_idxs[[d]] <- 1
+    print(paste("Finished", d))
+}
+
+print("All predictions made")
+
+ys <- NULL
+for (i in 1:nrow(test)) {
+    t <- test[i, ]
+    d_ys <- district_ys[[t$PdDistrict]]
+    d_idx <- district_idxs[d]
+    next_val <- d_ys[d_idx]
+    district_idxs[d] <- district_idxs[d] + 1
+    ys <- c(ys, next_val)
+}
 
 index_of_result <- function(x) match(x, out_col_names)
 result_row <- function(pos) replace(rep(0, length(out_col_names)), pos, 1)
