@@ -6,6 +6,8 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
+import postcodes
+
 
 def care_costs_for_postcode(postcode):
     browser = webdriver.Firefox()
@@ -39,19 +41,23 @@ def care_costs_for_postcode(postcode):
     actions.perform()
 
     actions.send_keys(Keys.CONTROL, 'c').perform()
+    browser.quit()
 
     copied_text = pyperclip.paste()
-    residential_care, at_home_care = re.findall('[0-9\.]+', copied_text)
-    browser.quit()
-    return residential_care, at_home_care
+    occurrences = re.findall('[0-9\.]+', copied_text)
+    if len(occurrences) == 2:
+        residential, at_home = occurrences
+        return residential, at_home
+    return '?', '?'
 
 
 def main():
-    residential_care, at_home_care = care_costs_for_postcode('ha1 4bj')
-    print 'Residential care =', residential_care
-    print 'At home care =    ', at_home_care
+    dist_posts = postcodes.district_postcodes('postcodes.grouped.csv')
+    for district, postcode in dist_posts.itertuples():
+        residential_care, at_home_care = care_costs_for_postcode(postcode)
+        print 'District,Postcode,Residential care, At home care'
+        print ','.join((district, postcode, residential_care, at_home_care))
 
 
 if __name__ == '__main__':
     main()
-
