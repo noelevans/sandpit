@@ -1,4 +1,6 @@
+import pandas as pd
 import pyperclip
+import random
 import re
 import time
 
@@ -6,8 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-import postcodes
 
+random.seed(101)
 
 def care_costs_for_postcode(postcode):
     browser = webdriver.Firefox()
@@ -41,22 +43,43 @@ def care_costs_for_postcode(postcode):
     actions.perform()
 
     actions.send_keys(Keys.CONTROL, 'c').perform()
+    copied_text = pyperclip.paste() or ''
     browser.quit()
 
-    copied_text = pyperclip.paste()
     occurrences = re.findall('[0-9\.]+', copied_text)
     if len(occurrences) == 2:
         residential, at_home = occurrences
         return residential, at_home
-    return '?', '?'
+
+
+def randomised(ol):
+    random.shuffle(ol)
+    return iter(ol)
+
+
+def care_costs_for_postcodes(postcodes):
+    for p in randomised(postcodes):
+        res = care_costs_for_postcode(p)
+        if res:
+            return res + (p,)
+    return (-1, -1, p)
+
+
+def district_postcodes(filename):
+    # read csv file
+    df = pd.read_csv(filename, sep=',')[['Postcode', 'District']]
+    district_to_postcodes = {}
+    for i, postcode, district in df.itertuples():
+        district_to_postcodes.setdefault(district, []).append(postcode)
+    return district_to_postcodes
 
 
 def main():
-    dist_posts = postcodes.district_postcodes('postcodes.grouped.csv')
-    for district, postcode in dist_posts.itertuples():
-        residential_care, at_home_care = care_costs_for_postcode(postcode)
-        print 'District,Postcode,Residential care, At home care'
-        print ','.join((district, postcode, residential_care, at_home_care))
+    dist_posts = district_postcodes('postcodes.simple.ew.csv')
+    print 'District,Postcode,Residential care,At home care'
+    for district, postcodes in dist_posts.iteritems():
+        residential, at_home, postcode = care_costs_for_postcodes(postcodes)
+        print ','.join((district, postcode, residential, at_home))
 
 
 if __name__ == '__main__':
