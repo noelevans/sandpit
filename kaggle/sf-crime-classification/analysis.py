@@ -1,4 +1,5 @@
 import optparse
+import datetime
 
 import pandas as pd
 from sklearn import preprocessing
@@ -9,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 # Resolution ???
 
 CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict')
+TIME_SERIES_VARS = ('Date', 'Time')
 OUT_COL_NAMES = ("ARSON", "ASSAULT", "BAD CHECKS", "BRIBERY", "BURGLARY",
                  "DISORDERLY CONDUCT", "DRIVING UNDER THE INFLUENCE",
                  "DRUG/NARCOTIC", "DRUNKENNESS", "EMBEZZLEMENT", "EXTORTION",
@@ -21,6 +23,12 @@ OUT_COL_NAMES = ("ARSON", "ASSAULT", "BAD CHECKS", "BRIBERY", "BURGLARY",
                  "STOLEN PROPERTY", "SUICIDE", "SUSPICIOUS OCC", "TREA",
                  "TRESPASS", "VANDALISM", "VEHICLE THEFT", "WARRANTS",
                  "WEAPON LAWS")
+
+
+def time_diff(start, end):
+    dt_start = datetime.datetime.combine(datetime.date.today(), start)
+    dt_end = datetime.datetime.combine(datetime.date.today(), end)
+    return float((dt_end - dt_start).seconds) / (60 * 60)
 
 
 def feature_engineering(filename, is_training=False, encoders=None):
@@ -40,9 +48,16 @@ def feature_engineering(filename, is_training=False, encoders=None):
             le = preprocessing.LabelEncoder()
             le.fit(all_choices)
             encoders[c] = le
+        for t in TIME_SERIES_VARS:
+            encoders[t] = min(df[t])
 
     for c in CATEGORICAL_VARS:
         df[c] = encoders[c].transform(df[c])
+    for v in TIME_SERIES_VARS:
+        if v == 'Date':
+            df[v] = df[v].apply(lambda t: (t - encoders[v]).days)
+        elif v == 'Time':
+            df[v] = df[v].apply(lambda t: time_diff(encoders[v], t))
 
     if is_training:
         # df['Category'] = df['Category'].astype(object)
@@ -70,12 +85,12 @@ if options.full:
     train_filename = "train.csv"
     test_filename = "test.csv"
     independent_vars = ['DayOfWeek', 'Date', 'Time', 'X', 'Y']
-    n_trees = 2
+    n_trees = 1
 else:
     print "Running with a subset of training/test data"
     train_filename = "train.small.csv"
     test_filename = "test.small.csv"
-    independent_vars = ['DayOfWeek']   #, 'Date', 'Time', 'X', 'Y']  # ['DayOfWeek']
+    independent_vars = ['DayOfWeek', 'Date', 'Time', 'X', 'Y']
     n_trees = 1
 
 
@@ -115,4 +130,3 @@ true_indicies = [OUT_COL_NAMES.index(y) for y in ys]
 result_row = lambda pos: [int(i == pos) for i in range(len(OUT_COL_NAMES))]
 out_df = pd.DataFrame([result_row(i) for i in true_indicies])
 out_df.to_csv('submission.csv', header=OUT_COL_NAMES, index_label='Id')
-
