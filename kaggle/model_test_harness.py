@@ -25,9 +25,10 @@ def main():
         raise Exception(msg  % {'m': module_name})
 
     model_module = getattr(module_package, module_name.split('.')[-1])
-    Xs, y = model_module.load_training(training_filename)
+    model = model_module.build_model()
+    Xs, y = model.load_training(training_filename)
     X_train, X_test, y_train, y_test = train_test_split(Xs, y, test_size=0.25)
-    y_hat = model_module.model_and_predict(X_train, y_train, X_test)
+    y_hat = model.model_and_predict(X_train, y_train, X_test)
 
     print sum(y_hat == y_test) / float(len(y_hat))
 
