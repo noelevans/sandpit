@@ -1,6 +1,9 @@
+import datetime
 import optparse
 
+import numpy as np
 import pandas as pd
+
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
 
@@ -22,6 +25,12 @@ OUT_COL_NAMES = ("ARSON", "ASSAULT", "BAD CHECKS", "BRIBERY", "BURGLARY",
                  "STOLEN PROPERTY", "SUICIDE", "SUSPICIOUS OCC", "TREA",
                  "TRESPASS", "VANDALISM", "VEHICLE THEFT", "WARRANTS",
                  "WEAPON LAWS")
+
+
+def time_diff(start, end):
+    dt_start = datetime.datetime.combine(datetime.date.today(), start)
+    dt_end = datetime.datetime.combine(datetime.date.today(), end)
+    return float((dt_end - dt_start).seconds) / (60 * 60)
 
 
 def feature_engineering(filename, is_training=False, encoders=None):
@@ -68,7 +77,7 @@ def feature_engineering(filename, is_training=False, encoders=None):
     return df, encoders
 
 
-class RandomForestModel(KaggleModel):
+class RandomForestModel(object):
 
     def __init__(self, full_run=False):
         if full_run:
@@ -76,41 +85,48 @@ class RandomForestModel(KaggleModel):
         else:
             self.n_trees = 1
 
-    def load_training(training_filename):
+
+    def load_training(self, training_filename):
         ''' For use with model_test_harness '''
         training, _ = feature_engineering(training_filename, is_training=True)
         self.columns = list(training.ix[:,1:].columns)
         return training.ix[:,1:], training.ix[:,0]
 
 
-    def model_and_predict(X_train, y_train, X_test):
+    def model_and_predict(self, X_train, y_train, X_test):
         district_idx = self.columns.index('PdDistrict')
-        districts = set(X_train[[district_idx]])
+        districts = set(X_train[:,district_idx])
         district_ys = {}
         # Grow forest and predict separately for each district's records
         for d in districts:
-            district_train = X_train[X_train[[district_idx]] == d]
-            district_train = district_train.drop(['PdDistrict'], axis=1)
-            district_test = X_test[X_test['PdDistrict'] == d]
-            district_test = district_test.drop(['PdDistrict'], axis=1)
+            district_X_train = X_train[X_train[:, district_idx] == d]
+            district_X_train = np.delete(district_X_train, district_idx, 1)
+            district_y_train = y_train[X_train[:, district_idx] == d]
+            district_X_test = X_test[X_test[:, district_idx] == d]
+            district_X_test = np.delete(district_X_test, district_idx, 1)
             print "Growing forest for", d
 
-            # Not saving output in Git so make this deterministic with random_state
+            # Not saving output in Git so make this deterministic 
+            # with random_state
             rf = RandomForestClassifier(n_estimators=self.n_trees, n_jobs=-1,
                                         random_state=782629)
-            rf.fit(district_train[independent_vars], list(y_train))
+            rf.fit(district_X_train, district_y_train)
 
-            district_ys[d] = list(rf.predict(district_test[independent_vars]))
+            district_ys[d] = list(rf.predict(district_X_test))
             print "Finished", d
 
         print "All predictions made"
 
         y_hat = []
-        for i, row in X_test.iterrows():
-            d_ys = district_ys[row['PdDistrict']]
+        for row in X_test:
+            d_ys = district_ys[row[district_idx]]
             y_hat.append(d_ys.pop(0))
 
         return y_hat
+
+
+def build_model():
+    return RandomForestModel()
 
 
 def main():
