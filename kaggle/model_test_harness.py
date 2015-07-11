@@ -1,5 +1,4 @@
 import optparse
-import sys
 
 from sklearn.cross_validation import train_test_split
 
