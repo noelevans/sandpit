@@ -3,6 +3,10 @@ import datetime
 import pandas as pd
 from sklearn import preprocessing
 
+from random_forest import RandomForestModel
+from naive_bayes import NaiveBayesModel, MultinomialNaiveBayesModel
+from naive_bayes import BernoulliNaiveBayesModel
+
 
 CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict')
 TIME_SERIES_VARS = ('Date', 'Time')
@@ -14,7 +18,12 @@ def time_diff(start, end):
     return float((dt_end - dt_start).seconds) / (60 * 60)
 
 
-class SFKaggleModel(object):
+def models():
+    return [NaiveBayesModel(), BernoulliNaiveBayesModel()]
+    # return [RandomForestModel(), NaiveBayesModel()]
+
+
+class KaggleDataModel(object):
 
     def feature_engineering(self, filename, is_training=False):
         df = pd.read_csv(filename)
