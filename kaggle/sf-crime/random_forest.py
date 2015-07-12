@@ -3,8 +3,6 @@ import optparse
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
-import sf_model
-
 # Dependent variables to resolve:
 # Address -> Break somehow
 # Resolution ???
@@ -23,7 +21,7 @@ OUT_COL_NAMES = ("ARSON", "ASSAULT", "BAD CHECKS", "BRIBERY", "BURGLARY",
                  "WEAPON LAWS")
 
 
-class RandomForestModel(sf_model.SFKaggleModel):
+class RandomForestModel(object):
 
     def __init__(self, full_run=False):
         if full_run:

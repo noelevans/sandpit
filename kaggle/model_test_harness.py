@@ -3,6 +3,11 @@ import optparse
 from sklearn.cross_validation import train_test_split
 
 
+def evaluate_model(model, X_train, y_train, X_test, y_test):
+    y_hat = model.model_and_predict(X_train, y_train, X_test)
+    print model.__class__, sum(y_hat == y_test) / float(len(y_hat))
+
+
 def main():
     parser = optparse.OptionParser()
 
@@ -23,13 +28,14 @@ def main():
         msg = msg + 'running "__import__(%(m)s)" to investigate'
         raise Exception(msg  % {'m': module_name})
 
-    model_module = getattr(module_package, module_name.split('.')[-1])
-    model = model_module.build_model()
-    Xs, y = model.load_training(training_filename)
+    delegator = getattr(module_package, module_name.split('.')[-1])
+    models = delegator.models()
+    data_model = delegator.KaggleDataModel()
+    Xs, y = data_model.load_training(training_filename)
     X_train, X_test, y_train, y_test = train_test_split(Xs, y, test_size=0.25)
-    y_hat = model.model_and_predict(X_train, y_train, X_test)
-
-    print sum(y_hat == y_test) / float(len(y_hat))
+    
+    for model in models:
+        evaluate_model(model, X_train, y_train, X_test, y_test)
 
 
 if __name__ == '__main__':
