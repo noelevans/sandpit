@@ -4,8 +4,7 @@ import pandas as pd
 from sklearn import preprocessing
 
 from random_forest import RandomForestModel
-from naive_bayes import NaiveBayesModel, MultinomialNaiveBayesModel
-from naive_bayes import BernoulliNaiveBayesModel
+from naive_bayes import NaiveBayesModel, BernoulliNaiveBayesModel
 
 
 CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict')
@@ -76,3 +75,12 @@ class KaggleDataModel(object):
         self.columns = list(training.ix[:,1:].columns)
         return training.ix[:,1:], training.ix[:,0]
 
+    def trial_model(self):
+        import lib_linear
+        from sklearn.cross_validation import train_test_split
+        
+        Xs, y = sf_model.KaggleDataModel().load_training('train.csv')
+        X_train, X_test, y_train, y_test = train_test_split(Xs, y, 
+                                                            test_size=0.25)
+        y_hat = lib_linear.NaiveBayesModel().model_and_predict()
+        print sum(y_hat == y_test) / float(len(y_hat))
