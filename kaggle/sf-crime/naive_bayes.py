@@ -22,9 +22,11 @@ class BernoulliNaiveBayesModel(object):
 
 
 def main():
+    train_filename = 'train.csv'
+    test_filename = 'test.csv'
     data_prep = sf_model.KaggleDataModel()
-    train = data_prep.feature_engineering('train.csv', is_training=True)
-    test  = data_prep.feature_engineering('test.csv', is_training=False)
+    train = data_prep.feature_engineering(train_filename, test_filename)
+    test  = data_prep.feature_engineering(test_filename=test_filename)
 
     Xs = train.ix[:,1:]
     y  = train.ix[:,0]
@@ -44,7 +46,7 @@ def main():
     output = pd.DataFrame(binary_matches, columns=col_names)
 
     output['Id'] = test['Id'].astype(int)
-    output = output[['Id'] + col_names]
+    output = output[['Id'] + list(col_names)]
     output.to_csv('output.csv', index=False)
 
 
