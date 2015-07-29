@@ -1,5 +1,5 @@
 import datetime
-
+import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 
@@ -7,8 +7,9 @@ from random_forest import RandomForestModel
 from naive_bayes import NaiveBayesModel, BernoulliNaiveBayesModel
 
 
-CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict')
-TIME_SERIES_VARS = ('Date', 'Time')
+CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict', 'Address') #, 'Block', 'Junction_min', 
+                    #'Junction_max')
+TIME_SERIES_VARS = ('Date', 'Time') #, 'Dates')
 
 
 def time_diff(start, end):
@@ -19,27 +20,46 @@ def time_diff(start, end):
 
 def models():
     return [NaiveBayesModel(), BernoulliNaiveBayesModel()]
-    # return [RandomForestModel(), NaiveBayesModel()]
 
 
 class KaggleDataModel(object):
 
-    def feature_engineering(self, filename, is_training=False):
-        df = pd.read_csv(filename)
+    def feature_engineering(self, train_filename=None, test_filename=None):
+        df = pd.read_csv(train_filename and train_filename or test_filename)
         temp = pd.DatetimeIndex(df['Dates'])
         df['Date'] = temp.date
         df['Time'] = temp.time
+        del df['Dates']     # df['Dates'] = pd.to_datetime(df['Dates'])
 
-        # Rubbish or variables better engineered in another way
-        del df['Dates']
-        del df['Address']         # Removing just for now
+        # df['Block'] = 'Block of' in df['Address'] and df['Address'] or ''
+        # df['Junction_min'] =  ' / ' in df['Address'] and \
+        #         min(df['Address'].split(' / ')) or ''
+        # df['Junction_max'] =  ' / ' in df['Address'] and \
+        #         max(df['Address'].split(' / ')) or ''
+        
+        # There are df['Y'] == 90 in the test set too. In this case, we 
+        # guess the Y value by find others with the same road Address and 
+        # take an average. Where there are no other same address crimes we 
+        # just use 90 still
+        # df_temp = df.copy(deep=True)
+        # for n, row in df.iterrows():
+        #     if row['Y'] == 90:
+        #         same_addresses = df[df['Address'] == row['Address']]
+        #         x_median = np.median(same_addresses['X'])
+        #         y_median = np.median(same_addresses['Y'])
+        #         df_temp['X'][n] = x_median
+        #         df_temp['Y'][n] = y_median
+        # df = df_temp
 
-        if is_training:
+        if train_filename:
             encoders = {}
             for c in CATEGORICAL_VARS:
-                all_choices = tuple(set(df[c]))
+                all_choices = set(df[c])
+                if c == 'Address':
+                    test_choices = set(pd.read_csv(test_filename)['Address'])
+                    all_choices = all_choices.union(test_choices) 
                 le = preprocessing.LabelEncoder()
-                le.fit(all_choices)
+                le.fit(tuple(all_choices))
                 encoders[c] = le
             for t in TIME_SERIES_VARS:
                 encoders[t] = min(df[t])
@@ -52,11 +72,12 @@ class KaggleDataModel(object):
                 df[v] = df[v].apply(lambda t: (t - self.encoders[v]).days)
             elif v == 'Time':
                 df[v] = df[v].apply(lambda t: time_diff(self.encoders[v], t))
+            elif v == 'Dates':
+                f = lambda t: (t - self.encoders[v]).total_seconds() / (60*60.)
+                df[v] = df[v].apply(f)
 
-        if is_training:
-            # df['Category'] = df['Category'].astype(object)
-
-            # Omit when df$Y == 90 - seems to be a NA value
+        if train_filename:
+            # Omit when df['Y'] == 90 - seems to be a NA value
             df = df[df['Y'] != 90]
 
             del df['Descript']
