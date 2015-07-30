@@ -7,9 +7,9 @@ from random_forest import RandomForestModel
 from naive_bayes import NaiveBayesModel, BernoulliNaiveBayesModel
 
 
-CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict', 'Address') #, 'Block', 'Junction_min', 
-                    #'Junction_max')
-TIME_SERIES_VARS = ('Date', 'Time') #, 'Dates')
+CATEGORICAL_VARS = ('DayOfWeek', 'PdDistrict', 'Address') #, 'Block', 
+                    # 'Junction_min', 'Junction_max')
+TIME_SERIES_VARS = ('Date', 'Time', 'Dates')
 
 
 def time_diff(start, end):
@@ -26,10 +26,11 @@ class KaggleDataModel(object):
 
     def feature_engineering(self, train_filename=None, test_filename=None):
         df = pd.read_csv(train_filename and train_filename or test_filename)
+
         temp = pd.DatetimeIndex(df['Dates'])
         df['Date'] = temp.date
         df['Time'] = temp.time
-        del df['Dates']     # df['Dates'] = pd.to_datetime(df['Dates'])
+        df['Dates'] = pd.to_datetime(df['Dates'])
 
         # df['Block'] = 'Block of' in df['Address'] and df['Address'] or ''
         # df['Junction_min'] =  ' / ' in df['Address'] and \
@@ -63,7 +64,7 @@ class KaggleDataModel(object):
                 encoders[c] = le
             for t in TIME_SERIES_VARS:
                 encoders[t] = min(df[t])
-                self.encoders = encoders
+            self.encoders = encoders
 
         for c in CATEGORICAL_VARS:
             df[c] = self.encoders[c].transform(df[c])
@@ -82,6 +83,10 @@ class KaggleDataModel(object):
 
             del df['Descript']
             del df['Resolution']
+
+            # Ensure y value is first column of the result
+            cols = ['Category'] + [x for x in df.columns if x != 'Category']
+            df = df[cols]
 
         # Scaling coordinates so they are "prettier" to human-interpretation
         df['X'] = (df['X'] + 122) * 100
