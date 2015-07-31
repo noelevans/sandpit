@@ -42,15 +42,17 @@ class KaggleDataModel(object):
         # guess the Y value by find others with the same road Address and 
         # take an average. Where there are no other same address crimes we 
         # just use 90 still
-        # df_temp = df.copy(deep=True)
-        # for n, row in df.iterrows():
-        #     if row['Y'] == 90:
-        #         same_addresses = df[df['Address'] == row['Address']]
-        #         x_median = np.median(same_addresses['X'])
-        #         y_median = np.median(same_addresses['Y'])
-        #         df_temp['X'][n] = x_median
-        #         df_temp['Y'][n] = y_median
-        # df = df_temp
+        df_temp = df.copy(deep=True)
+        for n, row in df[df['Y'] == 90].iterrows():
+            same_addresses = df[(df['Address'] == row['Address']) & 
+                                (df['Y'] != 90)]
+            if same_addresses.empty:
+                same_addresses = df[df['PdDistrict'] == row['PdDistrict']]
+            x_median = np.median(same_addresses['X'])
+            y_median = np.median(same_addresses['Y'])
+            df_temp.set_value(n, 'X', x_median)
+            df_temp.set_value(n, 'Y', y_median)
+        df = df_temp
 
         if train_filename:
             encoders = {}
