@@ -25,8 +25,8 @@ def main():
     train_filename = 'train.csv'
     test_filename = 'test.csv'
     data_prep = sf_model.KaggleDataModel()
-    train = data_prep.feature_engineering(train_filename, test_filename)
-    test  = data_prep.feature_engineering(test_filename=test_filename)
+    train = data_prep.feature_engineer(True, train_filename, test_filename)
+    test  = data_prep.feature_engineer(False, test_filename, train_filename)
 
     Xs = train.ix[:,1:]
     y  = train.ix[:,0]
@@ -43,11 +43,9 @@ def main():
 
     col_names = np.sort(train['Category'].unique())
     binary_matches = col_names == y_hats
-    output = pd.DataFrame(binary_matches, columns=col_names)
 
-    output['Id'] = test['Id'].astype(int)
-    output = output[['Id'] + list(col_names)]
-    output.to_csv('output.csv', index=False)
+    output = pd.DataFrame(binary_matches, columns=col_names, dtype=int)
+    output.to_csv('output.csv', index_label='Id')
 
 
 if __name__ == '__main__':
