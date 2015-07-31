@@ -24,8 +24,37 @@ def models():
 
 class KaggleDataModel(object):
 
-    def feature_engineering(self, train_filename=None, test_filename=None):
-        df = pd.read_csv(train_filename and train_filename or test_filename)
+    def _correct_bad_coords(self, df, other_df=None):
+        """ Correct when coordinates do not place crime in SF region.
+
+        There are df['Y'] == 90 in the test set too. In this case, we guess the
+        Y value by find others with the same road Address and take an average.
+        Where there are no other same address crimes we just use 90 still 
+        """
+
+        cols = ['Address', 'PdDistrict', 'X', 'Y']
+        df_all = df
+        if other_df is not None:
+            df_all = pd.concat([df[cols], other_df[cols]])
+
+        df_temp = df.copy(deep=True)
+        for n, row in df[df['Y'] == 90].iterrows():
+            same_addresses = df_all[(df_all['Address'] == row['Address']) & 
+                                    (df_all['Y'] != 90)]
+            if same_addresses.empty:
+                same_addresses = df_all[
+                    df_all['PdDistrict'] == row['PdDistrict']]
+            x_median = np.median(same_addresses['X'])
+            y_median = np.median(same_addresses['Y'])
+            df_temp.set_value(n, 'X', x_median)
+            df_temp.set_value(n, 'Y', y_median)
+
+        return df_temp
+
+
+    def feature_engineer(self, is_training, filename, aux_filename=None):
+        df = pd.read_csv(filename)
+        aux_df = aux_filename and pd.read_csv(aux_filename)
 
         temp = pd.DatetimeIndex(df['Dates'])
         df['Date'] = temp.date
@@ -37,29 +66,15 @@ class KaggleDataModel(object):
         #         min(df['Address'].split(' / ')) or ''
         # df['Junction_max'] =  ' / ' in df['Address'] and \
         #         max(df['Address'].split(' / ')) or ''
-        
-        # There are df['Y'] == 90 in the test set too. In this case, we 
-        # guess the Y value by find others with the same road Address and 
-        # take an average. Where there are no other same address crimes we 
-        # just use 90 still
-        df_temp = df.copy(deep=True)
-        for n, row in df[df['Y'] == 90].iterrows():
-            same_addresses = df[(df['Address'] == row['Address']) & 
-                                (df['Y'] != 90)]
-            if same_addresses.empty:
-                same_addresses = df[df['PdDistrict'] == row['PdDistrict']]
-            x_median = np.median(same_addresses['X'])
-            y_median = np.median(same_addresses['Y'])
-            df_temp.set_value(n, 'X', x_median)
-            df_temp.set_value(n, 'Y', y_median)
-        df = df_temp
 
-        if train_filename:
+        df = self._correct_bad_coords(df, aux_df)
+        
+        if is_training:
             encoders = {}
             for c in CATEGORICAL_VARS:
                 all_choices = set(df[c])
                 if c == 'Address':
-                    test_choices = set(pd.read_csv(test_filename)['Address'])
+                    test_choices = set(aux_df['Address'])
                     all_choices = all_choices.union(test_choices) 
                 le = preprocessing.LabelEncoder()
                 le.fit(tuple(all_choices))
@@ -79,10 +94,7 @@ class KaggleDataModel(object):
                 f = lambda t: (t - self.encoders[v]).total_seconds() / (60*60.)
                 df[v] = df[v].apply(f)
 
-        if train_filename:
-            # Omit when df['Y'] == 90 - seems to be a NA value
-            df = df[df['Y'] != 90]
-
+        if is_training:
             del df['Descript']
             del df['Resolution']
 
@@ -99,7 +111,7 @@ class KaggleDataModel(object):
 
     def load_training(self, training_filename):
         ''' For use with model_test_harness '''
-        training = self.feature_engineering(training_filename, is_training=True)
+        training = self.feature_engineer(True, training_filename, is_training=True)
         self.columns = list(training.ix[:,1:].columns)
         return training.ix[:,1:], training.ix[:,0]
 
