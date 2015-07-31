@@ -27,9 +27,13 @@ class KaggleDataModel(object):
     def _correct_bad_coords(self, df, other_df=None):
         """ Correct when coordinates do not place crime in SF region.
 
-        There are df['Y'] == 90 in the test set too. In this case, we guess the
-        Y value by find others with the same road Address and take an average.
-        Where there are no other same address crimes we just use 90 still 
+        There are rows where Y == 90 placing the crime at the North Pole. When 
+        this happens, estimate coordinates by 
+            1) matching to other streets of the same name
+            2) matching to same street but different block
+                ^^^^ TODO: prefer closer blocks
+            3) if a crossroad, either of the streets making the junction
+            4) use middle of the District if Address cannot be cross-referenced
         """
 
         cols = ['Address', 'PdDistrict', 'X', 'Y']
@@ -39,13 +43,25 @@ class KaggleDataModel(object):
 
         df_temp = df.copy(deep=True)
         for n, row in df[df['Y'] == 90].iterrows():
-            same_addresses = df_all[(df_all['Address'] == row['Address']) & 
-                                    (df_all['Y'] != 90)]
-            if same_addresses.empty:
-                same_addresses = df_all[
+
+            neighbours = df_all[(df_all['Address'] == row['Address']) & 
+                                (df_all['Y'] != 90)]
+            
+            if neighbours.empty and len(row['Address'].split(' / ')) == 2:
+                # In train and test.csv, the only bad coords occur where the 
+                # Addresses is a crossroad (of 2 streets)
+                regex = '|'.join(row['Address'].split(' / '))
+                neighbours = df_all[
+                        (df_all['PdDistrict'] == row['PdDistrict']) &
+                        (df_all['Address'].str.contains(regex)) & 
+                        (df_all['Y'] != 90)]
+            
+            if neighbours.empty:
+                neighbours = df_all[
                     df_all['PdDistrict'] == row['PdDistrict']]
-            x_median = np.median(same_addresses['X'])
-            y_median = np.median(same_addresses['Y'])
+            
+            x_median = np.median(neighbours['X'])
+            y_median = np.median(neighbours['Y'])
             df_temp.set_value(n, 'X', x_median)
             df_temp.set_value(n, 'Y', y_median)
 
