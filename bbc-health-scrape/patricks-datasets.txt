@@ -1,0 +1,63 @@
+http://data.gov.uk/dataset/adult-social-care-information-personal-social-services-staff-of-social-services-departments-england-  - good time series, codes corresponding to range of social-work roles - how many people doing what
+http://data.gov.uk/dataset/characteristics_of_older_people - ~8 highlights of census information - useless
+http://data.gov.uk/dataset/community_care_statistics-grant_funded_services_for_adults_england - 2011 data
+http://data.gov.uk/dataset/community_care_statistics-home_help-care_for_adults
+http://data.gov.uk/dataset/community_care_statistics-home_help-care_for_adults
+http://data.gov.uk/dataset/community_care_statistics-social_services_activity_england
+http://data.gov.uk/dataset/community_care_statistics-supported_residents_for_adults_england
+http://data.gov.uk/dataset/direct_payments_-_adults_18-64
+http://data.gov.uk/dataset/direct_payments_-_aged_65
+http://data.gov.uk/dataset/domiciliary_care_services_for_adults_northern_ireland
+http://data.gov.uk/dataset/financial-transactions-data-manchester-mental-health-and-social-care-trust
+http://data.gov.uk/dataset/financial_reports_on_local_authority_expenditure_on_their_education_and_childrens_social_care_functi
+http://data.gov.uk/dataset/focus_on_older_people
+http://data.gov.uk/dataset/gp-practice-data
+http://data.gov.uk/dataset/health_survey_for_england
+http://data.gov.uk/dataset/home_care_services_scotland
+http://data.gov.uk/dataset/home_care_user_survey
+http://data.gov.uk/dataset/home_care_user_survey
+http://data.gov.uk/dataset/household-estimates-and-projections
+http://data.gov.uk/dataset/hpi_-_access_to_social_care
+http://data.gov.uk/dataset/hpi_-_quality_of_social_care
+http://data.gov.uk/dataset/hpi_-_social_care_resourcing
+http://data.gov.uk/dataset/id_2007_income_deprivation_affecting_older_people_index
+http://data.gov.uk/dataset/intensive_home_care
+http://data.gov.uk/dataset/learning_difficulties_-_adults_with_learning_difficulties_helped_to_live_at_home
+http://data.gov.uk/dataset/local_authority_social_services_staffing_wales
+http://data.gov.uk/dataset/measures_from_the_adult_social_care_outcomes_framework_england
+http://data.gov.uk/dataset/mental_health_-_adults_with_mental_health_problems_helped_to_live_at_home
+http://data.gov.uk/dataset/national-audit-of-dementia
+http://data.gov.uk/dataset/ni-124-people-with-a-long-term-condition-supported-to-be-independent
+http://data.gov.uk/dataset/ni-125-achieving-independence-for-older-people-through-rehabilitation-intermediate-care
+http://data.gov.uk/dataset/ni-127-self-reported-experience-of-social-care-users
+http://data.gov.uk/dataset/ni-130-social-care-clients
+http://data.gov.uk/dataset/ni-131-delayed-transfers-of-care-from-hospitals
+http://data.gov.uk/dataset/ni-136-people-supported-to-live-independently-through-social-services-all-ages
+http://data.gov.uk/dataset/ni-139-the-extent-to-which-older-people-receive-the-support-they-need-to-live-independently-at-home
+http://data.gov.uk/dataset/official-statistics-childrens-social-care-providers-and-places
+http://data.gov.uk/dataset/older_people_helped_to_live_at_home
+http://data.gov.uk/dataset/older_people_residential_and_nursing_care
+http://data.gov.uk/dataset/patient-led_assessments_of_the_care_environment_place
+http://data.gov.uk/dataset/personal-social-services-expenditure-and-unit-costs
+http://data.gov.uk/dataset/personal-social-services-staff-of-social-services-departments-england
+http://data.gov.uk/dataset/personal_social_services-home_care_users_aged_65_or_over_england
+http://data.gov.uk/dataset/personal_social_services-home_care_users_aged_65_or_over_england
+http://data.gov.uk/dataset/personal_social_services_adult_social_care_survey_england
+http://data.gov.uk/dataset/personal_social_services_adult_social_care_survey_england
+http://data.gov.uk/dataset/personal_social_services_survey_of_adult_carers_in_england
+http://data.gov.uk/dataset/planned_expenditure_of_local_authorities_on_education_and_childrens_social_care_functions_section_25 - has link to aggregated XLS: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357412/SR35-2014tables.xlsx
+http://data.gov.uk/dataset/residential_and_nursing_care - missing link
+http://data.gov.uk/dataset/residential_and_nursing_care_-_aged_18-64 - missing link
+http://data.gov.uk/dataset/residential_and_nursing_care_-_aged_65 - missing link
+http://data.gov.uk/dataset/residential_nursing_and_home_care_-_weeks_that_adults_and_older_groups_are_supported - missing link
+http://data.gov.uk/dataset/residential_nursing_and_home_care_costs - missing link
+http://data.gov.uk/dataset/rqia-registered-domiciliary-care-agencies-metadata - data for specific square region of the UK
+http://data.gov.uk/dataset/self-directed_care_census_scotland
+http://data.gov.uk/dataset/social-care-locations - useful
+http://data.gov.uk/dataset/social-care-providers - maybe
+http://data.gov.uk/dataset/social-care-services - (not - a join table for 2 above)
+http://data.gov.uk/dataset/social_care_indicators_from_the_national_indicator_set - cannot access *
+http://data.gov.uk/dataset/social_care_inspections_and_outcomes - cannot access
+http://data.gov.uk/dataset/social_care_providers_and_places - nothing after following another link on www.gov.uk
+http://data.gov.uk/dataset/social_focus_on_young_people - broken link
+http://data.gov.uk/dataset/social_services_performance_assessment_framework_paf_indicators - broken link
