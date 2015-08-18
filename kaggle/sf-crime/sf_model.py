@@ -46,15 +46,15 @@ class KaggleDataModel(object):
 
             neighbours = df_all[(df_all['Address'] == row['Address']) & 
                                 (df_all['Y'] != 90)]
-            
-            if neighbours.empty and len(row['Address'].split(' / ')) == 2:
-                # In train and test.csv, the only bad coords occur where the 
-                # Addresses is a crossroad (of 2 streets)
-                regex = '|'.join(row['Address'].split(' / '))
-                neighbours = df_all[
-                        (df_all['PdDistrict'] == row['PdDistrict']) &
-                        (df_all['Address'].str.contains(regex)) & 
-                        (df_all['Y'] != 90)]
+
+            # if neighbours.empty and len(row['Address'].split(' / ')) == 2:
+            #     # In train and test.csv, the only bad coords occur where the 
+            #     # Addresses is a crossroad (of 2 streets)
+            #     regex = '|'.join(row['Address'].split(' / '))
+            #     neighbours = df_all[
+            #             (df_all['PdDistrict'] == row['PdDistrict']) &
+            #             (df_all['Address'].str.contains(regex)) & 
+            #             (df_all['Y'] != 90)]
             
             if neighbours.empty:
                 neighbours = df_all[
@@ -90,7 +90,9 @@ class KaggleDataModel(object):
             for c in CATEGORICAL_VARS:
                 all_choices = set(df[c])
                 if c == 'Address':
-                    test_choices = set(aux_df['Address'])
+                    test_choices = set()
+                    if aux_df is not None:
+                        test_choices = set(aux_df['Address'])
                     all_choices = all_choices.union(test_choices) 
                 le = preprocessing.LabelEncoder()
                 le.fit(tuple(all_choices))
@@ -121,13 +123,15 @@ class KaggleDataModel(object):
         # Scaling coordinates so they are "prettier" to human-interpretation
         df['X'] = (df['X'] + 122) * 100
         df['Y'] = (df['Y'] -  37) * 100
+
+        del df['Dates']
         
         return df
 
 
     def load_training(self, training_filename):
         ''' For use with model_test_harness '''
-        training = self.feature_engineer(True, training_filename, is_training=True)
+        training = self.feature_engineer(True, training_filename)
         self.columns = list(training.ix[:,1:].columns)
         return training.ix[:,1:], training.ix[:,0]
 
