@@ -1,4 +1,4 @@
-import optparse
+import argparse
 
 from sklearn.cross_validation import train_test_split
 
@@ -9,17 +9,14 @@ def evaluate_model(model, X_train, y_train, X_test, y_test):
 
 
 def main():
-    parser = optparse.OptionParser()
+    parser = argparse.ArgumentParser()
 
-    parser.add_option('--module', action='store')
-    parser.add_option('--training', action='store')
-    options, args = parser.parse_args()
-    if not options.module:
-        print 'Usage: python model_test_harness.py --module path/to/model.py'
-        return
-    module_name = options.module.replace('.py', '').replace('/', '.')
-    training_filename = options.training or \
-            options.module[:options.module.rfind('/')] + '/train.csv'
+    parser.add_argument('-m', dest='module')
+    parser.add_argument('-t', dest='training')
+    args = parser.parse_args()
+    module_name = args.module.replace('.py', '').replace('/', '.')
+    training_filename = args.training or \
+            args.module[:args.module.rfind('/')] + '/train.csv'
 
     try:
         module_package = __import__(module_name)
