@@ -2,6 +2,7 @@
 # Taken from
 #   http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
 
+import operator
 import numpy as np
 import pandas as pd
 
@@ -13,14 +14,10 @@ def separate_by_class(train):
     return {c: train[train[:, -1] == c] for c in classifications}
 
 
-def summarize(dataset):
-    # means = np.mean(dataset[:, :-1], axis=0)
-    # stdevs = np.std(dataset[:, :-1], axis=0)
-    # return np.concatenate((np.array((ms,)), np.array((sd,))), axis=0)
-
-    summaries = [(np.mean(attr), np.std(attr)) for attr in zip(*dataset)]
-    del summaries[-1]
-    return summaries
+def summarize(train_subset):
+    means = np.mean(train_subset[:, :-1], axis=0)[np.newaxis].T
+    stds = np.std(train_subset[:, :-1], axis=0)[np.newaxis].T
+    return np.concatenate((means, stds), axis=1)
 
 
 def fit(train):
@@ -28,29 +25,24 @@ def fit(train):
     return {c: summarize(i) for c, i in classification_to_instances.items()}
 
 
-def calculate_probability(x, mean, stdev):
-    exponent = np.exp( -(np.power(x - mean, 2) / (2 * np.power(stdev, 2))))
-    return (1 / (np.sqrt(2 * np.pi) * stdev)) * exponent
+def calculate_probability(x, mean, std):
+    exponent = np.exp( -(np.power(x - mean, 2) / (2 * np.power(std, 2))))
+    return (1 / (np.sqrt(2 * np.pi) * std)) * exponent
 
 
 def calculate_class_probabilities(summaries, predictors):
-    probabilities = {}
+    probas = {}
     for classification, class_summaries in summaries.items():
-        probabilities[classification] = 1
-        for i, (mean, stdev) in enumerate(class_summaries):
-            x = predictors[i]
-            probabilities[classification] *= calculate_probability(x, mean, stdev)
-    return probabilities
+        probas[classification] = 1
+        for p, (mean, std) in zip(predictors, class_summaries):
+            probas[classification] *= calculate_probability(p, mean, std)
+    return probas
 
 
 def predict(model, predictors):
-    probabilities = calculate_class_probabilities(model, predictors)
-    best_label, best_prob = None, -1
-    for classification, probability in probabilities.items():
-        if best_label is None or probability > best_prob:
-            best_prob = probability
-            best_label = classification
-    return best_label
+    class_to_probability = calculate_class_probabilities(model, predictors)
+    dict_value = operator.itemgetter(1)
+    return sorted(class_to_probability.items(), key=dict_value)[-1][0]
 
 
 def accuracy(tests, predictions):
@@ -63,11 +55,11 @@ def main():
     dataset = pd.read_csv(filename, header=None)
     train, test = train_test_split(dataset, test_size=0.33)
     split_str = 'Split %i rows into train=%i and test=%i rows'
-    print(split_str % (len(dataset), len(train), len(test)))
+    print split_str % (len(dataset), len(train), len(test))
     model = fit(train)
 
     predictions = [predict(model, t) for t in test]
-    print('Accuracy: %f' % accuracy(test, predictions))
+    print 'Accuracy: %f' % accuracy(test, predictions)
 
 
 if __name__ == '__main__':
