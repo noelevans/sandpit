@@ -1,10 +1,6 @@
 # Example of Naive Bayes implemented from Scratch in Python
-# Taken from 
+# Taken from
 #   http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
-
-import csv
-import random
-import math
 
 import numpy as np
 import pandas as pd
@@ -12,48 +8,49 @@ import pandas as pd
 from sklearn.cross_validation import train_test_split
 
 
-def separateByClass(dataset):
-    dependent_vars = set(dataset.iloc[:, -1])
-    return {d: dataset[dataset.iloc[:, -1] == d] for d in dependent_vars}
+def separate_by_class(train):
+    classifications = set(train[:, -1])
+    return {c: train[train[:, -1] == c] for c in classifications}
 
 
 def summarize(dataset):
-    summaries = [(np.mean(attribute), np.std(attribute)) for attribute in zip(*dataset)]
+    # means = np.mean(dataset[:, :-1], axis=0)
+    # stdevs = np.std(dataset[:, :-1], axis=0)
+    # return np.concatenate((np.array((ms,)), np.array((sd,))), axis=0)
+
+    summaries = [(np.mean(attr), np.std(attr)) for attr in zip(*dataset)]
     del summaries[-1]
     return summaries
 
 
-def fit(dataset):
-    separated = separateByClass(dataset)
-    summaries = {}
-    for classValue, instances in separated.iteritems():
-        summaries[classValue] = summarize(instances)
-    return summaries
+def fit(train):
+    classification_to_instances = separate_by_class(train)
+    return {c: summarize(i) for c, i in classification_to_instances.items()}
 
 
-def calculateProbability(x, mean, stdev):
+def calculate_probability(x, mean, stdev):
     exponent = np.exp( -(np.power(x - mean, 2) / (2 * np.power(stdev, 2))))
     return (1 / (np.sqrt(2 * np.pi) * stdev)) * exponent
 
 
-def calculateClassProbabilities(summaries, inputVector):
+def calculate_class_probabilities(summaries, predictors):
     probabilities = {}
-    for classValue, classSummaries in summaries.iteritems():
-        probabilities[classValue] = 1
-        for i, (mean, stdev) in enumerate(classSummaries):
-            x = inputVector[i]
-            probabilities[classValue] *= calculateProbability(x, mean, stdev)
+    for classification, class_summaries in summaries.items():
+        probabilities[classification] = 1
+        for i, (mean, stdev) in enumerate(class_summaries):
+            x = predictors[i]
+            probabilities[classification] *= calculate_probability(x, mean, stdev)
     return probabilities
 
-            
+
 def predict(model, predictors):
-    probabilities = calculateClassProbabilities(model, predictors)
-    bestLabel, bestProb = None, -1
-    for classValue, probability in probabilities.iteritems():
-        if bestLabel is None or probability > bestProb:
-            bestProb = probability
-            bestLabel = classValue
-    return bestLabel
+    probabilities = calculate_class_probabilities(model, predictors)
+    best_label, best_prob = None, -1
+    for classification, probability in probabilities.items():
+        if best_label is None or probability > best_prob:
+            best_prob = probability
+            best_label = classification
+    return best_label
 
 
 def accuracy(tests, predictions):
@@ -68,7 +65,7 @@ def main():
     split_str = 'Split %i rows into train=%i and test=%i rows'
     print(split_str % (len(dataset), len(train), len(test)))
     model = fit(train)
-    
+
     predictions = [predict(model, t) for t in test]
     print('Accuracy: %f' % accuracy(test, predictions))
 
