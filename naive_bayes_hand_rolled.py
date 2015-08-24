@@ -1,6 +1,7 @@
-# Example of Naive Bayes implemented from Scratch in Python
-# Taken from
-#   http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
+""" Example of Gaussian Naive Bayes classifier implemented from scratch
+    Originally taken from
+        http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
+"""
 
 import operator
 import numpy as np
@@ -10,22 +11,34 @@ from sklearn.cross_validation import train_test_split
 
 
 def separate_by_class(train):
+    """ For each dependent variable (last column of DF) value, map to
+        corresponding rows of the DF
+    """
     classifications = set(train[:, -1])
     return {c: train[train[:, -1] == c] for c in classifications}
 
 
-def summarize(train_subset):
-    means = np.mean(train_subset[:, :-1], axis=0)[np.newaxis].T
-    stds = np.std(train_subset[:, :-1], axis=0)[np.newaxis].T
-    return np.concatenate((means, stds), axis=1)
+def summarise(train_subset):
+    """ Building a model for GNB entails determining the mean and standard
+        deviation for each predictor in the training data for a given dependent
+        classification value. Ignore the final column; the dependent
+    """
+    means = np.mean(train_subset[:, :-1], axis=0)
+    stds = np.std(train_subset[:, :-1], axis=0)
+    return np.column_stack((means, stds))
 
 
 def fit(train):
     classification_to_instances = separate_by_class(train)
-    return {c: summarize(i) for c, i in classification_to_instances.items()}
+    return {c: summarise(i) for c, i in classification_to_instances.items()}
 
 
-def calculate_probability(x, mean, std):
+def gaussian_density_probability(x, mean, std):
+    """ For a given value x, in a normal / Gaussian distribution with a given
+        mean and std, return a result where -> 1 indicates extreme proximity to
+        the mean with a wide std. Where result -> 0 indicates little proximity
+        to the mean and a more narrow std
+    """
     exponent = np.exp( -(np.power(x - mean, 2) / (2 * np.power(std, 2))))
     return (1 / (np.sqrt(2 * np.pi) * std)) * exponent
 
@@ -35,7 +48,7 @@ def calculate_class_probabilities(summaries, predictors):
     for classification, class_summaries in summaries.items():
         probas[classification] = 1
         for p, (mean, std) in zip(predictors, class_summaries):
-            probas[classification] *= calculate_probability(p, mean, std)
+            probas[classification] *= gaussian_density_probability(p, mean, std)
     return probas
 
 
