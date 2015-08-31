@@ -8,7 +8,9 @@
 import datetime
 import decimal
 import itertools
+import json
 import math
+import matplotlib
 import operator
 import random
 import re
@@ -26,6 +28,14 @@ from sklearn import datasets
 
 pd.set_option('display.max_columns', 30)
 pd.set_option('display.width', 100)
+
+
+def describe(ol):
+    print df.Series(ol).describe()
+
+
+matplotlibrc_path = '/home/noel/repo/playground/matplotlibrc.json'
+matplotlib.rcParams.update(json.load(open(matplotlibrc_path)))
 
 df_small = pd.DataFrame([[1,2,3], [2,4,8]], columns=['a', 'b', 'c'])
 
