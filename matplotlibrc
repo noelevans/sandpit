@@ -1,3 +1,8 @@
+#
+# This is the correct softlink to make:
+#     ln -s ~/repo/playground/matplotlibrc .config/matplotlib/matplotlibrc
+#
+
 ### MATPLOTLIBRC FORMAT
 
 # This is a sample matplotlib configuration file - you can find a copy
@@ -237,7 +242,8 @@ axes.labelsize      : large  # fontsize of the x any y labels
 #axes.unicode_minus  : True    # use unicode for the minus symbol
                                # rather than hyphen.  See
                                # http://en.wikipedia.org/wiki/Plus_and_minus_signs#Character_codes
-axes.color_cycle    : 348ABD, A60628, 7A68A6, 467821,D55E00,  CC79A7, 56B4E9, 009E73, F0E442, 0072B2  # color cycle for plot lines
+#axes.color_cycle    : 348ABD, A60628, 467821,D55E00,  CC79A7, 56B4E9, 009E73, F0E442, 0072B2, 7A68A6  # color cycle for plot lines
+axes.color_cycle    : 332288, 117733, 882255,44AA99,  999933, CC6677, AA4499, DDCC77, 88CCEE, 7A68A6  # color cycle for plot lines
                                             # as list of string colorspecs:
                                             # single letter, long name, or
                                             # web-style hex
