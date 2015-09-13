@@ -10,6 +10,7 @@ def main():
     figsize(12.5, 4)
 
     jet = plt.cm.jet
+    fig = plt.figure()
     x = y = np.linspace(0, 5, 100)
     X, Y = np.meshgrid(x, y)
 
@@ -24,7 +25,7 @@ def main():
     plt.ylim(0, 5)
     plt.title("Landscape formed by Uniform priors.")
 
-    ax = plt.figure().add_subplot(122, projection='3d')
+    ax = fig.add_subplot(122, projection='3d')
     ax.plot_surface(X, Y, M, cmap=plt.cm.jet, vmax=1, vmin=-.15)
     ax.view_init(azim=390)
     plt.title("Uniform prior landscape; alternate view")
