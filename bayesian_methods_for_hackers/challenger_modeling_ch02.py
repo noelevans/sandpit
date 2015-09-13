@@ -127,5 +127,15 @@ def main():
     plt.show()
 
 
+    # Chapter 2, question 2
+    # The plot shows negative correlation because you get the same
+    # intersection with the danger / safe divide temperature. Up the beta
+    # value and alpha must fall to have the correct dependent distinction
+    plt.scatter(alpha_samples, beta_samples, alpha=0.1)
+    plt.title("Why does the plot look like this?")
+    plt.xlabel(r"$\alpha$")
+    plt.ylabel(r"$\beta$")
+
+
 if __name__ == '__main__':
     main()
