@@ -135,6 +135,7 @@ def main():
     plt.title("Why does the plot look like this?")
     plt.xlabel(r"$\alpha$")
     plt.ylabel(r"$\beta$")
+    plt.show()
 
 
 if __name__ == '__main__':
