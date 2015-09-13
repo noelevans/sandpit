@@ -3,13 +3,12 @@ import numpy as np
 import scipy.stats as stats
 
 from IPython.core.pylabtools import figsize
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def main():
     figsize(12.5, 4)
 
-    import matplotlib.pyplot as plt
-    from mpl_toolkits.mplot3d import Axes3D
 
     jet = plt.cm.jet
     fig = plt.figure()
