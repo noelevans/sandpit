@@ -79,6 +79,24 @@ def main():
     plt.legend()
     plt.show()
 
+    std_trace = mcmc.trace("stds")[:]
+
+    _i = [1, 2, 3, 0]
+    for i in range(2):
+        plt.subplot(2, 2, _i[2 * i])
+        plt.title("Posterior of center of cluster %d" % i)
+        plt.hist(center_trace[:, i], color=colors[i], bins=30,
+                 histtype="stepfilled")
+
+        plt.subplot(2, 2, _i[2 * i + 1])
+        plt.title("Posterior of standard deviation of cluster %d" % i)
+        plt.hist(std_trace[:, i], color=colors[i], bins=30,
+                 histtype="stepfilled")
+        # plt.autoscale(tight=True)
+
+    plt.tight_layout()
+    plt.show()
+
 
 if __name__ == '__main__':
     main()
