@@ -14,6 +14,7 @@ import matplotlib
 import operator
 import random
 import re
+import time
 import timeit
 
 # import matplotlib.pyplot as plt    # very slow
@@ -36,6 +37,10 @@ pd.set_option('display.width', 100)
 
 def describe(ol):
     print df.Series(ol).describe()
+
+
+def nCr(n, r):
+    return sp.misc.comb(n, r, exact=True)
 
 
 matplotlibrc_path = '/home/noel/repo/playground/matplotlibrc.json'
