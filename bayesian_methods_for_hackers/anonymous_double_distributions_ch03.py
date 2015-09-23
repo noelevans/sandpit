@@ -13,7 +13,7 @@ def main():
     plt.title("Histogram of the dataset")
     plt.ylim([0, None])
     print data[:10], "..."
-    # plt.show()
+    plt.show()
 
     p = pm.Uniform("p", 0, 1)
 
@@ -77,12 +77,11 @@ def main():
     plt.xlabel("Steps")
     plt.ylim(0, 1)
     plt.legend()
-    # plt.show()
+    plt.show()
 
     std_trace = mcmc.trace("stds")[:]
 
-    # _i = [1, 2, 3, 4]
-    _i = [1, 2, 3, 0]
+    _i = [1, 2, 3, 4]
     for i in range(2):
         plt.subplot(2, 2, _i[2 * i])
         plt.title("Posterior of center of cluster %d" % i)
