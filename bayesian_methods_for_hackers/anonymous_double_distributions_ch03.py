@@ -1,6 +1,8 @@
+import matplotlib as mpl
 from matplotlib import pyplot as plt
 import numpy as np
 import pymc as pm
+from scipy import stats
 
 from IPython.core.pylabtools import figsize
 
@@ -95,6 +97,48 @@ def main():
         # plt.autoscale(tight=True)
 
     plt.tight_layout()
+    plt.show()
+
+    plt.cmap = mpl.colors.ListedColormap(colors)
+    plt.imshow(mcmc.trace("assignment")[::400, np.argsort(data)],
+           cmap=plt.cmap, aspect=.4, alpha=.9)
+    plt.xticks(np.arange(0, data.shape[0], 40),
+           ["%.2f" % s for s in np.sort(data)[::40]])
+    plt.ylabel("posterior sample")
+    plt.xlabel("value of $i$th data point")
+    plt.title("Posterior labels of data points")
+    plt.show()
+
+    cmap = mpl.colors.LinearSegmentedColormap.from_list("BMH", colors)
+    assign_trace = mcmc.trace("assignment")[:]
+    plt.scatter(data, 1 - assign_trace.mean(axis=0), cmap=cmap,
+            c=assign_trace.mean(axis=0), s=50)
+    plt.ylim(-0.05, 1.05)
+    plt.xlim(35, 300)
+    plt.title("Probability of data point belonging to cluster 0")
+    plt.ylabel("probability")
+    plt.xlabel("value of data point")
+    plt.show()
+
+    x = np.linspace(20, 300, 500)
+    posterior_center_means = center_trace.mean(axis=0)
+    posterior_std_means = std_trace.mean(axis=0)
+    posterior_p_mean = mcmc.trace("p")[:].mean()
+
+    plt.hist(data, bins=20, histtype="step", normed=True, color="k",
+         lw=2, label="histogram of data")
+    y = posterior_p_mean * stats.norm.pdf(x, loc=posterior_center_means[0],
+                                    scale=posterior_std_means[0])
+    plt.plot(x, y, label="Cluster 0 (using posterior-mean parameters)", lw=3)
+    plt.fill_between(x, y, color=colors[1], alpha=0.3)
+
+    y = (1 - posterior_p_mean) * stats.norm.pdf(x, loc=posterior_center_means[1],
+                                          scale=posterior_std_means[1])
+    plt.plot(x, y, label="Cluster 1 (using posterior-mean parameters)", lw=3)
+    plt.fill_between(x, y, color=colors[0], alpha=0.3)
+
+    plt.legend(loc="upper left")
+    plt.title("Visualizing Clusters using posterior-mean parameters")
     plt.show()
 
 
