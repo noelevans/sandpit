@@ -32,8 +32,13 @@ def main():
     # below we create a model class
     model = pm.Model([p, assignment, observations, taus, centers])
 
+    map_ = pm.MAP(model)
+    map_.fit() #stores the fitted variables' values in foo.value
+
     mcmc = pm.MCMC(model)
-    mcmc.sample(50000)
+    # Where 50000 is the burn-in iterations where fitting is
+    # started but the results are not counted to the end model
+    mcmc.sample(100000, 50000)
 
     p_trace = mcmc.trace("p")[:]
     center_trace = mcmc.trace("centers")[:]
