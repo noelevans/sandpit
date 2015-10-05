@@ -6,9 +6,6 @@ from matplotlib import pyplot as plt
 
 
 def main():
-    matplotlibrc_path = '/home/noel/repo/playground/matplotlibrc.json'
-    matplotlib.rcParams.update(json.load(open(matplotlibrc_path)))
-
     tau = pm.rdiscrete_uniform(0, 80)
     print tau
 
