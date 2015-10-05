@@ -1,6 +1,6 @@
 # To be used with pylint to prevent annoying errors that are bogus. Create a
 # sym-link to this file in your home directory like so:
-#     ln -s ~/repo/playground/pylint ~/.pylintrc
+#     ln -s ~/repo/sandpit/pylint ~/.pylintrc
 
 [TYPECHECK]
 
