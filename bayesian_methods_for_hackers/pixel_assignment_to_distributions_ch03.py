@@ -1,5 +1,6 @@
 import numpy as np
 import pymc as pm
+from pymc.Matplot import plot as mcplot
 from scipy import stats
 
 
@@ -51,8 +52,13 @@ def main():
          (1 - p_trace) *
           stats.norm.pdf(x, loc=center_trace[:, 1], scale=std_trace[:, 1]))
 
+    # If you try this with out the 50000 burn-in iterations, the certainty is
+    # much less that the pixel belongs to cluster 0
     print "Probability of belonging to cluster 1:", v.mean()
     print "Probability of belonging to cluster 0:", 1 - v.mean()
+
+    mcmc.sample(25000, 0, 10)
+    mcplot(mcmc.trace("centers", 2), common_scale=False)
 
 
 if __name__ == '__main__':

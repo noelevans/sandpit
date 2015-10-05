@@ -1,6 +1,6 @@
 #
 # This is the correct softlink to make:
-#     ln -s ~/repo/playground/matplotlibrc .config/matplotlib/matplotlibrc
+#     ln -s ~/repo/sandpit/matplotlibrc ~/.config/matplotlib/matplotlibrc
 #
 
 ### MATPLOTLIBRC FORMAT
