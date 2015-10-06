@@ -1,8 +1,8 @@
 Pkg.add("Images")
 Pkg.add("DataFrames")
 Pkg.add("DecisionTree")
-using Images
 
+using Images
 using DataFrames
 using DecisionTree
 
