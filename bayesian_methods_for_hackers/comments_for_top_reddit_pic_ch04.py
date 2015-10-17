@@ -1,7 +1,25 @@
 import sys
 import numpy as np
 import praw
+import pymc as pm
+from matplotlib import pyplot as plt
 from IPython.core.display import Image
+
+
+def posterior_upvote_ratio(upvotes, downvotes, samples=20000):
+    """ This function accepts the number of upvotes and downvotes a particular
+        comment received, and the number of posterior samples to return to the
+        user. Assumes a uniform prior.
+    """
+    N = upvotes + downvotes
+    upvote_ratio = pm.Uniform("upvote_ratio", 0, 1)
+    observations = pm.Binomial("obs", N, upvote_ratio, value=upvotes,
+                               observed=True)
+    # do the fitting; first do a MAP as it is cheap and useful.
+    map_ = pm.MAP([upvote_ratio, observations]).fit()
+    mcmc = pm.MCMC([upvote_ratio, observations])
+    mcmc.sample(samples, samples / 4)
+    return mcmc.trace("upvote_ratio")[:]
 
 
 def main():
@@ -46,8 +64,26 @@ def main():
     print "Some Comments (out of %d total) \n-----------" % n_comments
     for i in comments:
         print '"' + contents[i] + '"'
-        print"upvotes/downvotes: ", votes[i, :]
+        print "upvotes/downvotes: ", votes[i, :]
         print
+
+    posteriors = []
+    colours = ["#348ABD", "#A60628", "#7A68A6", "#467821", "#CF4457"]
+    for i in range(len(comments)):
+        j = comments[i]
+        posteriors.append(posterior_upvote_ratio(votes[j, 0], votes[j, 1]))
+        label = '(%d up:%d down)\n%s...' % (votes[j, 0], votes[j, 1],
+                                            contents[j][:50])
+        plt.hist(posteriors[i], bins=18, normed=True, alpha=.9,
+                 histtype="step", color=colours[i % 5], lw=3,
+                 label=label)
+        plt.hist(posteriors[i], bins=18, normed=True, alpha=.2,
+                 histtype="stepfilled", color=colours[i], lw=3, )
+
+    plt.legend(loc="upper left")
+    plt.xlim(0, 1)
+    plt.title("Posterior distributions of upvote ratios on different comments")
+    plt.show()
 
 
 if __name__ == '__main__':
