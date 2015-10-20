@@ -133,6 +133,17 @@ def main():
         print votes[i, 0], votes[i, 1], contents[i]
         print "-------------"
 
+    # Sorting visually with the lower bound estimation. Also showing the mean
+    # and its apparent random fluctuation i.e it's better to use lower bound
+    r_order = order[::-1][-40:]
+    plt.errorbar(posterior_mean[r_order], np.arange(len(r_order)),
+                 xerr=std_err[r_order], xuplims=True, capsize=0, fmt="o",
+                 color="#7A68A6")
+    plt.xlim(0.3, 1)
+    plt.yticks(np.arange(len(r_order) - 1, -1, -1),
+               map(lambda x: x[:30].replace("\n", ""), ordered_contents))
+    plt.show()
+
 
 if __name__ == '__main__':
     main()
