@@ -109,5 +109,30 @@ def main():
     order = np.argsort(-np.array(lower_limits))
     print order, lower_limits
 
+    # This is the closed form method to replace the Markov Chain process above
+    # for real-time work
+
+    def intervals(u, d):
+        a = 1. + u
+        b = 1. + d
+        mu = a / (a + b)
+        std_err = 1.65 * np.sqrt((a * b) / ((a + b) ** 2 * (a + b + 1.)))
+        return (mu, std_err)
+
+    print "Approximate lower bounds:"
+    posterior_mean, std_err = intervals(votes[:, 0], votes[:, 1])
+    lb = posterior_mean - std_err
+    print lb
+    print
+    print "Top 40 Sorted according to approximate lower bounds:"
+    print
+    order = np.argsort(-lb)
+    ordered_contents = []
+    for i in order[:40]:
+        ordered_contents.append(contents[i])
+        print votes[i, 0], votes[i, 1], contents[i]
+        print "-------------"
+
+
 if __name__ == '__main__':
     main()
