@@ -85,6 +85,29 @@ def main():
     plt.title("Posterior distributions of upvote ratios on different comments")
     plt.show()
 
+    N = posteriors[0].shape[0]
+    lower_limits = []
+
+    for i in range(len(comments)):
+        j = comments[i]
+        plt.hist(posteriors[i], bins=20, normed=True, alpha=.9,
+                 histtype="step", color=colours[i], lw=3,
+                 label='(%d up:%d down)\n%s...' % (votes[j, 0], votes[j, 1],
+                                                   contents[j][:50]))
+        plt.hist(posteriors[i], bins=20, normed=True, alpha=.2,
+                 histtype="stepfilled", color=colours[i], lw=3, )
+        v = np.sort(posteriors[i])[int(0.05 * N)]
+        # plt.vlines( v, 0, 15 , color = "k", alpha = 1, linewidths=3 )
+        plt.vlines(v, 0, 10, color=colours[i], linestyles="--", linewidths=3)
+        lower_limits.append(v)
+        plt.legend(loc="upper left")
+
+    plt.legend(loc="upper left")
+    plt.title("Posterior distributions of upvote ratios on different comments")
+    plt.show()
+
+    order = np.argsort(-np.array(lower_limits))
+    print order, lower_limits
 
 if __name__ == '__main__':
     main()
