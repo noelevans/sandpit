@@ -71,5 +71,33 @@ def main():
     plt.show()
 
 
+    def showdown_loss(guess, true_price, risk=80000):
+        loss = np.zeros_like(true_price)
+        ix = true_price < guess
+        loss[~ix] = np.abs(guess - true_price[~ix])
+        close_mask = [abs(true_price - guess) <= 250]
+        loss[close_mask] = -2 * true_price[close_mask]
+        loss[ix] = risk
+        return loss
+
+
+    guesses = np.linspace(5000, 50000, 70)
+    risks = np.linspace(30000, 150000, 6)
+    expected_loss = lambda guess, risk: showdown_loss(guess, price_trace,
+                                                      risk).mean()
+
+    for _p in risks:
+        results = [expected_loss(_g, _p) for _g in guesses]
+        plt.plot(guesses, results, label="%d" % _p)
+
+    plt.title("Expected loss of different guesses, \n" +
+                "various risk-levels of overestimating")
+    plt.legend(loc="upper left", title="Risk parameter")
+    plt.xlabel("price bid")
+    plt.ylabel("expected loss")
+    plt.xlim(5000, 30000)
+    plt.show()
+
+
 if __name__ == '__main__':
     main()
