@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pymc as pm
 import scipy.stats as stats
+import scipy.optimize as sop
 
 
 def main():
@@ -96,6 +97,28 @@ def main():
     plt.xlabel("price bid")
     plt.ylabel("expected loss")
     plt.xlim(5000, 30000)
+    plt.show()
+
+
+    ax = plt.subplot(111)
+
+    for _p in risks:
+        _color = ax._get_lines.color_cycle.next()
+        _min_results = sop.fmin(expected_loss, 15000, args=(_p,), disp=False)
+        _results = [expected_loss(_g, _p) for _g in guesses]
+        plt.plot(guesses, _results, color=_color)
+        plt.scatter(_min_results, 0, s=60,
+                    color=_color, label="%d" % _p)
+        plt.vlines(_min_results, 0, 120000, color=_color, linestyles="--")
+        print "minimum at risk %d: %.2f" % (_p, _min_results)
+
+    plt.title("Expected loss & Bayes actions of different guesses, \n \
+    various risk-levels of overestimating")
+    plt.legend(loc="upper left", scatterpoints=1, title="Bayes action at risk:")
+    plt.xlabel("price guess")
+    plt.ylabel("expected loss")
+    plt.xlim(7000, 30000)
+    plt.ylim(-1000, 80000)
     plt.show()
 
 
