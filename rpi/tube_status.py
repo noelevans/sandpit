@@ -1,9 +1,4 @@
-import datetime
-import json
 import requests
-import time
-import warnings
-
 from piglow import PiGlow
 
 
@@ -23,30 +18,25 @@ def update():
 def main():
     piglow = PiGlow()
     piglow.all(0)
-    start = datetime.datetime.now()
+    running = update()
 
-    while (datetime.datetime.now() - start).seconds < 24 * 60 * 60:
-        running = update()
+    if running['metropolitan']:
+        piglow.led1(1)
+    else:
+        piglow.arm1(1)
 
-        if running['metropolitan']:
-            piglow.led1(1)
-        else:
-            piglow.arm1(1)
+    if running['jubilee']:
+        piglow.led7(1)
+        piglow.led8(1)
+    else:
+        piglow.arm2(1)
 
-        if running['jubilee']:
-            piglow.led7(1)
-            piglow.led8(1)
-        else:
-            piglow.arm2(1)
-
-        if all(running.values()):
-            piglow.led13(1)
-            piglow.led14(1)
-            piglow.led15(1)
-        else:
-            piglow.arm3(1)
-
-        time.sleep(30)
+    if all(running.values()):
+        piglow.led13(1)
+        piglow.led14(1)
+        piglow.led15(1)
+    else:
+        piglow.arm3(1)
 
 
 if __name__ == '__main__':
