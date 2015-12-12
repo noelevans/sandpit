@@ -17,15 +17,14 @@ def update():
 
 def main():
     piglow = PiGlow()
-    piglow.all(0)
     running = update()
 
-    if running['metropolitan']:
+    if running.pop('metropolitan'):
         piglow.led1(1)
     else:
         piglow.arm1(1)
 
-    if running['jubilee']:
+    if running.pop('jubilee'):
         piglow.led7(1)
         piglow.led8(1)
     else:
