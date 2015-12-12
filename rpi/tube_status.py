@@ -37,6 +37,7 @@ def main():
         piglow.led15(1)
     else:
         piglow.arm3(1)
+        piglow.led18(0)
 
 
 if __name__ == '__main__':
