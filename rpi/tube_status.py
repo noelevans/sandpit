@@ -1,11 +1,15 @@
+import datetime
 import json
 import requests
 import time
+import warnings
 
-from PyGlow import PyGlow
+from piglow import PiGlow
 
 
-URL = 'https://api.tfl.gov.uk/Line/Mode/tube/Status'
+URL = 'http://api.tfl.gov.uk/Line/Mode/tube/Status'
+requests.packages.urllib3.disable_warnings()
+
 
 def update():
     resp = requests.get(URL)
@@ -17,25 +21,33 @@ def update():
 
 
 def main():
-    pyglow = PyGlow()
-    good = {brightness:  85, speed=None, pulse=False}
-    bad  = {brightness: 170, speed=1000, pulse=True}
+    piglow = PiGlow()
+    piglow.all(0)
+    start = datetime.datetime.now()
 
-    while True:
-        good_statuses = update()
+    while (datetime.datetime.now() - start).seconds < 24 * 60 * 60:
+        running = update()
 
-        led_settings = lambda test: test and good or bad
-        met_args = led_settings(good_statuses['metropolitan'])
-        jub_args = led_settings(good_statuses['jubilee'])
-        all_args = led_settings(all(good_statuses.values())
+        if running['metropolitan']:
+            piglow.led1(1)
+        else:
+            piglow.arm1(1)
 
-        pyglow.arm(1, **met_args)
-        pyglow.arm(2, **jub_args)
-        pyglow.arm(3, **all_args)
+        if running['jubilee']:
+            piglow.led7(1)
+            piglow.led8(1)
+        else:
+            piglow.arm2(1)
+
+        if all(running.values()):
+            piglow.led13(1)
+            piglow.led14(1)
+            piglow.led15(1)
+        else:
+            piglow.arm3(1)
 
         time.sleep(30)
 
 
 if __name__ == '__main__':
     main()
-
