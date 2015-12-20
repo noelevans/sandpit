@@ -1,9 +1,10 @@
+import datetime
 import requests
 from piglow import PiGlow
 
 
 STATUSES = {'Good Service': 'GOOD',
-            'Minor Delays': 'OK'}   # All other statuses are bad
+            'Minor Delays': 'OK'}   # All other statuses are 'BAD'
 
 def update():
     requests.packages.urllib3.disable_warnings()
@@ -18,54 +19,36 @@ def main():
     piglow = PiGlow()
     piglow.all(0)
     try:
-        running = update()
+        status = update()
     except:     # Unknown error raised when the wifi adapter dies
         piglow.orange(1)
+        raise
 
-    important_lines_running = True
+    met_status = status.pop('metropolitan')
+    jubilee_status = status.pop('jubilee')
 
-    # {'GOOD': [1],
-    #  'OK': [1, 2]}.get(running['metropolitan'], [1, 2, 3, 4, 5, 6])
-    if running['metropolitan'] == 'GOOD':
-        piglow.led(1, 1)
-    elif running['metropolitan'] == 'OK':
-            piglow.led(1, 1)
-            piglow.led(2, 1)
-    else:
-        [piglow.led(n, 1) for n in [1, 2, 3, 4, 5, 6]]
-        important_lines_running = False
-    running.pop('metropolitan')
-
-    if running['jubilee'] == 'GOOD':
-        piglow.led(7, 1)
-        piglow.led(8, 1)
-    elif running['jubilee'] == 'OK':
-        piglow.led(7, 1)
-        piglow.led(8, 1)
-        piglow.led(9, 1)
-    else:
-        [piglow.led(n, 1) for n in [7, 8, 9, 10, 11, 12]]
-        important_lines_running = False
-    running.pop('jubilee')
-
-    # Waterloo and City line never runs on the weekend
     if datetime.date.today().isoweekday() in (6, 7):
-        running.pop('waterloo-city')
+        # No Waterloo and City service on the weekend
+        status.pop('waterloo-city')
 
-    if all('GOOD' == v for v in running.values()):
-        piglow.led(13, 1)
-        piglow.led(14, 1)
-        piglow.led(15, 1)
-    elif all(v in ('GOOD', 'OK') for v in running.values()):
-        piglow.led(13, 1)
-        piglow.led(14, 1)
-        piglow.led(15, 1)
-        piglow.led(16, 1)
-    else:
-        [piglow.led(n, 1) for n in [13, 14, 15, 16, 17, 18]]
-        if important_lines_running:
-            # asthetic tweak to avoid bright white LED always being on "alone"
-            piglow.led(18, 0)
+    # Reminder: sets can't be keys to dicts but frozensets can
+    other_statuses = frozenset(status.values())
+    other_status = {frozenset(['GOOD']): 'GOOD',
+                    frozenset(['GOOD', 'OK']): 'OK'}.get(other_statuses, 'BAD')
+
+    met_leds = {'GOOD': [1],
+                'OK':   [1, 2],
+                'BAD':  [1, 2, 3, 4, 5, 6]}[met_status]
+
+    jubilee_leds = {'GOOD': [7],
+                    'OK':   [7, 8],
+                    'BAD':  [7, 8, 9, 10, 11, 12]}[jubilee_status]
+
+    other_leds = {'GOOD': [13],
+                  'OK':   [13, 14],
+                  'BAD':  [13, 14, 15, 16, 17, 18]}[other_status]
+
+    [piglow.led(n, 1) for n in met_leds + jubilee_leds + other_leds]
 
 
 if __name__ == '__main__':
