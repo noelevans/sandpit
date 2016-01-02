@@ -1,4 +1,5 @@
 import datetime
+import os
 import requests
 from piglow import PiGlow
 
@@ -21,8 +22,8 @@ def main():
     try:
         status = update()
     except:     # Unknown error raised when the wifi adapter dies
-        piglow.orange(1)
-        raise
+        piglow.blue(1)
+        os.system('sudo shutdown -r now')
 
     met_status = status.pop('metropolitan')
     jubilee_status = status.pop('jubilee')
