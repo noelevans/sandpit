@@ -59,6 +59,13 @@ def main():
  
     decay_mean = lambda x: sum(x * weights) / sum(weights)
     recs['decay_mean'] = recs[list(years)].apply(decay_mean, axis=1)
+ 
+    print('Order by 2017')
+    print(recs.sort(2017)[:10])
+    print('Order by mean')
+    print(recs.sort('mean')[:10])
+    print('Order by decay mean')
+    print(recs.sort('decay_mean')[:10])
 
 
 if __name__ == '__main__':
