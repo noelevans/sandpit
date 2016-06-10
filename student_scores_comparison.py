@@ -6,12 +6,13 @@ import numpy as np
 
     https://speakerdeck.com/pycon2016/jake-vanderplas-statistics-for-hackers
     The question posed:
-    "Student_1 gets
-        84, 72, 57, 46, 63, 76, 99, 91.                 Mean: 73.5
-     Student_2 gets
-        81, 69, 74, 61, 56, 87, 69, 65, 66, 44, 62, 69. Mean: 66.9
+    "Two students get the following scores over a term's modules:
 
-    But is the difference in means (6.58) statistically significant?"
+    student_1 84, 72, 57, 46, 63, 76, 99, 91:                 mean 73.5
+    student_2 81, 69, 74, 61, 56, 87, 69, 65, 66, 44, 62, 69: mean 66.9
+
+    Student_1 has an average of 6.6% more than student_2.
+    Is this difference statistically significant?
 
 """
 
