@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import unittest
 
 
 """ Implementing a slide from a PyCon talk, Statistics for Hackers.
@@ -28,13 +29,25 @@ def trial(scores):
     return student_1.mean() - student_2.mean()
 
 
-def main():
-    tests = 1000000
-    scores_1 = [trial(SCORES_1) for _ in range(tests)]
-    scores_2 = [trial(SCORES_2) for _ in range(tests)]
+def significance_bound(hist, pt):
+    normed = hist[0].cumsum() / hist[0].sum()
+    # Make the sums the same length as the widths
+    normed = np.append(normed, 1)
+    return np.interp(pt, normed, hist[1])
 
-    plt.hist(scores_1, 16, color='blue', alpha=0.4)
-    plt.hist(scores_2, 16, color='red', alpha=0.3)
+
+def main():
+    tests = 10000
+    net_scores_1 = [trial(SCORES_1) for _ in range(tests)]
+    net_scores_2 = [trial(SCORES_2) for _ in range(tests)]
+
+    h1 = plt.hist(net_scores_1, 30, color='blue', alpha=0.4)
+    h2 = plt.hist(net_scores_2, 10, color='red', alpha=0.4)
+    actual_difference = 73.5 - 66.9
+    plt.axvline(actual_difference, lw=2, color='black')
+    plt.axvspan(significance_bound(h2, 0.05),
+                significance_bound(h2, 0.95),
+                alpha=0.2)
     plt.show()
 
 
