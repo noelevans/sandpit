@@ -29,11 +29,11 @@ def trial(scores):
     return student_1.mean() - student_2.mean()
 
 
-def significance_bound(hist, pt):
-    normed = hist[0].cumsum() / hist[0].sum()
-    # Make the sums the same length as the widths
-    normed = np.append(normed, 1)
-    return np.interp(pt, normed, hist[1])
+def significance_bound(hist, x):
+    freq, widths, _ = hist
+    normed_freq = freq.cumsum() / freq.sum()
+    midpoints = (widths[:-1] + widths[1:]) / 2
+    return np.interp(x, normed_freq, midpoints)
 
 
 def main():
