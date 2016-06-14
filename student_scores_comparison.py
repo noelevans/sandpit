@@ -17,10 +17,13 @@ import unittest
 
 """
 
-SCORES_1 = np.array([84, 72, 57, 46, 63, 76, 99, 91,
-                     81, 69, 74, 61, 56, 87, 69, 65, 66, 44, 62, 69])
-SCORES_2 = np.array([73, 73, 73, 73, 73, 74, 74, 74,
-                     67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 66])
+STUDENT_1 = [84, 72, 57, 46, 63, 76, 99, 91]
+STUDENT_2 = [81, 69, 74, 61, 56, 87, 69, 65, 66, 44, 62, 69]
+STUDENT_3 = [73, 73, 73, 73, 73, 74, 74, 74]
+STUDENT_4 = [67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 67, 66]
+
+SCORES_1 = np.array(STUDENT_1 + STUDENT_2)
+SCORES_2 = np.array(STUDENT_3 + STUDENT_4)
 
 def trial(scores):
     np.random.shuffle(scores)
@@ -37,17 +40,29 @@ def significance_bound(hist, x):
 
 
 def main():
-    tests = 10000
+    tests = 100000
     net_scores_1 = [trial(SCORES_1) for _ in range(tests)]
     net_scores_2 = [trial(SCORES_2) for _ in range(tests)]
 
-    h1 = plt.hist(net_scores_1, 30, color='blue', alpha=0.4)
-    h2 = plt.hist(net_scores_2, 10, color='red', alpha=0.4)
+    h1 = plt.hist(net_scores_1, 16, color='darkblue', alpha=0.4,
+                  label=r'$scoring_1$')
+    h2 = plt.hist(net_scores_2, 16, color='red', alpha=0.7,
+                  label=r'$scoring_2$')
+
     actual_difference = 73.5 - 66.9
-    plt.axvline(actual_difference, lw=2, color='black')
+    plt.axvline(actual_difference, lw=2, color='black',
+                label=r'$Actual\ score\ difference$')
+    plt.axvspan(significance_bound(h1, 0.05),
+                significance_bound(h1, 0.95),
+                color='skyblue',
+                alpha=0.3,
+                label=r'$2\sigma_1$')
     plt.axvspan(significance_bound(h2, 0.05),
                 significance_bound(h2, 0.95),
-                alpha=0.2)
+                color='salmon',
+                alpha=0.4,
+                label=r'$2\sigma_2$')
+    plt.legend()
     plt.show()
 
 
