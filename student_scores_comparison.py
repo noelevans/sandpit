@@ -66,5 +66,17 @@ def main():
     plt.show()
 
 
+class StudentScoreTesting(unittest.TestCase):
+
+    def test_significance_bound(self):
+        h = (np.array([39, 499, 1277, 1028, 3199, 2644, 556, 595, 154, 9]),
+             np.array([-4.375, -3.41666667, -2.45833333, -1.5, -0.54166667,
+                       0.41666667,   1.375, 2.33333333, 3.29166667, 4.25,
+                       5.20833333]),
+             None)
+        self.assertEqual(3.8187500014999998, significance_bound(h, 0.05))
+
+
 if __name__ == '__main__':
+    # unittest.main()
     main()
