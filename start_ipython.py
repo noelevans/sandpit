@@ -50,5 +50,12 @@ def exp_decay(days, half_life=0.05):
 # matplotlibrc_path = '/home/noel/repo/sandpit/matplotlibrc.json'
 # matplotlib.rcParams.update(json.load(open(matplotlibrc_path)))
 
-df_small = pd.DataFrame([[1,2,3], [2,4,8]], columns=['a', 'b', 'c'])
+today = lambda: datetime.date.today()
+tomorrow = lambda: today() + datetime.timedelta(days=1)
+yesterday = lambda: today() - datetime.timedelta(days=1)
 
+data = [{'num': 2, 'date': yesterday()},
+        {'num': 3, 'date': today()},
+        {'num': 4, 'date': tomorrow()}]
+df_small = pd.DataFrame(data, columns=['num', 'date'])
+df = df_small
