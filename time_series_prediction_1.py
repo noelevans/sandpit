@@ -18,9 +18,15 @@ DATA = [1807, 1957, 1574, 1531, 1026, 973, 1207, 1127, 1171, 811, 21534, 28001,
         15487, 6127, 9275, 12540, 20698, 9229, 2389, 6735, 6563, 19895]
 
 
+def rolling_window(a, window):
+    shape = a.shape[:-1] + (a.shape[-1] - window + 1, window)
+    strides = a.strides + (a.strides[-1],)
+    return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)
+
+
 def main():
     start = datetime.date(2015, 9, 12)
-    data = [{'date': start + datetime.timedelta(days=n), 'vol':  val}
+    data = [{'date': start + datetime.timedelta(days=n), 'vol': val}
             for n, val in enumerate(DATA)]
     df = pd.DataFrame(data, columns=['date', 'vol'])
     mean = np.mean(df.vol)
@@ -29,7 +35,14 @@ def main():
     upper_pc = np.percentile(df.vol, 97.5)
 
     f, (ax1, ax2) = plt.subplots(2)
-    df.plot(color='Black', ax=ax1)
+    df.plot(ax=ax1)
+
+    window_len = 20
+    window = rolling_window(df.vol.values, window_len)
+    rolling_lower_pc = np.percentile(window,  5, axis=1)
+    rolling_upper_pc = np.percentile(window, 95, axis=1)
+    X = np.arange(len(rolling_lower_pc)) + window_len
+    ax1.fill_between(X, rolling_lower_pc, rolling_upper_pc, alpha=0.2)
 
     ax2.hist(df.vol, 20, alpha=0.7)
     ax2.axvspan(mean - 2 * std,
