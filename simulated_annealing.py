@@ -14,7 +14,7 @@ nationalities = ['british',   'danish',  'swedish', 'norwegian', 'german']
 house_colours = ['yellow',    'red',     'white',   'green',     'blue']
 drinks        = ['water',     'tea',     'milk',    'coffee',    'root beer']
 
-houses = np.array([animals, cigarettes, nationalities, house_colours, drinks])
+CFG = np.array([animals, cigarettes, nationalities, house_colours, drinks])
 
 
 def adjacents(arr):
@@ -65,8 +65,26 @@ def cost(cfg):
     return -1 * sum(score)
 
 
+def shuffle(arr):
+    choice = np.random.randint(len(arr))
+    np.random.shuffle(arr[choice])
+    return arr
+
+
 def main():
-    print(cost(houses))
+    cfg_cost = cost(CFG)
+    cfg = CFG
+    N = 10000
+    for i in range(N):
+        if i % (N / 20.0) == 0:
+            print(cost(cfg))
+        cfg_prime = shuffle(np.copy(cfg))
+        cfg_prime_cost = cost(cfg_prime)
+        if cfg_prime_cost < cfg_cost:
+            cfg = cfg_prime
+            cfg_cost = cfg_prime_cost
+
+    print(cost(cfg))
 
 
 if __name__ == '__main__':
