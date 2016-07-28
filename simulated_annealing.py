@@ -4,6 +4,7 @@ Implementing Einstein's Fish riddle explained here:
         using-simulated-annealing-to-solve-logic-puzzles/
 """
 
+from __future__ import division
 import numpy as np
 
 
@@ -15,7 +16,7 @@ house_colours = ['yellow',    'red',     'white',   'green',     'blue']
 drinks        = ['water',     'tea',     'milk',    'coffee',    'root beer']
 
 CFG = np.array([animals, cigarettes, nationalities, house_colours, drinks])
-
+MAX_COST = 15
 
 def adjacents(arr):
     return (np.arange(len(filter(None, arr))) ==
@@ -26,7 +27,8 @@ def adjacents(arr):
 def cost(cfg):
     """ Score for a configuration of the houses' wrt constraints of the riddle.
 
-    Lower result indicates a better configuration; closer to the desired constraints.
+    Lower result indicates a better configuration; closer to the
+    desired constraints.
 
     The Brit lives in the house with red walls.
     The Swede has a dog.
@@ -62,7 +64,7 @@ def cost(cfg):
         adjacents(((cfg == 'norwegian') | (cfg == 'blue')).sum(0)),
         adjacents(((cfg == 'blends') | (cfg == 'water')).sum(0)),
     ]
-    return -1 * sum(score)
+    return MAX_COST - sum(score)
 
 
 def shuffle(arr):
@@ -71,21 +73,28 @@ def shuffle(arr):
     return arr
 
 
+def accept_new_state(current, proposed, temp):
+    change = cost(proposed) - cost(current)
+    return change <= 0 or np.random.rand() < np.exp(-change / temp)
+
+
 def main():
-    cfg_cost = cost(CFG)
+    np.random.seed(0)
     cfg = CFG
-    N = 10000
+    N = 1000000
     for i in range(N):
-        if i % (N / 20.0) == 0:
+        if i % 500 == 0:
             print(cost(cfg))
         cfg_prime = shuffle(np.copy(cfg))
-        cfg_prime_cost = cost(cfg_prime)
-        if cfg_prime_cost < cfg_cost:
+        temp = max([float(N - i) / N, 0.1])
+        if accept_new_state(cfg, cfg_prime, temp):
             cfg = cfg_prime
-            cfg_cost = cfg_prime_cost
-
-    print(cost(cfg))
+            # print(cost(cfg))
+        if cost(cfg) == 0:
+            'Finished on iteration %i' % i+1
+            return
 
 
 if __name__ == '__main__':
     main()
+
