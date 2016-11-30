@@ -1,3 +1,4 @@
+from __future__ import print_function
 import pandas
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.cross_validation import train_test_split
@@ -6,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 
 def main():
     train_all = pandas.DataFrame.from_csv('train.csv')
-    train = train_all[['Survived', 'Sex', 'Fare']][:20]
+    train = train_all[['Survived', 'Sex', 'Fare']][:200]
 
     gender_label = LabelEncoder()
     train.Sex = gender_label.fit_transform(train.Sex)
@@ -19,8 +20,7 @@ def main():
     clf = MultinomialNB()
     clf.fit(X_train, y_train)
 
-    print(clf.predict(X_test))
-    print(y_test)
+    print('Accuracy: ', end='')
     print(sum(clf.predict(X_test) == y_test) / float(len(y_test)))
 
 
