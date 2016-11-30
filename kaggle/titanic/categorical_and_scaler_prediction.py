@@ -20,6 +20,8 @@ def main():
     clf.fit(X_train, y_train)
 
     print(clf.predict(X_test))
+    print(y_test)
+    print(sum(clf.predict(X_test) == y_test) / float(len(y_test)))
 
 
 if __name__ == '__main__':
