@@ -42,7 +42,8 @@ def main():
     rolling_lower_pc = np.percentile(window,  5, axis=1)
     rolling_upper_pc = np.percentile(window, 95, axis=1)
     X = np.arange(len(rolling_lower_pc)) + window_len
-    ax1.fill_between(X, rolling_lower_pc, rolling_upper_pc, alpha=0.2)
+    ax1.fill_between(X, rolling_lower_pc, rolling_upper_pc,
+                     alpha=0.2, label='5-95th percentile window')
 
     ax2.hist(df.vol, 20, alpha=0.7)
     ax2.axvspan(mean - 2 * std,
