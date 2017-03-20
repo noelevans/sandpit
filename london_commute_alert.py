@@ -21,10 +21,7 @@ def email(lines):
         subject = 'Good service for commute'
         body = 'Good service on all lines'
 
-    # We must have this running on PythonAnywhere - Monday to Sunday.
-    # Ignore Saturday and Sunday
-    if datetime.date.today().isoweekday() in range(1, 6):
-        os.system(raw_command.format(subject=subject, body=body))
+    os.system(raw_command.format(subject=subject, body=body))
 
 
 def main():
