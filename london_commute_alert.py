@@ -7,8 +7,7 @@ def update():
     requests.packages.urllib3.disable_warnings()
     resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
 
-    return {el['id']: el['lineStatuses'][0]['statusSeverityDescription']
-            for el in resp}
+    return {el['id']: el['lineStatuses'][0]['statusSeverityDescription'] for el in resp}
 
 
 def email(lines):
