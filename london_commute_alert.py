@@ -1,12 +1,11 @@
 import datetime
-import json
 import os
-import urllib2
+import requests
 
 
 def update():
-    url = 'http://api.tfl.gov.uk/Line/Mode/tube/Status'
-    resp = json.loads(urllib2.urlopen(url).read())
+    requests.packages.urllib3.disable_warnings()
+    resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
 
     return {el['id']: el['lineStatuses'][0]['statusSeverityDescription'] for el in resp}
 
@@ -17,12 +16,15 @@ def email(lines):
 
     if lines:
         subject = 'Tube delays for commute'
-        body = ', '.join(': '.join([line.capitalize(), s]) for line, s in status.items())
+        body = ', '.join(': '.join([line.capitalize(), s]) for line, s in lines.items())
     else:
         subject = 'Good service for commute'
         body = 'Good service on all lines'
 
-    os.system(raw_command.format(subject=subject, body=body))
+    # We must have this running on PythonAnywhere - Monday to Sunday.
+    # Ignore Saturday and Sunday
+    if datetime.date.today().isoweekday() in range(1, 6):
+        os.system(raw_command.format(subject=subject, body=body))
 
 
 def main():
