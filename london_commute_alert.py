@@ -1,11 +1,12 @@
 import datetime
+import json
 import os
-import requests
+import urllib2
 
 
 def update():
-    requests.packages.urllib3.disable_warnings()
-    resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
+    url = 'http://api.tfl.gov.uk/Line/Mode/tube/Status'
+    resp = json.loads(urllib2.urlopen(url).read())
 
     return {el['id']: el['lineStatuses'][0]['statusSeverityDescription'] for el in resp}
 
