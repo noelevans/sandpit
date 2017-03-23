@@ -17,9 +17,6 @@ def email(lines):
     if lines:
         subject = 'Tube delays for commute'
         body = ', '.join(': '.join([line.capitalize(), s]) for line, s in lines.items())
-    else:
-        subject = 'Good service for commute'
-        body = 'Good service on all lines'
 
     # We must have this running on PythonAnywhere - Monday to Sunday.
     # Ignore Saturday and Sunday
