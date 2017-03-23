@@ -4,19 +4,26 @@ import requests
 
 
 def update():
-    requests.packages.urllib3.disable_warnings()
-    resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
+    url = 'http://api.tfl.gov.uk/Line/Mode/tube/Status'
+    resp = requests.get(url).json()
+    result = {}
 
-    return {el['id']: el['lineStatuses'][0]['statusSeverityDescription'] for el in resp}
+    for el in resp:
+        value = el['lineStatuses'][0]
+        if value['statusSeverityDescription'] != 'Good Service':
+            message = '{} ({})'.format(value['statusSeverityDescription'],
+                                       value['reason'])
+            result[el['id']] = message
+
+    return result
 
 
 def email(lines):
     with open('curl_raw_command.sh') as f:
         raw_command = f.read()
 
-    if lines:
-        subject = 'Tube delays for commute'
-        body = ', '.join(': '.join([line.capitalize(), s]) for line, s in lines.items())
+    subject = 'Tube delays for commute'
+    body = '\n\n'.join(': '.join([line.capitalize(), s]) for line, s in lines.items())
 
     # We must have this running on PythonAnywhere - Monday to Sunday.
     # Ignore Saturday and Sunday
@@ -27,8 +34,11 @@ def email(lines):
 def main():
     commute_lines = ['metropolitan', 'jubilee', 'central']
     status = update()
-    delays = {c: status[c] for c in commute_lines if status[c] != 'Good Service'}
-    email(delays)
+    print(status)
+    delays = {c: status[c] for c in commute_lines if status.get(c)}
+
+    if delays:
+        email(delays)
 
 
 if __name__ == '__main__':
