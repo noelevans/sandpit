@@ -13,29 +13,24 @@ def update(lines):
         state = value['statusSeverityDescription']
         if el['id'] in lines and state != 'Good Service':
             result.append('{}: {} ({})'.format(
-                el['id'].capitalize(),
-                value['statusSeverityDescription'],
-                value['reason']))
+                el['id'].capitalize(), state, value['reason']))
 
     return result
 
 
-def email(lines):
+def email(delays):
     with open('curl_raw_command.sh') as f:
         raw_command = f.read()
 
-    # We must have this running on PythonAnywhere - Monday to Sunday.
-    # Ignore Saturday and Sunday
-    if datetime.date.today().isoweekday() in range(1, 6):
+    # Running on PythonAnywhere - Monday to Sunday. Skip on the weekend
+    if delays and datetime.date.today().isoweekday() in range(1, 6):
         os.system(raw_command.format(subject='Tube delays for commute', 
-                                     body='\n\n'.join(lines)))
+                                     body='\n\n'.join(delays)))
 
 
 def main():
     commute_lines = ['metropolitan', 'jubilee', 'central']
-    delays = update(commute_lines)
-    if delays:
-        email(delays)
+    email(update(commute_lines))
 
 
 if __name__ == '__main__':
