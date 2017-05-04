@@ -25,15 +25,21 @@ def main():
     y_pred_train = clf.predict(X_train)
     y_pred_test = clf.predict(X_test)
     y_pred_outliers = clf.predict(X_outliers)
+
+    pos_mask = y_pred_outliers ==  1
+    neg_mask = y_pred_outliers == -1
+    X_outliers_pos = X_outliers[pos_mask[: np.newaxis].T]
+    X_outliers_neg = X_outliers[neg_mask[: np.newaxis].T]
     
-    print(y_pred_test)
-    print(y_pred_outliers)
-
     s = 40
-    plt.scatter(X_train[:, 0], X_train[:, 1], c='white', s=s)
-    plt.scatter(X_test[:, 0], X_test[:, 1], c='blueviolet', s=s)
-    plt.scatter(X_outliers[:, 0], X_outliers[:, 1], c='gold', s=s)
+    plt.scatter(X_train[:, 0], X_train[:, 1], c='white', s=s, label='Train')
+    plt.scatter(X_test[:, 0], X_test[:, 1], c='black', s=s, label='Test')
+    plt.scatter(X_outliers_pos[:, 0], X_outliers_pos[:, 1], c='#56B4E9', s=s, 
+        label='Synthetic valid')
+    plt.scatter(X_outliers_neg[:, 0], X_outliers_neg[:, 1], c='#F0E442', s=s,
+        label='Synthetic invalid')
 
+    plt.legend()
     plt.axis('equal')
     plt.show()
 
