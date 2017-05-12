@@ -18,15 +18,15 @@ def main():
     for d in degrees:
         poly_features = PolynomialFeatures(degree=d, include_bias=False)
         model = LinearRegression()
-        pipeline = Pipeline([("polynomial_features", poly_features),
-                             ("linear_regression", model)])
+        pipeline = Pipeline([('polynomial_features', poly_features),
+                             ('linear_regression', model)])
         pipeline.fit(X[:, np.newaxis], y)
 
         scores = cross_val_score(pipeline, X[:, np.newaxis], y,
-                                 scoring="mean_squared_error", cv=10)
+                                 scoring='mean_squared_error', cv=10)
 
-        print("Degree {}\nMSE = {:.2e}(+/- {:.2e})".format(
-            degrees[i], -scores.mean(), scores.std()))
+        print('Degree {:>2}: mse = {}, std = {}'.format(
+            d, -scores.mean(), scores.std()))
     
 
 if __name__ == '__main__':
