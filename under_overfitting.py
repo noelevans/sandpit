@@ -29,7 +29,7 @@ def main():
         scores = cross_val_score(pipeline, X[:, np.newaxis], y,
                                  scoring='mean_squared_error', cv=10)
 
-        print('Degree {:>2}: mse = {}, std = {}'.format(
+        print('Degree {:>2}: mse = {:16.3f}, std = {:16.3f}'.format(
             d, -scores.mean(), scores.std()))
         mses.append(-scores.mean())
         stds.append(scores.std())
@@ -59,9 +59,9 @@ def main():
                 ax.set_yticklabels([])
                 if h == w == 0:
                     ax.set_title('Raw data', fontsize=10)
-                    ax.scatter(X, y, color='teal')
+                    ax.scatter(X, y, color='teal', s=7)
                 else:
-                    p = pipelines.pop(0)
+                    p = pipelines[n]
                     n += 1
                     ax.set_title('{} degrees'.format(n), fontsize=10)
                     ax.plot(X, p.predict(X[:, np.newaxis]), color='teal')
