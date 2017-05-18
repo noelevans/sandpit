@@ -15,10 +15,10 @@ def main():
     X = [np.random.zipf(1.2, samples),
          np.random.zipf(1.3, samples),
          np.random.zipf(1.5, samples)]
-    y = np.array([np.histogram(x[x<b], bins, normed=True)[0] for x in X])
+    y = np.array([np.histogram(x[x<bins], bins, normed=True)[0] for x in X])
     fn = np.polyfit(np.arange(bins), y.T, 3)
     print(fn)
-    
+
 
 if __name__ == '__main__':
     main()
