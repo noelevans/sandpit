@@ -2,3 +2,5 @@
 *.pyc
 *.Rhistory
 *.RData
+.ipynb_checkpoints/
+
