@@ -19,6 +19,15 @@ def main():
     pipelines = []
     degrees = range(1, 16)
 
+    # continuous_X = np.linspace(0, 1, 500)
+    # plt.plot(continuous_X, true_fn(continuous_X), 
+    #     c='aquamarine', label='Signal')
+    # plt.scatter(X, y, label='Samples')
+    # plt.title('Signal and noisy samples taken')
+    # plt.legend()
+    # plt.show()
+    # return
+
     for d in degrees:
         poly_features = PolynomialFeatures(degree=d, include_bias=False)
         model = LinearRegression()
