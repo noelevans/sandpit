@@ -23,11 +23,7 @@ def binary_to_rgb(binary, line):
         'northern':     (  0,   0,   0),
         'piccadilly':   (  0,  25, 168),
     }
-    dark = ['northern', 'metropolitan']
-    opposites = {}
-    for line in line_colours:
-        opposites[line] = (0, 0, 0) if line not in dark else (230, 230, 230)
-    return [b and line_colours[line] or opposites[line] for b in binary]
+    return [line_colours.get(line, (0, 0, 0)) for b in binary]
 
 
 def layout(statuses):
@@ -46,16 +42,17 @@ def layout(statuses):
 
 def main():
     hat.set_layout(hat.AUTO)
-    hat.rotation(180)
+    hat.rotation(270)
     hat.brightness(0.5)
     width, height = hat.get_shape()
 
     import random
-    statuses = {line: random.choice(['ok']) for line in LINES}
+    statuses = {line: random.choice(['bad', 'good', 'ok']) for line in LINES}
 
     status = layout(statuses)
     for h in range(height):
         for w in range(width):
+            # print(w, h, status[w, h])
             hat.set_pixel(w, h, *status[w, h])
     hat.show()
 
