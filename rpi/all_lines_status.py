@@ -1,16 +1,16 @@
 import numpy as np
 import time
-import unicornhat as hat
+import unicornhat
 
 
 LINES = ['central',  'circle',
+         'central',  'circle',
+         'jubilee',  'metropolitan',
          'jubilee',  'metropolitan',
          'northern', 'piccadilly',
-         'central',  'central',
-         'central',  'central',
-         'central',  'central',
-         'central',  'central',
-         'central',  'central',
+         'northern', 'piccadilly',
+         '',         '',
+         '',         '',
         ]
 
 
@@ -37,25 +37,30 @@ def layout(statuses):
 
         result.extend(binary_to_rgb(illuminate, line))
 
-    return np.array(result).reshape(8, 8, 3)
+    return np.array(result)
 
 
-def main():
+def tube_statuses():
+    import random
+    return {line: random.choice(['bad', 'good', 'ok']) for line in LINES}
+
+
+def update_hat(status, hat):
     hat.set_layout(hat.AUTO)
     hat.rotation(270)
     hat.brightness(0.5)
     width, height = hat.get_shape()
+    pixel_statuses = status.reshape(width, height, 3)
 
-    import random
-    statuses = {line: random.choice(['bad', 'good', 'ok']) for line in LINES}
-
-    status = layout(statuses)
     for h in range(height):
         for w in range(width):
-            # print(w, h, status[w, h])
             hat.set_pixel(w, h, *status[w, h])
     hat.show()
 
+
+def main():
+    status = layout(tube_statuses())
+    update_hat(status, unicornhat)
     time.sleep(5)
 
 
