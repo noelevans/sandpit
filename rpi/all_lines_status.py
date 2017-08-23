@@ -47,14 +47,14 @@ def tube_statuses():
 
 def update_hat(status, hat):
     hat.set_layout(hat.AUTO)
-    hat.rotation(270)
+    hat.rotation(90)
     hat.brightness(0.5)
     width, height = hat.get_shape()
     pixel_statuses = status.reshape(width, height, 3)
 
     for h in range(height):
         for w in range(width):
-            hat.set_pixel(w, h, *status[w, h])
+            hat.set_pixel(w, h, *pixel_statuses[w, h])
     hat.show()
 
 
