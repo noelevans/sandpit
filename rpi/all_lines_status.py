@@ -1,4 +1,5 @@
 import numpy as np
+import requests
 import time
 import unicornhat
 
@@ -9,9 +10,10 @@ LINES = ['central',  'circle',
          'jubilee',  'metropolitan',
          'northern', 'piccadilly',
          'northern', 'piccadilly',
-         '',         '',
-         '',         '',
         ]
+
+STATUSES = {'Good Service': 'good',
+            'Minor Delays': 'ok'}   # All other statuses are 'bad'
 
 
 def binary_to_rgb(binary, line):
@@ -23,7 +25,8 @@ def binary_to_rgb(binary, line):
         'northern':     (  0,   0,   0),
         'piccadilly':   (  0,  25, 168),
     }
-    return [line_colours.get(line, (0, 0, 0)) for b in binary]
+    blank = (0, 0, 0)
+    return [b and line_colours.get(line, blank) or blank for b in binary]
 
 
 def layout(statuses):
@@ -41,15 +44,24 @@ def layout(statuses):
 
 
 def tube_statuses():
-    import random
-    return {line: random.choice(['bad', 'good', 'ok']) for line in LINES}
+    requests.packages.urllib3.disable_warnings()
+    resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
+
+    statuses = {el['id']: el['lineStatuses'][0]['statusSeverityDescription']
+                for el in resp}
+    return {line: STATUSES.get(statuses[line], 'bad')
+            for line in statuses.keys()
+            if line in LINES}
 
 
-def update_hat(status, hat):
+def update_hat(tube_status, hat):
     hat.set_layout(hat.AUTO)
     hat.rotation(180)
     hat.brightness(0.5)
     width, height = hat.get_shape()
+
+    weather_status = np.zeros(4 * 4 * 3).reshape(16, 3).astype(int)
+    status = np.concatenate([tube_status, weather_status])
     pixel_statuses = status.reshape(width, height, 3)
 
     for h in range(height):
