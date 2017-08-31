@@ -1,3 +1,4 @@
+import datetime
 import numpy as np
 import requests
 import time
@@ -8,8 +9,8 @@ LINES = ['central',  'circle',
          'central',  'circle',
          'jubilee',  'metropolitan',
          'jubilee',  'metropolitan',
-         'northern', 'piccadilly',
-         'northern', 'piccadilly',
+         'northern', 'piccadilly',    # victoria
+         'northern', 'piccadilly',    # victoria
         ]
 
 STATUSES = {'Good Service': 'good',
@@ -24,6 +25,7 @@ def binary_to_rgb(binary, line):
         'metropolitan': (155,   0,  88),
         'northern':     (  0,   0,   0),
         'piccadilly':   (  0,  25, 168),
+        'victoria':     (  0, 152, 212),
     }
     blank = (0, 0, 0)
     return [b and line_colours.get(line, blank) or blank for b in binary]
@@ -43,7 +45,7 @@ def layout(statuses):
     return np.array(result)
 
 
-def tube_statuses():
+def tube_status():
     requests.packages.urllib3.disable_warnings()
     resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
 
@@ -54,14 +56,36 @@ def tube_statuses():
             if line in LINES}
 
 
-def update_hat(tube_status, hat):
+def weather_status():
+    url = ('https://api.darksky.net/forecast/' +
+           '09eb3c861a010137bff29ba16b13d3e1/51.576301,-0.349967?' +
+           'units=si&exclude=minutely')
+
+    requests.packages.urllib3.disable_warnings()
+    resp  = requests.get(url).json()
+    today = datetime.date.today()
+    start = datetime.datetime.min
+    end   = datetime.datetime.combine(datetime.date.today(),
+                                      datetime.datetime.max.time())
+    probas = [el['precipProbability']
+              for el in resp['hourly']['data']
+              if start < datetime.datetime.fromtimestamp(el['time']) < end]
+    return max(probas)
+
+
+def update_hat(tube, hat):
     hat.set_layout(hat.AUTO)
     hat.rotation(180)
     hat.brightness(0.5)
     width, height = hat.get_shape()
 
-    weather_status = np.zeros(4 * 4 * 3).reshape(16, 3).astype(int)
-    status = np.concatenate([tube_status, weather_status])
+    ws = weather_status()
+    weather = np.zeros(16).astype(int)
+    weather[:int(round(16 * ws))] = 1
+    w2 = weather[:, np.newaxis]
+    weather = np.hstack([w2, w2, w2]) * 255
+
+    status = np.concatenate([tube, weather])
     pixel_statuses = status.reshape(width, height, 3)
 
     for h in range(height):
@@ -71,7 +95,7 @@ def update_hat(tube_status, hat):
 
 
 def main():
-    status = layout(tube_statuses())
+    status = layout(tube_status())
     update_hat(status, unicornhat)
     time.sleep(5)
 
