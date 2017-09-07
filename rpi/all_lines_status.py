@@ -70,34 +70,33 @@ def weather_status():
     probas = [el['precipProbability']
               for el in resp['hourly']['data']
               if start < datetime.datetime.fromtimestamp(el['time']) < end]
-    return max(probas)
+    return max(probas or 0)
 
 
-def update_hat(tube, hat):
-    hat.set_layout(hat.AUTO)
-    hat.rotation(180)
-    hat.brightness(0.5)
-    width, height = hat.get_shape()
+def update_hat(tube):
+    unicornhat.set_layout(unicornhat.AUTO)
+    unicornhat.rotation(180)
+    unicornhat.brightness(0.5)
+    width, height = unicornhat.get_shape()
 
     ws = weather_status()
     weather = np.zeros(16).astype(int)
     weather[:int(round(16 * ws))] = 1
-    w2 = weather[:, np.newaxis]
-    weather = np.hstack([w2, w2, w2]) * 255
-
+    w2 = np.hstack(weather.reshape(8, 2).T)
+    weather = np.vstack([w2, w2, w2]).T * 255
     status = np.concatenate([tube, weather])
     pixel_statuses = status.reshape(width, height, 3)
 
     for h in range(height):
         for w in range(width):
-            hat.set_pixel(h, w, *pixel_statuses[w, h])
-    hat.show()
+            unicornhat.set_pixel(h, w, *pixel_statuses[w, h])
+    unicornhat.show()
 
 
 def main():
     status = layout(tube_status())
-    update_hat(status, unicornhat)
-    time.sleep(5)
+    update_hat(status)
+    time.sleep(50)
 
 
 if __name__ == '__main__':
