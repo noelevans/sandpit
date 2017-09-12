@@ -1,4 +1,5 @@
 import datetime
+import encodings.idna
 import numpy as np
 import requests
 import time
