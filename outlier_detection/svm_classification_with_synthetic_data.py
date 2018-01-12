@@ -26,6 +26,11 @@ def main():
     y_pred_test = clf.predict(X_test)
     y_pred_outliers = clf.predict(X_outliers)
 
+    # xx, yy = np.meshgrid(np.linspace(-5, 5, 500), np.linspace(-5, 5, 500))
+    # # Function defining the decision boundary
+    # Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
+    # Z = Z.reshape(xx.shape)
+
     pos_mask = y_pred_outliers ==  1
     neg_mask = y_pred_outliers == -1
     X_outliers_pos = X_outliers[pos_mask[: np.newaxis].T]
@@ -38,7 +43,9 @@ def main():
         label='Synthetic valid')
     plt.scatter(X_outliers_neg[:, 0], X_outliers_neg[:, 1], c='#F0E442', s=s,
         label='Synthetic invalid')
-
+    # plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='darkred', 
+    #     label='Learned frontier')
+    
     plt.legend()
     plt.axis('equal')
     plt.show()
