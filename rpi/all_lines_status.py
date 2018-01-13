@@ -8,10 +8,10 @@ import unicornhat
 
 LINES = ['central',  'circle',
          'central',  'circle',
+         'central',  'circle',
          'jubilee',  'metropolitan',
          'jubilee',  'metropolitan',
-         'northern', 'piccadilly',    # victoria
-         'northern', 'piccadilly',    # victoria
+         'jubilee',  'metropolitan',
         ]
 
 STATUSES = {'Good Service': 'good',
@@ -95,9 +95,10 @@ def update_hat(tube):
 
 
 def main():
-    status = layout(tube_status())
-    update_hat(status)
-    time.sleep(50)
+    while True:
+        status = layout(tube_status())
+        update_hat(status)
+        time.sleep(120)
 
 
 if __name__ == '__main__':
