@@ -1,6 +1,7 @@
 import datetime
 import encodings.idna
 import numpy as np
+import os
 import requests
 import time
 import unicornhat
@@ -46,10 +47,20 @@ def layout(statuses):
     return np.array(result)
 
 
-def tube_status():
-    requests.packages.urllib3.disable_warnings()
-    resp = requests.get('http://api.tfl.gov.uk/Line/Mode/tube/Status').json()
+def http_get(url):
+    # Unknown error raised when the wifi adapter dies - restart RPi to fix
+    try:
+        requests.packages.urllib3.disable_warnings()
+        return requests.get(url).json()
+    except:
+        unicornhat.set_all(255, 0 , 0)
+        unicornhat.show()
+        time.sleep(60)
+        os.system('sudo shutdown -r now')
 
+
+def tube_status():
+    resp = http_get('http://api.tfl.gov.uk/Line/Mode/tube/Status')
     statuses = {el['id']: el['lineStatuses'][0]['statusSeverityDescription']
                 for el in resp}
     return {line: STATUSES.get(statuses[line], 'bad')
@@ -62,8 +73,7 @@ def weather_status():
            '09eb3c861a010137bff29ba16b13d3e1/51.576301,-0.349967?' +
            'units=si&exclude=minutely')
 
-    requests.packages.urllib3.disable_warnings()
-    resp  = requests.get(url).json()
+    resp  = http_get(url)
     today = datetime.date.today()
     start = datetime.datetime.min
     end   = datetime.datetime.combine(datetime.date.today(),
