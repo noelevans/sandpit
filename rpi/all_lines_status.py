@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import encodings.idna
 import numpy as np
@@ -105,10 +106,23 @@ def update_hat(tube):
 
 
 def main():
+    # Adding an option to pause running if started from cron on power-up when
+    # wifi adapter may not be ready causing a reboot and then indefinite loop
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--init_wait', type=int, default=0)
+    args = parser.parse_args()
+    time.sleep(args.init_wait)
+
     while True:
-        status = layout(tube_status())
-        update_hat(status)
-        time.sleep(120)
+        hour = datetime.datetime.now().hour
+        if 5 <= hour <= 8:
+            status = layout(tube_status())
+            update_hat(status)
+        else:
+            unicornhat.set_all(0, 0, 0)
+            unicornhat.show()
+
+        time.sleep(300)
 
 
 if __name__ == '__main__':
