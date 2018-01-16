@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=gui-bits-to-run-automatically
+Comment=Starts script to run automated GUI tasks
+NoDisplay=false
+Exec=/usr/bin/lxterminal -e /home/pi/rpi_zero_on_startup.sh
+NotShowIn=GNOME;KDE;XFCE;
