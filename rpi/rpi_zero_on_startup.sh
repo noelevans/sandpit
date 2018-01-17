@@ -5,5 +5,5 @@
 # Copy RPi-zero-startup.desktop to /etc/xdg/autostart/
 # and copy this script to /home/pi/rpi_zero_on_startup.sh
 
-/usr/bin/calibre &
+/usr/bin/calibre
 
