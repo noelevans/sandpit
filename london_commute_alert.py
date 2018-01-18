@@ -1,6 +1,7 @@
 import datetime
 import os
 import requests
+import sys
 
 
 def update(lines):
@@ -19,12 +20,13 @@ def update(lines):
 
 
 def email(delays):
+    os.chdir(sys.path[0])
     with open('curl_raw_command.sh') as f:
         raw_command = f.read()
 
     # Running on PythonAnywhere - Monday to Sunday. Skip on the weekend
     if delays and datetime.date.today().isoweekday() in range(1, 6):
-        os.system(raw_command.format(subject='Tube delays for commute', 
+        os.system(raw_command.format(subject='Tube delays for commute',
                                      body='\n\n'.join(delays)))
 
 
