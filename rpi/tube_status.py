@@ -1,7 +1,7 @@
 import datetime
 import os
 import requests
-from piglow import PiGlow
+import piglow
 
 
 STATUSES = {'Good Service': 'GOOD',
@@ -17,13 +17,15 @@ def update():
 
 
 def main():
-    piglow = PiGlow()
+    piglow.clear_on_exit = False
+    piglow.auto_update = True
     piglow.all(0)
+
     try:
         status = update()
     except:     # Unknown error raised when the wifi adapter dies
         piglow.blue(1)
-        os.system('sudo shutdown -r now')
+        # os.system('sudo shutdown -r now')
 
     met_status = status.pop('metropolitan')
     jubilee_status = status.pop('jubilee')
