@@ -9,8 +9,12 @@ Handle these cases carefully:
 
 import blinkt
 import colours
+import multiprocessing
 import requests
 import time
+
+
+REFRESH_TIME = 5 * 60
 
 
 def typo_correct(input):
@@ -56,25 +60,34 @@ def transport_status():
 
 def pixel_operation(status):
 
-    def good_op(x, r, g, b):
-        blinkt.set_pixel(x, r, g, b, brightness=0.04)
-
-    def flash_op(x, r, g, b):
-        while True:
-            blinkt.set_pixel(x, r, g, b, brightness=0.04)
-            blinkt.show()
-            time.sleep(1)
-            blinkt.set_pixel(x, r, g, b, brightness=0.0)
+    def good_op(x, rgb):
+        start = time.time()
+        while time.time() < start + REFRESH_TIME:
+            blinkt.set_pixel(x, *rgb, brightness=0.04)
             blinkt.show()
             time.sleep(1)
 
-    def off_op(x, r, g, b):
-        blinkt.set_pixel(x, r, g, b, brightness=0.0)
+    def flash_op(x, rgb):
+        start = time.time()
+        while time.time() < start + REFRESH_TIME:
+            blinkt.set_pixel(x, *rgb, brightness=0.04)
+            blinkt.show()
+            time.sleep(1.5)
+            blinkt.set_pixel(x, *rgb, brightness=0.0)
+            blinkt.show()
+            time.sleep(1.5)
+
+    def off_op(x, rgb):
+        start = time.time()
+        while time.time() < start + REFRESH_TIME:
+            blinkt.set_pixel(x, *rgb, brightness=0)
+            blinkt.show()
+            time.sleep(1)
 
     return {
             'GOOD': good_op,
             'OK':   flash_op,
-            'BAD':  flash_op,   #off_op,
+            'BAD':  off_op,
         }[status]
 
 
@@ -84,17 +97,21 @@ def illuminate():
     status = [all_statuses[el] for el in lines]
     line_colours = [colours.LINE_COLOURS.get(el) for el in lines]
 
+    processes = []
     for n, (rgb, s) in enumerate(zip(line_colours, status)):
+        print(s)
         operation = pixel_operation(s)
-        operation(n, *rgb)
+        process = multiprocessing.Process(target=operation, args=(n, rgb))
+        process.start()
+        processes.append(process)
 
-    blinkt.show()
-
+    for p in processes:
+        p.join()
+    print('All processes joined')
 
 def main():
     while True:
         illuminate()
-        time.sleep(120)
 
 
 if __name__ == '__main__':
