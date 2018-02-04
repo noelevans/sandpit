@@ -7,14 +7,16 @@ Handle these cases carefully:
 
 """
 
+import blinkt
 import colours
+import requests
 import time
 
 
 def typo_correct(input):
     subs = {
         'hamm': 'hammersmith-city',
-        'over': 'overground',
+        'over': 'london-overground',
         'rail': 'tflrail',
         'doc':  'dlr',
         'met':  'metropolitan',
@@ -55,13 +57,15 @@ def transport_status():
 def pixel_operation(status):
 
     def good_op(x, r, g, b):
-        blinkt.set_pixel(x, r, g, b, brightness=0.2)
+        blinkt.set_pixel(x, r, g, b, brightness=0.04)
 
     def flash_op(x, r, g, b):
         while True:
-            blinkt.set_pixel(x, r, g, b, brightness=0.2)
+            blinkt.set_pixel(x, r, g, b, brightness=0.04)
+            blinkt.show()
             time.sleep(1)
             blinkt.set_pixel(x, r, g, b, brightness=0.0)
+            blinkt.show()
             time.sleep(1)
 
     def off_op(x, r, g, b):
@@ -70,26 +74,27 @@ def pixel_operation(status):
     return {
             'GOOD': good_op,
             'OK':   flash_op,
-            'BAD':  off_op,
+            'BAD':  flash_op,   #off_op,
         }[status]
-
-
-def set_pixel(n, rgb, fn):
-    fn(n, *rgb)
 
 
 def illuminate():
     lines = line_choices()
-    status = transport_status()
+    all_statuses = transport_status()
+    status = [all_statuses[el] for el in lines]
     line_colours = [colours.LINE_COLOURS.get(el) for el in lines]
 
     for n, (rgb, s) in enumerate(zip(line_colours, status)):
-        set_pixel(n, rgb, pixel_operation(s))
+        operation = pixel_operation(s)
+        operation(n, *rgb)
+
+    blinkt.show()
 
 
 def main():
-    illuminate()
-    time.sleep(10)
+    while True:
+        illuminate()
+        time.sleep(120)
 
 
 if __name__ == '__main__':
