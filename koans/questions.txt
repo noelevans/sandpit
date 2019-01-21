@@ -1,0 +1,47 @@
+list of 1 to 10 inclusive
+all even numbers in 
+
+Average from a list of numbers
+f([2, 3, 4])			# returns 3.0
+
+Removes all whitespace at the start and end of the string and returns first 3 chars
+f('   hello    ')		# returns 'hello'
+
+Replace minus signs with plus signs 
+f('hello-world')		# returns 'hello+world'
+
+Take this function and change it so any number of args can be passed. All are sumed bar the last which is subtracted
+Before:		
+			f(a, b, z):
+				return a + b - z
+
+Reverse a list
+f([1, 2, 3])		# returns [3, 2, 1]
+
+Odd indices of a list 
+f([1, 2, 3, 4])		# returns [2, 4]
+
+From plain list, yield (1,2),(3,4),...
+f([1, 2, 3, 4, 5, 6])	# returns [(1, 2), (3, 4), (5, 6)]
+
+Count nones, zeros and blank strings in a list
+f([7, 0, None, 1, 'hi', '', 88, 0]) 	# returns 4
+
+Unzip
+f([(1, 2), (3, 4), (5, 6)])		# returns [1, 2, 3, 4, 5, 6]
+
+Is any list element divisible by 3
+f([1, 2, 4, 5])		# returns False
+f([1, 2, 3, 5])		# returns True
+
+Flatten a nested list of numbers 
+f([[1, 2, 3], [4, 5], [6, 7]])		# returns [1, 2, 3, 4, 5, 6, 7]
+
+Most common element 
+f([3, 3, 4, 4, 4, 4, 2])			# returns 4
+
+Dict inversion 
+f({'a': 3, 'b': 4, 'c': 9})			# returns {3: 'a', 4: 'b', 9: 'c'}
+
+generate sequence of ACGT - one long, then two long, then three
+determine the molecular weight of CH4, NaCl etc
