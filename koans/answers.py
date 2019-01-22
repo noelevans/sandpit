@@ -1,6 +1,8 @@
 import collections
 import itertools
 import math
+import mendeleev
+import re
 
 
 def my_range():
@@ -66,6 +68,22 @@ def sequences(max_len):
             yield el
 
 
+def weight(formula):
+    chunks = re.findall('([A-Z][a-z]*|[0-9]+)', formula)
+    total = 0
+    while chunks:
+        element = chunks.pop(0)
+        if chunks and chunks[0].isnumeric():
+            count = int(chunks[0])
+            chunks.pop(0)
+        else:
+            count = 1
+        element_weight = getattr(mendeleev, element).atomic_weight * count
+        total = total + element_weight
+
+    return total
+
+
 def main():
     print(my_range())
     print(average([2, 3, 4]))
@@ -82,6 +100,12 @@ def main():
     print(most_common([3, 3, 4, 4, 4, 4, 2]))
     print(dict_reverse({'a': 2, 'b': 7}))
     print(list(sequences(3)))
+    print('')
+    print(weight('NaCl'))
+    print(weight('CCl4'))
+    print(weight('H2O'))
+    print(weight('H2SO4'))
+    print(weight('C6H12COH'))
 
 
 if __name__ == '__main__':
