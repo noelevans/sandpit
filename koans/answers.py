@@ -84,6 +84,15 @@ def weight(formula):
     return total
 
 
+def qsort(ol):
+    if not ol:
+        return []
+    pivot = ol[0]
+    return qsort([el for el in ol[1:] if el < pivot]) + \
+           [pivot] + \
+           qsort([el for el in ol[1:] if el >= pivot])
+
+
 def main():
     print(my_range())
     print(average([2, 3, 4]))
@@ -106,6 +115,7 @@ def main():
     print(weight('H2O'))
     print(weight('H2SO4'))
     print(weight('C6H12COH'))
+    print(qsort([1, 7, 2, 9, 3, 3, 3, 7]))
 
 
 if __name__ == '__main__':
