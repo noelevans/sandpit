@@ -1,39 +1,43 @@
 import csv
-from flask import Flask, g, jsonify
+import flask
+import operator
 import sqlite3
 
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
-# tasks = [
-#     {
-#         'id': 1,
-#         'title': u'Buy groceries',
-#         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-#         'done': False
-#     },
-#     {
-#         'id': 2,
-#         'title': u'Learn Python',
-#         'description': u'Need to find a good Python tutorial on the web',
-#         'done': False
-#     }
-# ]
 
-@app.route('/api/ships/', methods=['GET'])
+@app.route('/api/ships/')
 def ships():
-    cursor = conn.cursor()
-    ships = cursor.execute('select * from Ships')
+    cursor = get_db()
+    result = []
 
-    return jsonify({'ships': ships})
+    for ship in cursor.execute('select * from Ships'):
+        result.append({'name': str(ship[0]), 'imo': str(ship[1])})
+
+    return flask.jsonify(result)
 
 
-@app.route('/api/positions/{imo}', methods=['GET'])
+@app.route('/api/positions/<imo>/')
 def positions(imo):
-    return []
+    cursor = get_db()
+    result = []
+
+    for p in cursor.execute('select * from Positions where imo = "%s"' % imo):
+        result.append({
+            'timestamp': p[1],
+            'latitude':  p[2],
+            'longitude': p[3]
+        })
+
+    if not result:
+        flask.abort(404)
+
+    return flask.jsonify(sorted(result, key=operator.itemgetter('timestamp'),
+        reverse=True))
 
 
-def build_db():
+def _build_db():
     conn = sqlite3.connect(':memory:')
     c = conn.cursor()
 
@@ -48,23 +52,33 @@ def build_db():
     return conn
 
 
-def fill_db(conn, positions_file):
+def fill_db(positions_file):
+    conn = _build_db()
     cursor = conn.cursor()
-    cursor.execute('insert into Ships values ("Mathilde Maersk", 9632179)')
-    cursor.execute('insert into Ships values ("Australian Spirit", 9247455)')
-    cursor.execute('insert into Ships values ("MSC Preziosa", 9595321)')
+
+    ships = [('Mathilde Maersk', 9632179),
+             ('Australian Spirit', 9247455),
+             ('MSC Preziosa', 9595321)]
+    for ship in ships:
+        cursor.execute('insert into Ships values ("%s", %s)' % ship)
 
     for row in csv.reader(positions_file):
         cursor.execute('''insert into Positions values (%s, "%s", %s, %s)''' %
                             tuple(row))
 
     conn.commit()
+    return cursor
+
+
+def get_db():
+    if 'db' not in flask.g:
+        cursor = fill_db(open('positions.csv'))
+        flask.g.db = cursor
+
+    return flask.g.db
 
 
 def main():
-    conn = build_db()
-    fill_db(conn, open('positions.csv'))
-
     app.run(debug=True)
 
 
