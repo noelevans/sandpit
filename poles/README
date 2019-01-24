@@ -1,0 +1,13 @@
+Submission for Noel Evans
+	
+To run the flask app...
+	$ cd this_folder
+    $ export FLASK_APP=app.py
+    $ flask run
+
+All the tests are in the test_app.py file. Run the tests:
+	$ python -m pytest test_app.py
+
+Sample queries:
+    http://127.0.0.1:5000/api/ships/
+    http://127.0.0.1:5000/api/positions/9632179/
