@@ -4,3 +4,4 @@
 *.RData
 .ipynb_checkpoints/
 
+curl_raw_command.sh
