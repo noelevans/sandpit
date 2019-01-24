@@ -27,9 +27,6 @@ f([1, 2, 3, 4, 5, 6])	# returns [(1, 2), (3, 4), (5, 6)]
 Count nones, zeros and blank strings in a list
 f([7, 0, None, 1, 'hi', '', 88, 0]) 	# returns 4
 
-Unzip
-f([(1, 2), (3, 4), (5, 6)])		# returns [1, 2, 3, 4, 5, 6]
-
 Is any list element divisible by 3
 f([1, 2, 4, 5])		# returns False
 f([1, 2, 3, 5])		# returns True
@@ -45,3 +42,13 @@ f({'a': 3, 'b': 4, 'c': 9})			# returns {3: 'a', 4: 'b', 9: 'c'}
 
 generate sequence of ACGT - one long, then two long, then three
 determine the molecular weight of CH4, NaCl etc
+
+
+also do something on string formatting
+eg commas between entries and placing a value in a string
+
+quicksort
+
+all of itertools fns - an example for each
+
+build OrderedDict
