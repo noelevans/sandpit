@@ -1,0 +1,13 @@
+{
+    // Editor view look-and-feel
+    "fold_buttons": false,
+
+    // Word wrapping - follow PEP 8 recommendations
+    "rulers": [79],
+
+    // Whitespace - no tabs, trimming, end files with \n
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "trim_trailing_white_space_on_save": true,
+    "ensure_newline_at_eof_on_save": true,
+}
