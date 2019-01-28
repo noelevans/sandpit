@@ -29,10 +29,10 @@ def main():
 	Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
 	Z = Z.reshape(xx.shape)
 
-	plt.title("Novelty Detection")
-	plt.contourf(xx, yy, Z, levels=np.linspace(Z.min(), 0, 7), cmap=plt.cm.PuBu)
+	# plt.title("Novelty Detection")
+	# plt.contourf(xx, yy, Z, levels=np.linspace(Z.min(), 0, 7), cmap=plt.cm.PuBu)
 	a = plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='darkred')
-	plt.contourf(xx, yy, Z, levels=[0, Z.max()], colors='palevioletred')
+	# plt.contourf(xx, yy, Z, levels=[0, Z.max()], colors='palevioletred')
 
 	s = 40
 	b1 = plt.scatter(X_train[:, 0], X_train[:, 1], c='white', s=s)
@@ -41,11 +41,11 @@ def main():
 	plt.axis('tight')
 	plt.xlim((-5, 5))
 	plt.ylim((-5, 5))
-	plt.legend([a.collections[0], b1, b2, c],
-	           ["learned frontier", "training observations",
-	            "new regular observations", "new abnormal observations"],
-	           loc="upper left",
-	           prop=matplotlib.font_manager.FontProperties(size=11))
+	# plt.legend([a.collections[0], b1, b2, c],
+	#            ["learned frontier", "training observations",
+	#             "new regular observations", "new abnormal observations"],
+	#            loc="upper left",
+	#            prop=matplotlib.font_manager.FontProperties(size=11))
 	plt.xlabel(
 	    "error train: %d/200 ; errors novel regular: %d/40 ; "
 	    "errors novel abnormal: %d/40"

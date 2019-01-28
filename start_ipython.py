@@ -20,7 +20,7 @@ import timeit
 # import matplotlib.pyplot as plt    # very slow
 import numpy as np
 import pandas as pd
-import pymc as pm
+# import pymc as pm
 import scipy as sp
 
 from collections import Counter
@@ -36,7 +36,7 @@ pd.set_option('display.width', 100)
 
 
 def describe(ol):
-    print df.Series(ol).describe()
+    print(df.Series(ol).describe())
 
 
 def nCr(n, r):
