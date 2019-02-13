@@ -1,9 +1,11 @@
-"""
+'''
 Python questions to work on. To invoke with pytest use
 
-$ python3 -m pytest answer_template.py
+    $ python3 answer_template.py
+or
+    $ python3 -m pytest answer_template.py
 
-"""
+'''
 
 import pytest
 
@@ -130,3 +132,12 @@ def test_inclusive_range():
 
 # def test_dict_reverse():
 #     assert dict_reverse({'a': 3, 'b': 4, 'c': 9}) == {3: 'a', 4: 'b', 9: 'c'}
+
+
+def main():
+    import os
+    pytest.main([os.path.basename(__file__)])
+
+
+if __name__ == '__main__':
+    main()
