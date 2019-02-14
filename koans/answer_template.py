@@ -7,7 +7,6 @@ or
 
 '''
 
-import mendeleev
 import pytest
 
 
@@ -48,15 +47,16 @@ def minus_to_plus(t):
 
 
 def sum_bar_last(a, b, c):
-    # Add a + b and then do it generically for arbitrary arguments
+    # a + b - c and then do it generically for arbitrary arguments
     pass
 
 
 # def test_sum_bar_last():
-#     assert sum_bar_last(4, 5, 6) == 9
+#     assert sum_bar_last(4, 5, 6) == 3
+#     assert sum_bar_last(4, 5, 1, 6) == 4
 
 
-def mirror(ol):
+def mirror(s):
     # Turn a string around so 1st char is the last, 2nd becomes penultimate
     pass
 
@@ -81,7 +81,9 @@ def pairs(ol):
 
 
 # def test_pairs():
-#     assert pairs([0, 1, 2, 3, 4, 5]) == [[0, 1], [2, 3], [4, 5]]
+#     assert list(pairs([0, 1, 2, 3, 4, 5])) == [[0, 1], [2, 3], [4, 5]]
+#     # Bonus
+#     assert list(pairs([0, 1, 2, 3, 4])) == [[0, 1], [2, 3], [4]]
 
 
 def blank_count(ol):
@@ -133,7 +135,8 @@ def dict_reverse(d):
 def atomic_weight(formula):
 
     def weight(element='Na'):
-            return getattr(mendeleev, element).atomic_weight
+        import mendeleev
+        return getattr(mendeleev, element).atomic_weight
 
     pass
 
@@ -154,13 +157,12 @@ def sequences(max_len):
         3 -> ['A', 'C', 'G', 'T', 'AC', 'AG', 'AT', 'CG', 'CT', 'GT', 'ACG',
               'ACT', 'AGT', 'CGT']
     '''
-    for n in range(1, max_len+1):
-        for el in itertools.combinations('ACGT', n):
-            yield ''.join(el)
+    pass
 
-    #
-    # Now write tests for this fn
-    #
+
+# def test_sequences():
+#     assert list(sequences(3)) == ['A', 'C', 'G', 'T', 'AC', 'AG', 'AT', 'CG',
+#                                   'CT', 'GT', 'ACG', 'ACT', 'AGT', 'CGT']
 
 
 def stock_prices(ticker):
@@ -184,7 +186,6 @@ def stock_prices(ticker):
             'NFLX':  107,
         },
     }
-    return
 
 
 # def test_stock_prices():
