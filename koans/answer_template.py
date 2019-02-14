@@ -168,11 +168,9 @@ def stock_prices(ticker):
         '2019-02-14': {
             'MSFT':  106,
             'GOOG': 1120,
-            # Missing NFLX
         },
         '2019-02-15': {
             'MSFT':  108,
-            # Missing GOOG
             'NFLX':  351,
         },
         '2019-02-18': {
@@ -186,17 +184,20 @@ def stock_prices(ticker):
             'NFLX':  107,
         },
     }
+    return
 
 
 # def test_stock_prices():
-#     assert stock_prices('MSFT') = [ 106,  108,  108,  109]
-#     assert stock_prices('GOOG') = [1120, 1120, 1119, 1122]
-#     assert stock_prices('NFLX') = [None,  351,  352,  107]
+#     assert set(stock_prices('MSFT')) == set([ 106,  108,  108,  109])
+#     assert list(stock_prices('MSFT')) == [ 106,  108,  108,  109]
+#     assert list(stock_prices('NFLX')) == [None,  351,  352,  107]
+#     assert list(stock_prices('GOOG')) == [1120, 1120, 1119, 1122]
 
 
 def main():
     import os
-    pytest.main([os.path.basename(__file__)])
+    filename = os.path.basename(__file__)
+    pytest.main([filename])
 
 
 if __name__ == '__main__':
