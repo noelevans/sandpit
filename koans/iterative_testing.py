@@ -20,8 +20,11 @@ def friendly_url(title):
     return result
 
 
-def test_friendly_url():
+def test_friendly_url_identity():
     assert friendly_url('hello') == 'hello'
+
+
+def test_friendly_url_substitution():
     assert friendly_url('hello world') == 'hello-world'
     assert friendly_url('can you hear me?') == 'can-you-hear-me'
 
