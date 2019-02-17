@@ -1,3 +1,6 @@
+import os
+import pytest
+
 from db_utils import save_url, url_exists
 
 
@@ -52,15 +55,6 @@ def test_friendly_url_duplicates():
     # Now discuss how this would work with a real DB rather than in-memory.
     # How do we test a url without writing it to the DB and repeat to
     # demonstrate no dupes still works
-
-
-
-###############################################################################
-# Code to make task work
-###############################################################################
-
-import os
-import pytest
 
 
 def main():
