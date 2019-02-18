@@ -1,23 +1,28 @@
+import itertools
 import os
 import pytest
+import re
+import string
 
 from db_utils import save_url, url_exists
 
 
 def friendly_url(title):
-    result = title
+    short = title
     if len(title) > 25:
-        result = ''.join([word[0] for word in result.split(' ')])
+        short = ''.join([word[0] for word in short.split(' ')])
 
-    replacements = {
-        ' ': '-',
-        '?': '',
-    }
-    for before, after in replacements.items():
-        result = result.replace(before, after)
+    pre_subs = short.replace(' ', '-')
+    result = ''
+    for c in pre_subs:
+        if c in string.ascii_letters + string.digits + '-':
+            result = result + c
 
+    n = itertools.count(1)
+    url_no_increment = result
     while url_exists(result):
-        result = result + '1'
+        without_numbers = re.search('([^0-9]+)', title).groups()
+        result = url_no_increment + str(n.__next__())
 
     save_url(result)
     return result
@@ -36,6 +41,9 @@ def test_friendly_url_long_names():
     assert friendly_url('really long long long long title') == 'rllllt'
     # Discuss ever longer list of bad characters if hard-coding
 
+    # As time goes on we see an ever increasing list of punctuation etc to
+    # omit. How can we more easily exclude non alpha-numeric chars?
+
 
 def test_friendly_url_duplicates():
     '''
@@ -46,7 +54,7 @@ def test_friendly_url_duplicates():
 
     assert friendly_url('no dupes') == 'no-dupes'
     assert friendly_url('no dupes') == 'no-dupes1'
-    assert friendly_url('no dupes') == 'no-dupes11'
+    assert friendly_url('no dupes') == 'no-dupes2'
 
     # Quick solution adds extra character as above. If time deal with nicer
     # enumeration eg
