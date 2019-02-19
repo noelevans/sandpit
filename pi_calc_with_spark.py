@@ -9,7 +9,7 @@ Run with
 """
 
 
-def inside(p):
+def inside(rdd):
     x, y = random.random(), random.random()
     return x*x + y*y < 1
 
@@ -24,7 +24,7 @@ def main():
     print('Pi is roughly...........................', pi)
 
     # or locally ...
-    # sum(np.square(np.random.random((samples, 2))).sum(1) < 1) * 4 / samples
+    (np.square(np.random.random((samples, 2))).sum(1) < 1).sum() * 4 / samples
 
 if __name__ == '__main__':
     main()
