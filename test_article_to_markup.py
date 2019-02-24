@@ -1,6 +1,8 @@
 from unittest import mock
 import os
 import pytest
+import re
+
 import article_to_markup
 
 
@@ -11,10 +13,14 @@ def test_html(mock_get):
 
     html = article_to_markup.html('http://fake-url.com')
 
-    print(html)
-    # assert False
+    # print(html)
+    latest_updates = ('latest-updates-panel__container latest-' +
+        'updates-panel__container--blog-post')
+
+    assert html.split('\n')
+
     for line in html.split('\n'):
-        assert not re.search('latest.updates', line)
+        assert not re.search(latest_updates, line)
 
 
 def main():
