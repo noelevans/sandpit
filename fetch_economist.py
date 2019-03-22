@@ -3,11 +3,7 @@ import re
 import time
 import subprocess
 
-""" Download The Economist and send to kindle if new.
-
-    Run in cron with the appropriate directory set:
-    cd /home/noel/tmp/books && ./fetch_economist.py
-"""
+""" Download The Economist and send to kindle if new """
 
 def fetch():
     url = ('https://raw.githubusercontent.com/kovidgoyal/calibre/master/' +
@@ -32,14 +28,19 @@ def main():
         dated_filename = fetch()
 
         if os.path.exists(dated_filename):
+            # The links are still being updated
+            # Wait and retry in a few minutes
             time.sleep(5 * 60)
         else:
             open(dated_filename, 'a').close()
             subprocess.run([
-                'calibre-smtp', '-a', 'economist.mobi', '-u',
-                'SENDERNAME@PROVIDER.com', '-p', 'PASSWORD', '-r',
-                'smtp.PROVIDER.com', '--port', '587',
-                'SENDERNAME@PROVIDER.com', 'USERNAME@free.kindle.com'])
+                'calibre-smtp', '-a', 'economist.mobi',
+                '-u', 'SENDERNAME@PROVIDER.com',
+                '-p', 'PASSWORD',
+                '-r', 'smtp.PROVIDER.com',
+                '--port', '587',
+                'SENDERNAME@PROVIDER.com',
+                'USERNAME@free.kindle.com'])
             return
 
         if time.localtime().tm_hour > 22:
