@@ -3,6 +3,7 @@ import requests
 import time
 
 import emailing
+import fetch_economist
 
 
 def alert(body):
@@ -16,25 +17,29 @@ def main():
     original_date = original_fwd.split('/')[-1]
 
     while True:
+        current_fwd = requests.get(soft_link).url
+        current_date = current_fwd.split('/')[-1]
+
+        print(current_fwd, original_fwd)
+        print(current_date, original_date)
+
+        if current_date > original_date:
+            alert('A new Economist has been released: ' + current_date)
+            result = fetch_economist.run()
+            if result:
+                alert('Sent to kindle: {}'.format(result))
+            return
+
+        if datetime.datetime.now().hour > 19:
+            return
+
         is_thursday = datetime.datetime.today().isoweekday() == 4
-        if is_thursday and datetime.datetime.now().hour > 14:
+        if is_thursday and datetime.datetime.now().hour > 15:
             minutes = 5
         else:
             minutes = 30
         time.sleep(60 * minutes)
 
-        current_fwd = requests.get(soft_link).url
-        current_date = current_fwd.split('/')[-1]
-
-        print('Noel')
-        print(current_fwd, original_fwd)
-        print(current_date, original_date)
-        if current_date > original_date:
-            alert('A new Economist has been released: ' + current_date)
-            return
-
-        if datetime.datetime.now().hour > 19:
-            return
 
 
 if __name__ == '__main__':
