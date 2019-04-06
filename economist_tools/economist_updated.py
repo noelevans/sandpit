@@ -20,7 +20,7 @@ def main():
         current_fwd = requests.get(soft_link).url
         current_date = current_fwd.split('/')[-1]
 
-        print(current_fwd, original_fwd)
+        # print(current_fwd, original_fwd)
         print(current_date, original_date)
 
         if current_date > original_date:
@@ -30,16 +30,20 @@ def main():
                 alert('Sent to kindle: {}'.format(result))
             return
 
-        if datetime.datetime.now().hour > 19:
+        if datetime.datetime.now().hour > 20:
             return
 
         is_thursday = datetime.datetime.today().isoweekday() == 4
         if is_thursday and datetime.datetime.now().hour > 15:
             minutes = 5
-        else:
+        elif is_thursday:
             minutes = 30
+        else:
+            minutes = 240
+        print('Sleeping for {} minutes'.format(minutes))
         time.sleep(60 * minutes)
 
+        print('')
 
 
 if __name__ == '__main__':
