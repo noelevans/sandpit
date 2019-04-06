@@ -2,6 +2,9 @@
 *.pyc
 *.Rhistory
 *.RData
+*.mobi
 .ipynb_checkpoints/
 
 curl_raw_command.sh
+email.sh
+
