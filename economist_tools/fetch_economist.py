@@ -7,13 +7,13 @@ import time
 """ Download The Economist and send to kindle if new """
 
 def fetch(existant_versions):
-    # print('Fetching calibre recipe from Github')
-    # url = ('https://raw.githubusercontent.com/kovidgoyal/calibre/master/' +
-    #        'recipes/economist.recipe')
-    # resp = requests.get(url)
+    print('Fetching calibre recipe from Github')
+    url = ('https://raw.githubusercontent.com/kovidgoyal/calibre/master/' +
+           'recipes/economist.recipe')
+    resp = requests.get(url)
 
-    # with open('economist.recipe', 'w') as f:
-    #     f.writelines(resp.text)
+    with open('economist.recipe', 'w') as f:
+        f.writelines(resp.text)
 
     print('Making mobi file')
     cmd = 'ebook-convert economist.recipe economist.mobi'
@@ -41,11 +41,8 @@ def fetch(existant_versions):
 
 
 def send_message(dated_filename):
-    '''
-    mail -A ~/repo/sandbox/economist_tools/economist.mobi -s "Email File 3: mail" -a "From: noelevans@gmx.co.uk" noelevans@gmail.com < /dev/null
-    '''
     print('Emailing')
-    subprocess.run(['./email.sh', dated_filename])
+    subprocess.run(['./email.sh'])
 
 
 def run():
@@ -65,7 +62,7 @@ def run():
             print('Done.')
             return dated_filename
 
-        if time.localtime().tm_hour > 22:
+        if time.localtime().tm_hour > 20:
             return
 
 
