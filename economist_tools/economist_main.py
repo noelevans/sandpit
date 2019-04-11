@@ -37,7 +37,7 @@ def main():
         if is_thursday and datetime.datetime.now().hour > 15:
             minutes = 5
         elif is_thursday:
-            minutes = 30
+            minutes = 20
         else:
             minutes = 240
         print('Sleeping for {} minutes'.format(minutes))
