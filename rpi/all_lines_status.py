@@ -10,10 +10,10 @@ import unicornhat
 
 LINES = ['central',  'circle',
          'central',  'circle',
-         'central',  'circle',
          'jubilee',  'metropolitan',
          'jubilee',  'metropolitan',
-         'jubilee',  'metropolitan',
+         'piccadilly', 'victoria',
+         'piccadilly', 'victoria',
         ]
 
 STATUSES = {'Good Service': 'good',
@@ -114,14 +114,8 @@ def main():
     time.sleep(args.init_wait)
 
     while True:
-        hour = datetime.datetime.now().hour
-        if 5 <= hour <= 8:
-            status = layout(tube_status())
-            update_hat(status)
-        else:
-            unicornhat.set_all(0, 0, 0)
-            unicornhat.show()
-
+        status = layout(tube_status())
+        update_hat(status)
         time.sleep(300)
 
 
