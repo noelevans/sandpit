@@ -20,8 +20,12 @@ def fetch(existant_versions):
     proc = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE,
                             universal_newlines=True)
     early_termination = False
+    article_count = 0
+
     for line in iter(proc.stdout.readline, ''):
         print(line, end='', flush=True)
+        if 'Article downloaded' in line:
+            article_count += 1
         match = re.search(r'Got cover.*print-covers/(\d{8})', line)
         if match:
             date = match.groups()[0]
@@ -30,6 +34,11 @@ def fetch(existant_versions):
                 proc.terminate()
                 early_termination = True
                 break
+
+    if article_count < 50:
+        print('Insufficient articles downloaded. Failed fetch.')
+        early_termination = True
+        return
 
     proc.stdout.close()
     proc.wait()
@@ -51,7 +60,7 @@ def run():
                              if el.endswith('.mobi')]
         dated_filename = fetch(existant_versions)
 
-        if os.path.exists(dated_filename):
+        if not dated_filename or os.path.exists(dated_filename):
             # The links are still being updated
             # Wait and retry in a few minutes
             print('Retrying in 5 minutes')
