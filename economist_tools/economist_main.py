@@ -30,14 +30,15 @@ def main():
                 alert('Sent to kindle: {}'.format(result))
             return
 
-        if datetime.datetime.now().hour > 20:
+        hour = datetime.datetime.now().hour
+        if hour > 20 or hour < 7:
             print('After 21:00. Exiting.')
             return
 
         is_thursday = datetime.datetime.today().isoweekday() == 4
-        if is_thursday and datetime.datetime.now().hour > 15:
+        if is_thursday and hour > 15:
             minutes = 5
-        elif is_thursday and datetime.datetime.now().hour > 14:
+        elif is_thursday and hour > 14:
             minutes = 20
         elif is_thursday:
             minutes = 40
