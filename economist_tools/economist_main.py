@@ -31,8 +31,8 @@ def main():
             return
 
         hour = datetime.datetime.now().hour
-        if hour > 20 or hour < 7:
-            print('After 21:00. Exiting.')
+        if hour > 20 or hour < 6:
+            print('Night hours. Exiting.')
             return
 
         is_thursday = datetime.datetime.today().isoweekday() == 4
