@@ -163,7 +163,7 @@ set tw=500
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
-set colorcolumn=81
+"set colorcolumn=81
 
 set cursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40
@@ -201,12 +201,11 @@ hi CursorLine term=bold cterm=bold guibg=Grey40
 " Pressing ,ss will toggle and untoggle spell checking
 "map <leader>ss :setlocal spell!<cr>
 
-" Shortcuts using <leader>
-"map <leader>sn ]s
-"map <leader>sp [s
-"map <leader>sa zg
-"map <leader>s? z=
-
+" Mark lines going past 80 characters
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
+  autocmd BufEnter * match OverLength /\%80v.*/
+augroup END
 
 " Quickly open a buffer for scribble
 "map <leader>q :e ~/buffer<cr>
