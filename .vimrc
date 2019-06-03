@@ -122,10 +122,6 @@ set relativenumber
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable 
 
@@ -142,10 +138,6 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
 
@@ -174,9 +166,6 @@ hi CursorLine term=bold cterm=bold guibg=Grey40
 " Close all the buffers
 "map <leader>ba :bufdo bd<cr>
 
-"map <leader>l :bnext<cr>
-"map <leader>h :bprevious<cr>
-
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 "map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -187,17 +176,9 @@ hi CursorLine term=bold cterm=bold guibg=Grey40
 " Return to last edit position when opening files (You want this!)
 "au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 " map 0 ^
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 "map <leader>ss :setlocal spell!<cr>
 
