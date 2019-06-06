@@ -3,6 +3,7 @@
 *.Rhistory
 *.RData
 *.mobi
+*.swp
 .ipynb_checkpoints/
 
 curl_raw_command.sh
