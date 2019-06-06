@@ -194,8 +194,12 @@ augroup END
 " Quickly open a markdown buffer for scribble
 "map <leader>x :e ~/buffer.md<cr>
 
+set path+=**
+
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+noremap <PageUp> <Nop>
+noremap <PageDown> <Nop>
 
