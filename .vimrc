@@ -15,6 +15,9 @@ Plugin 'VundleVim/Vundle.vim'
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'lifepillar/vim-solarized8'
+"Plugin 'klen/python-mode'
+Plugin 'vim-airline/vim-airline'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -54,10 +57,11 @@ filetype indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
+set autowrite
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
+"command W w !sudo tee % > /dev/null
 
 
 " Set 7 lines to the cursor - when moving vertically using j/k
@@ -141,9 +145,6 @@ set ffs=unix,dos,mac
 " Use spaces instead of tabs
 set expandtab
 
-" Be smart when using tabs ;)
-set smarttab
-
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
@@ -153,7 +154,6 @@ set lbr
 set tw=500
 
 set ai "Auto indent
-set si "Smart indent
 set wrap "Wrap lines
 "set colorcolumn=81
 
@@ -195,6 +195,11 @@ augroup END
 "map <leader>x :e ~/buffer.md<cr>
 
 set path+=**
+set tags=tags
+
+" Necessary for python-mode plugin to supress red 80 chars marker
+hi ColorColumn ctermbg=8
+
 
 noremap <Up> <Nop>
 noremap <Down> <Nop>
