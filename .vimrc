@@ -196,6 +196,7 @@ augroup END
 
 set path+=**
 set tags=tags
+set showcmd
 
 " Necessary for python-mode plugin to supress red 80 chars marker
 hi ColorColumn ctermbg=8
