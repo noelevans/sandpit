@@ -1,5 +1,6 @@
 import datetime
 import requests
+import socket
 import time
 
 import emailing
@@ -24,7 +25,11 @@ def main():
         print(current_date, original_date)
 
         if current_date > original_date:
-            alert('A new Economist has been released: ' + current_date)
+            alert('A new Economist has been released: {}. ({})'.format(
+                    current_date,
+                    socket.gethostname(),
+                )
+            )
             result = fetch_economist.run()
             if result:
                 alert('Sent to kindle: {}'.format(result))
