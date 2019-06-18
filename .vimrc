@@ -197,6 +197,14 @@ augroup END
 set path+=**
 set tags=tags
 set showcmd
+set undofile
+
+" Allows you to do 'gf' on config which opens config.py
+set suffixesadd=.py 
+
+if has('unix')
+    set clipboard=unnamedplus
+endif
 
 " Necessary for python-mode plugin to supress red 80 chars marker
 hi ColorColumn ctermbg=8
