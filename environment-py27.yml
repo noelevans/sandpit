@@ -1,0 +1,24 @@
+# To setup:
+#   conda env create -f environment.yml
+#
+# To activate:
+#   conda activate py27
+#
+# To verify:
+#   conda list
+#
+# To update:
+#   source activate py27
+#   conda env update --file environment.yml
+
+name: py27
+dependencies:
+    - python=2.7
+    - pip
+    - numpy
+    - msgpack-python
+    - trollius
+    - greenlet
+    - pip:
+        - pytest
+        # - pynvim
