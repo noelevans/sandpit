@@ -1,0 +1,27 @@
+# To setup:
+#   conda env create -f environment.yml
+#
+# To activate:
+#   conda activate py37
+#
+# To verify:
+#   conda list
+#
+# To update:
+#   source activate py37
+#   conda env update --file environment.yml
+
+name: py37
+dependencies:
+    - python=3.7
+    - pip=18.1
+    - numpy=1.15.2
+    - pandas=0.23.4
+    - scikit-learn=0.20.0
+    - matplotlib=3.0.2
+    - scipy=1.1
+    - pymc3
+    - pip:
+        - pytest==4.4.0
+        - black==18.9b0
+        # - pynvim==0.3.2
