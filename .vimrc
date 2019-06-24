@@ -15,6 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
 Plugin 'lifepillar/vim-solarized8'
 "Plugin 'klen/python-mode'
 Plugin 'vim-airline/vim-airline'
