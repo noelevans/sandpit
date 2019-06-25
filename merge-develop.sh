@@ -6,6 +6,11 @@
 # Example usage:
 #     $ ./merge-develop.sh my-feature-branch
 
+if (( $# != 1 )); then
+    echo "Illegal number of arguments"
+    exit
+fi
+
 git checkout develop
 git pull origin 
 git checkout $1
