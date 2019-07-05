@@ -16,9 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
-Plugin 'lifepillar/vim-solarized8'
-"Plugin 'klen/python-mode'
-Plugin 'vim-airline/vim-airline'
+" Plugin 'neoclide/coc.nvim'
+Plugin 'itchyny/lightline.vim'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -31,6 +30,9 @@ Plugin 'vim-airline/vim-airline'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" After updating plugins, do:
+"   :PluginUpdate
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -75,6 +77,7 @@ source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
 " Turn on the Wild menu
+set wildmode=longest,list
 set wildmenu
 
 " Ignore compiled files
@@ -158,7 +161,7 @@ set ai "Auto indent
 set wrap "Wrap lines
 "set colorcolumn=81
 
-set cursorline
+set nocursorline
 hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " Close the current buffer
@@ -199,13 +202,14 @@ set path+=**
 set tags=tags
 set showcmd
 set undofile
+" set spell
 
 " Allows you to do 'gf' on config which opens config.py
 set suffixesadd=.py 
 
-if has('unix')
-    set clipboard=unnamedplus
-endif
+" if has('unix')
+    " set clipboard=unnamedplus
+" endif
 
 " Necessary for python-mode plugin to supress red 80 chars marker
 hi ColorColumn ctermbg=8
@@ -217,4 +221,19 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 noremap <PageUp> <Nop>
 noremap <PageDown> <Nop>
+
+let mapleader="\<Space>"
+nnoremap <leader>w :w<cr>
+
+
+" Correct spelling error on this line with first dictionary choice
+"nnoremap <leader>sp :normal! mf[s1z=`f<cr>
+" or...
+function! FixLastSpellingError()
+    normal! mf[s1z=`f
+endfunction
+nnoremap <leader>sp :call FixLastSpellingError()<cr>
+
+" Source current file
+nnoremap <leader>sop :source %<cr>
 
