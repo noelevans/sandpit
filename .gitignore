@@ -4,8 +4,10 @@
 *.RData
 *.mobi
 *.swp
+*.un~
 .ipynb_checkpoints/
 
 curl_raw_command.sh
 email.sh
+economist.recipe
 
