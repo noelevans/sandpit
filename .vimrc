@@ -54,10 +54,6 @@ filetype plugin indent on    " required
 " Sets how many lines of history VIM has to remember
 set history=500
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
-
 " Set to auto read when a file is changed from the outside
 set autoread
 set autowrite
@@ -122,7 +118,6 @@ set mat=2
 set noerrorbells
 set novisualbell
 set t_vb=
-set tm=500
 
 set number
 set relativenumber
@@ -152,10 +147,6 @@ set expandtab
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
-
-" Linebreak on 500 characters
-set lbr
-set tw=500
 
 set ai "Auto indent
 set wrap "Wrap lines
@@ -207,9 +198,9 @@ set undofile
 " Allows you to do 'gf' on config which opens config.py
 set suffixesadd=.py 
 
-" if has('unix')
-    " set clipboard=unnamedplus
-" endif
+if has('unix')
+    set clipboard=unnamedplus
+endif
 
 " Necessary for python-mode plugin to supress red 80 chars marker
 hi ColorColumn ctermbg=8
@@ -237,3 +228,6 @@ nnoremap <leader>sp :call FixLastSpellingError()<cr>
 " Source current file
 nnoremap <leader>sop :source %<cr>
 
+if has('nvim')
+        tnoremap <Esc> <C-\><C-n>
+endif
