@@ -18,6 +18,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 " Plugin 'neoclide/coc.nvim'
 Plugin 'itchyny/lightline.vim'
+Plugin 'airblade/vim-gitgutter'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -90,19 +91,9 @@ set ruler
 " Height of the command bar
 "set cmdheight=2
 
-" A buffer becomes hidden when it is abandoned
 set hidden
-
-" Ignore case when searching
-"set ignorecase
-
-" When searching try to be smart about cases 
 set smartcase
-
-" Highlight search results
 set hlsearch
-
-" Makes search act like search in modern browsers
 set incsearch 
 
 " Don't redraw while executing macros (good performance config)
@@ -192,7 +183,7 @@ augroup END
 set path+=**
 set tags=tags
 set showcmd
-set undofile
+set undofile     " Persistent undo
 " set spell
 
 " Allows you to do 'gf' on config which opens config.py
@@ -229,5 +220,6 @@ nnoremap <leader>sp :call FixLastSpellingError()<cr>
 nnoremap <leader>sop :source %<cr>
 
 if has('nvim')
-        tnoremap <Esc> <C-\><C-n>
+    set inccommand=nosplit
+    tnoremap <Esc> <C-\><C-n>
 endif
