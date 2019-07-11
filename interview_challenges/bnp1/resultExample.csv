@@ -1,0 +1,4 @@
+CorrelationID,NumberOfTrades,State
+200,2,Pending
+222,1,Rejected
+234,3,Accepted
