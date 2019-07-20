@@ -4,33 +4,19 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
-" Plugin 'neoclide/coc.nvim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'airblade/vim-gitgutter'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
+Plugin 'mhinz/vim-startify'
+
+" Plugin 'w0rp/ale'
+" Plugin 'neoclide/coc.nvim'
 
 " After updating plugins, do:
 "   :PluginUpdate
@@ -41,16 +27,8 @@ filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-"
-"
+
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -59,38 +37,18 @@ set history=500
 set autoread
 set autowrite
 
-" :W sudo saves the file 
-" (useful for handling the permission-denied error)
-"command W w !sudo tee % > /dev/null
-
-
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
-" Avoid garbled characters in Chinese language windows OS
 let $LANG='en' 
 set langmenu=en
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
 
 " Turn on the Wild menu
 set wildmode=longest,list
 set wildmenu
 
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
-else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-endif
-
 "Always show current position
 set ruler
-
-" Height of the command bar
-"set cmdheight=2
-
 set hidden
 set smartcase
 set hlsearch
@@ -99,10 +57,10 @@ set incsearch
 " Don't redraw while executing macros (good performance config)
 set lazyredraw 
 
-" Show matching brackets when text indicator is over them
+" Show matching brackets under cursor
 set showmatch 
 
-" How many tenths of a second to blink when matching brackets
+" Tenths of second to blink when matching brackets
 set mat=2
 
 " No annoying sound on errors
@@ -110,23 +68,19 @@ set noerrorbells
 set novisualbell
 set t_vb=
 
+set path+=**
+set tags=tags
+set showcmd
+set undofile     " Persistent undo
 set number
 set relativenumber
 
+" Allows you to do 'gf' on config which opens config.py
+set suffixesadd=.py 
+
 " Add a bit extra margin to the left
-set foldcolumn=1
+" set foldcolumn=1
 
-" Enable syntax highlighting
-syntax enable 
-
-try
-    colorscheme torte
-catch
-endtry
-
-set background=dark
-
-" Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
 " Use Unix as the standard file type
@@ -141,20 +95,28 @@ set tabstop=4
 
 set ai "Auto indent
 set wrap "Wrap lines
-"set colorcolumn=81
 
-set nocursorline
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
 hi CursorLine term=bold cterm=bold guibg=Grey40
 
-" Close the current buffer
-"map <leader>bd :Bclose<cr>:tabclose<cr>gT
+" Enable syntax highlighting
+syntax enable 
 
-" Close all the buffers
-"map <leader>ba :bufdo bd<cr>
+try
+    colorscheme torte
+catch
+endtry
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-"map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+"map <leader>e :edit <c-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
 "map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -162,32 +124,14 @@ hi CursorLine term=bold cterm=bold guibg=Grey40
 " Return to last edit position when opening files (You want this!)
 "au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" Remap VIM 0 to first non-blank character
-" map 0 ^
-
-" Pressing ,ss will toggle and untoggle spell checking
-"map <leader>ss :setlocal spell!<cr>
-
 " Mark lines going past 80 characters
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
   autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
 
-" Quickly open a buffer for scribble
-"map <leader>q :e ~/buffer<cr>
-
 " Quickly open a markdown buffer for scribble
 "map <leader>x :e ~/buffer.md<cr>
-
-set path+=**
-set tags=tags
-set showcmd
-set undofile     " Persistent undo
-" set spell
-
-" Allows you to do 'gf' on config which opens config.py
-set suffixesadd=.py 
 
 if has('unix')
     set clipboard=unnamedplus
@@ -205,8 +149,10 @@ noremap <PageUp> <Nop>
 noremap <PageDown> <Nop>
 
 let mapleader="\<Space>"
-nnoremap <leader>w :w<cr>
 
+" :W sudo saves the file 
+" (useful for handling the permission-denied error)
+"command W w !sudo tee % > /dev/null
 
 " Correct spelling error on this line with first dictionary choice
 "nnoremap <leader>sp :normal! mf[s1z=`f<cr>
@@ -216,8 +162,13 @@ function! FixLastSpellingError()
 endfunction
 nnoremap <leader>sp :call FixLastSpellingError()<cr>
 
-" Source current file
+" Toggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
 nnoremap <leader>sop :source %<cr>
+nnoremap <leader>h :nohl<cr>
+nnoremap <leader>lint :ALEToggle<cr>
+nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 
 if has('nvim')
     set inccommand=nosplit
