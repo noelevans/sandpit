@@ -1,4 +1,6 @@
 import datetime
+import os
+import re
 import requests
 import socket
 import time
@@ -12,19 +14,21 @@ def alert(body):
 
 
 def main():
-    soft_link = 'https://www.economist.com/printedition'
     # The URL forwards to a datestamped URL for this week
-    original_fwd = requests.get(soft_link).url
-    original_date = original_fwd.split('/')[-1]
+    soft_link = 'https://www.economist.com/printedition'
+
+    working_dir = os.path.dirname(os.path.realpath(__file__))
+    previous_editions = [
+        el.split('.')[1]
+        for el in os.listdir(working_dir) 
+        if re.match('economist.\d{8}.mobi', el)
+    ]
 
     while True:
         current_fwd = requests.get(soft_link).url
         current_date = current_fwd.split('/')[-1]
 
-        # print(current_fwd, original_fwd)
-        print(current_date, original_date)
-
-        if current_date > original_date:
+        if current_date not in previous_editions:
             alert('A new Economist has been released: {}. ({})'.format(
                     current_date,
                     socket.gethostname(),
