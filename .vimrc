@@ -14,6 +14,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'itchyny/lightline.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mhinz/vim-startify'
+Plugin 'sjl/gundo.vim'
 
 " Plugin 'w0rp/ale'
 " Plugin 'neoclide/coc.nvim'
@@ -169,6 +170,17 @@ nnoremap <leader>sop :source %<cr>
 nnoremap <leader>h :nohl<cr>
 nnoremap <leader>lint :ALEToggle<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
+nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>- :vert edit %:h<cr>
+
+
+let g:netrw_winsize = -28               " absolute width of netrw window
+let g:netrw_banner = 0                  " do not display info on the top of window
+let g:netrw_liststyle = 3               " tree-view
+let g:netrw_sort_sequence = '[\/]$,*'   " sort is affecting only: directories on the top, files below
+let g:netrw_browse_split = 4            " use the previous window to open file
+
+let g:gundo_prefer_python3 = 1
 
 if has('nvim')
     set inccommand=nosplit
