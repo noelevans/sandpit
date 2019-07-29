@@ -1,3 +1,4 @@
+import flask
 import json
 import pytest
 from unittest import mock
@@ -11,6 +12,19 @@ data = {'anna': json.dumps({
     'first_name': 'Anna',
     'last_name': 'Zander'
 })}
+
+app = flask.Flask(__name__)
+
+
+@pytest.fixture
+def client():
+    flaskr.app.config['TESTING'] = True
+    client = flaskr.app.test_client()
+
+    with flaskr.app.app_context():
+        flaskr.init_db()
+
+    yield client
 
 
 def test_get_contact():
@@ -26,13 +40,14 @@ def test_get_contact():
         assert client.get('/api/contact/barry') is 7
 
 
-def test_get_all_contacts():
+def test_get_all_contacts(client):
     all_contacts = [data, {'clare': json.dumps({
         'username': 'clare',
         'email': 'clare@outlook.com',
         'first_name': 'Clare',
         'last_name': 'Cuthbert'
     })}]
+    print(client.get('/api/contacts'))
     assert 2 == len(client.get('/api/contacts'))
 
 
