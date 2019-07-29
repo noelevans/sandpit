@@ -12,6 +12,7 @@ if (( $# != 1 )); then
 fi
 
 git checkout develop
+git merge
 git pull origin 
 git checkout $1
 git merge develop
