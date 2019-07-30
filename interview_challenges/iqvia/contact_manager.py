@@ -7,57 +7,63 @@ import redis
 app = Flask(__name__)
 
 
-def get_db():
-    return redis.StrictRedis(db=0)
+rdb = redis.StrictRedis(db=0)
 
 
 @app.route('/api/contact/<username>', methods=['GET'])
 def get_contact(username):
-    response = get_db().get(username)
-    if response:
-        return json.loads(response)
-    return abort(404, 'User not found')
+    response = rdb.get(username)
+    if not response:
+        return abort(404, 'User not found')
+    return response
 
 
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
-    keys = get_db().scan_iter('user:*')
-    return jsonify({json.loads(get_db().get(k)) for k in keys})
+    keys = rdb.scan_iter('user:*') or []
+    return jsonify([rdb.get(k) for k in keys])
 
 
-@app.route('/api/contact', methods=['POST'])
+@app.route('/api/contact/create', methods=['POST'])
 def create_contact():
+    if not request.json or 'username' not in request.json:
+        abort(400, 'Bad request')
     contact = json.dumps({
         'username': request.json['username'],
         'email': request.json['email'],
         'first_name': request.json['first_name'],
         'last_name': request.json['last_name']
     })
-    get_db().set(username, contact)
+    rdb.set(request.json['username'], contact)
     return contact, 201
 
 
-@app.route('/api/contact/<username>', methods=['DELETE'])
+@app.route('/api/contact/delete/<username>', methods=['DELETE'])
 def delete_contact(username):
-    count = get_db().delete([username])
-    if count:
-        return json.dumps({'result': True})
-    return make_response(jsonify({'error': 'Non-existant username'}), 409)
+    count = rdb.delete([username])
+    if not count:
+        return make_response(
+                jsonify({'error': 'Non-existant username'}), 
+                409)
+    return json.dumps({'result': True})
 
 
-@app.route('/api/contact/<username>', methods=['PUT'])
-def update_contact(username):
-    old_data = get_contact(username)
-    new_username = request.json.get('username', username)
-    if new_username != username:
-        delete_contact(username)
-    
+@app.route('/api/contact/update', methods=['PUT'])
+def update_contact():
+    if 'username' not in request.json:
+        abort(400, 'Missing username in update')
+    username = request.json['username']
+    old_data = json.loads(redis_db.get(username))
     contact = json.dumps({
-        username:new_username,
-        email:request.json.get('email', old_data.email),
-        first_name:request.json.get('first_name', old_data.first_name),
-        last_name:request.json.get('last_name', old_data.last_name)
+        'username': username,
+        'email': request.json.get('email', old_data['email']),
+        'first_name': request.json.get('first_name', old_data['first_name']),
+        'last_name': request.json.get('last_name', old_data['last_name'])
     })
-    get_db().set(new_username, contact)
+    rdb.set(username, contact)
     return contact
+
+
+if __name__ == '__main__':
+    app.run(dubug=True)
 
