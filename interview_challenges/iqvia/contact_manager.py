@@ -1,12 +1,9 @@
-from collections import namedtuple
 from flask import Flask, jsonify, make_response, request, abort
 import json
 import redis
 
 
 app = Flask(__name__)
-
-
 rdb = redis.StrictRedis(db=0)
 
 
@@ -43,8 +40,8 @@ def delete_contact(username):
     count = rdb.delete([username])
     if not count:
         return make_response(
-                jsonify({'error': 'Non-existant username'}), 
-                409)
+            jsonify({'error': 'Non-existant username'}),
+            409)
     return json.dumps({'result': True})
 
 
@@ -53,7 +50,7 @@ def update_contact():
     if 'username' not in request.json:
         abort(400, 'Missing username in update')
     username = request.json['username']
-    old_data = json.loads(redis_db.get(username))
+    old_data = json.loads(rdb.get(username))
     contact = json.dumps({
         'username': username,
         'email': request.json.get('email', old_data['email']),
@@ -65,5 +62,4 @@ def update_contact():
 
 
 if __name__ == '__main__':
-    app.run(dubug=True)
-
+    app.run(debug=True)
