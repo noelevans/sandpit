@@ -17,8 +17,9 @@ def get_contact(username):
 
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
-    keys = rdb.scan_iter('user:*') or []
-    return jsonify([rdb.get(k) for k in keys])
+    keys = rdb.scan_iter('*') or []
+    contacts = [json.loads(rdb.get(k).decode('utf-8')) for k in keys]
+    return jsonify(contacts)
 
 
 @app.route('/api/contact/create', methods=['POST'])
