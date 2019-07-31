@@ -105,9 +105,10 @@ def update(key):
     if not raw_json:
         abort(400, 'Bad key')
     old_value = json.loads(raw_json)
+    all_keys = set(old_value.keys()).union(set(request.json.keys()))
     value = {
-        jk: request.json.get(jk, old_value[jk] 
-        for jk in old_value.keys() + request.json.keys()}
+        jk: request.json.get(jk, old_value[jk])
+        for jk in all_keys}
     if key.startswith('user') and 'email' in value:
         del value['email']
     rdb.set(key, json.dumps(value))
