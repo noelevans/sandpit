@@ -5,7 +5,7 @@ from unittest import mock
 import contact_manager
 
 
-data = {'anna': json.dumps({
+data = {'user:anna': json.dumps({
     'username': 'anna',
     'email': 'anna@gmail.com',
     'first_name': 'Anna',
@@ -32,16 +32,17 @@ def test_get_contact(client):
 
 
 def test_get_all_contacts(client):
-    all_contacts = [data, {'clare': json.dumps({
+    all_contacts = data.copy()
+    all_contacts.update({'user:clare': json.dumps({
         'username': 'clare',
         'email': 'clare@outlook.com',
         'first_name': 'Clare',
         'last_name': 'Cuthbert'
-    })}]
-    mock_get = lambda _, username: all_contacts
+    })})
+    mock_get = lambda _, username: bytes(all_contacts[username], 'utf-8')
     with mock.patch('redis.StrictRedis.get', mock_get):
         with mock.patch('redis.StrictRedis.scan_iter',
-                        return_value=['anna', 'clare']):
+                return_value=['user:anna', 'user:clare']):
             assert len(client.get('/api/contacts').json) == 2
 
 
@@ -52,10 +53,9 @@ def test_create_contact(client):
 
 
 def test_delete_contact(client):
-    mock_delete = lambda _, usernames: {'anna': 1}.get(usernames[0], 0)
+    mock_delete = lambda _, usernames: {'user:anna': 1}.get(usernames[0], 0)
 
     with mock.patch('redis.StrictRedis.delete', mock_delete):
-        print(dir(client))
         assert client.delete('/api/contact/delete/anna').status_code == 200
         assert client.delete('/api/contact/delete/barry').status_code == 409
 
