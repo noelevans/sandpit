@@ -6,8 +6,7 @@ import contact_manager
 
 
 data = {'user:anna': json.dumps({
-    'username': 'anna',
-    'email': 'anna@gmail.com',
+    'email': ['anna@gmail.com', 'az@email.com'],
     'first_name': 'Anna',
     'last_name': 'Zander'
 })}
@@ -23,8 +22,7 @@ def test_get(client):
 
     with mock.patch('redis.StrictRedis.get', mock_get):
         resp_data = json.loads(client.get('/api/get/user:anna').data)
-        assert resp_data['username'] == 'anna'
-        assert resp_data['email'] == 'anna@gmail.com'
+        assert resp_data['email'] == ['anna@gmail.com', 'az@email.com']
         assert resp_data['first_name'] == 'Anna'
         assert resp_data['last_name'] == 'Zander'
 
@@ -34,8 +32,7 @@ def test_get(client):
 def test_get_all(client):
     all_contacts = data.copy()
     all_contacts.update({'user:clare': json.dumps({
-        'username': 'clare',
-        'email': 'clare@outlook.com',
+        'email': ['clare@outlook.com', 'ccuthbert@hotmail.com'],
         'first_name': 'Clare',
         'last_name': 'Cuthbert'
     })})
@@ -69,12 +66,11 @@ def test_update_contact(client):
                 '/api/update/user:anna',
                 json=({
                     'last_name': 'Bander',
-                    'email': 'anna@hotmail.com'}))
+                    'email': ['anna@hotmail.com']}))
 
             assert mock_set.called_with(
                 'user:anna',
                 json.dumps({
-                    'username': 'anna',
                     'email': 'anna@hotmail.com',
                     'first_name': 'Anna',
                     'last_name': 'Bander'
