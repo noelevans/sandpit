@@ -5,31 +5,40 @@ import redis
 
 app = Flask(__name__)
 rdb = redis.StrictRedis(
-    db=0, 
-    charset='utf-8', 
+    db=0,
+    encoding='utf-8',
     decode_responses=True)
+
+
+def _get(key, value):
+    if key.startswith('email'):
+        # recursively call fn with corresponding username to save duplication
+        user_key = 'user:{}'.format(value)
+        return _get(user_key, rdb.get(user_key)) 
+
+    all_email_keys = {
+        k: rdb.get(k)
+        for k in rdb.scan_iter('email:*') or []}
+    email_keys = [
+        k for k, v in all_email_keys.items() 
+        if 'user:{}'.format(v) == key]
+
+    combo_response = json.loads(value)
+    combo_response.update({
+        'email': email_keys})
+    return combo_response
 
 
 @app.route('/api/get/<key>', methods=['GET'])
 def get(key):
     """
-    Generic get, expecting key to be 
+    Generic get, expecting key to be
     user:anna, user:bill, email:clare@gmail.com, email:dan@outlook.com, etc
     """
     response = rdb.get(key)
     if not response:
         return abort(404, '{} not found'.format(key))
-    entity, eid = key.split(':')
-    #TODO: Does this even work?
-    other_keys = rdb.scan_iter('*:{}'.format(eid))
-    if entity.startswith('user'):
-        combo_response = json.loads(response)
-        combo_response.update({
-            'email': other_keys})
-    elif entity.startswith('email'):
-        # recursively call fn with corresponding username to save duplication
-        get(other_keys[0])
-    return response
+    return jsonify(_get(key, response))
 
 
 @app.route('/api/get_all/<entity>', methods=['GET'])
@@ -38,14 +47,14 @@ def get_all(entity):
     Get all where entity is either 'user' or 'email'
     """
     keys = rdb.scan_iter('{}:*'.format(entity)) or []
-    entities = [json.loads(rdb.get(k)) for k in keys]
-    return jsonify(entities)
+    get_value = lambda v: json.loads(v) if entity == 'user' else v
+    return jsonify({k: get_value(rdb.get(k)) for k in keys})
 
 
 @app.route('/api/create/<key>', methods=['POST'])
 def create(key):
     """
-    Generic create where key is either 
+    Generic create where key is either
     user:abc or email:f@g.com
 
     For user:anna, the request json should be like so:
@@ -64,7 +73,7 @@ def create(key):
     value = {jk: request.json[jk] for jk in request.json.keys()}
     if key.startswith('user'):
         for email in request.json.get('email', []):
-            rdb.set('email:{}'.format(email), key[key.index(':')+1:]) 
+            rdb.set('email:{}'.format(email), key[key.index(':')+1:])
         if 'email' in value:
             del value['email']
     rdb.set(key, json.dumps(value))
@@ -114,7 +123,7 @@ def update(key):
     rdb.set(key, json.dumps(value))
     if key.startswith('user'):
         for email in request.json['email']:
-            rdb.set('email:{}'.format(email), key[key.index(':')+1:]) 
+            rdb.set('email:{}'.format(email), key[key.index(':')+1:])
     return json.dumps(value)
 
 
