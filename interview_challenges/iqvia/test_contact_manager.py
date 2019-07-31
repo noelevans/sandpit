@@ -18,20 +18,20 @@ def client():
     return contact_manager.app.test_client()
 
 
-def test_get_contact(client):
-    mock_get = lambda _, username: data.get(username)
+def test_get(client):
+    mock_get = lambda _, key: data.get(key)
 
     with mock.patch('redis.StrictRedis.get', mock_get):
-        resp_data = json.loads(client.get('/api/contact/anna').data)
+        resp_data = json.loads(client.get('/api/get/user:anna').data)
         assert resp_data['username'] == 'anna'
         assert resp_data['email'] == 'anna@gmail.com'
         assert resp_data['first_name'] == 'Anna'
         assert resp_data['last_name'] == 'Zander'
 
-        assert client.get('/api/contact/barry').status_code == 404
+        assert client.get('/api/get/user:barry').status_code == 404
 
 
-def test_get_all_contacts(client):
+def test_get_all(client):
     all_contacts = data.copy()
     all_contacts.update({'user:clare': json.dumps({
         'username': 'clare',
@@ -39,40 +39,40 @@ def test_get_all_contacts(client):
         'first_name': 'Clare',
         'last_name': 'Cuthbert'
     })})
-    mock_get = lambda _, username: bytes(all_contacts[username], 'utf-8')
+    mock_get = lambda _, key: all_contacts[key]
     with mock.patch('redis.StrictRedis.get', mock_get):
         with mock.patch('redis.StrictRedis.scan_iter',
                 return_value=['user:anna', 'user:clare']):
-            assert len(client.get('/api/contacts').json) == 2
+            assert len(client.get('/api/get_all/user').json) == 2
 
 
-def test_create_contact(client):
+def test_create(client):
     with mock.patch('redis.StrictRedis.set') as mock_set:
-        client.post('/api/contact', data=data)
-        assert mock_set.called_with('anna', data)
+        client.post('/api/contact/user:anna', data=data['user:anna'])
+        assert mock_set.called_with('user:anna', data['user:anna'])
 
 
 def test_delete_contact(client):
-    mock_delete = lambda _, usernames: {'user:anna': 1}.get(usernames[0], 0)
+    mock_delete = lambda _, keys: {'user:anna': 1}.get(keys[0], 0)
 
     with mock.patch('redis.StrictRedis.delete', mock_delete):
-        assert client.delete('/api/contact/delete/anna').status_code == 200
-        assert client.delete('/api/contact/delete/barry').status_code == 409
+        assert client.delete('/api/delete/user:anna').status_code == 200
+        assert client.delete('/api/delete/user:barry').status_code == 409
 
 
 def test_update_contact(client):
     with mock.patch('redis.StrictRedis.set') as mock_set:
-        mock_get = lambda _, username: data.get(username)
+        mock_get = lambda _, key: data.get(key)
 
         with mock.patch('redis.StrictRedis.get', mock_get):
             client.put(
-                '/api/contact/update',
+                '/api/update/user:anna',
                 json=({
                     'last_name': 'Bander',
                     'email': 'anna@hotmail.com'}))
 
             assert mock_set.called_with(
-                'anna',
+                'user:anna',
                 json.dumps({
                     'username': 'anna',
                     'email': 'anna@hotmail.com',
