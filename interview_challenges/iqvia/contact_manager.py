@@ -46,9 +46,11 @@ def get_all(entity):
     """
     Get all where entity is either 'user' or 'email'
     """
+    def get_value(k, v):
+        return v if entity == 'email' else _get(k, v)
+
     keys = rdb.scan_iter('{}:*'.format(entity)) or []
-    get_value = lambda v: json.loads(v) if entity == 'user' else v
-    return jsonify({k: get_value(rdb.get(k)) for k in keys})
+    return jsonify({k: get_value(k, rdb.get(k)) for k in keys})
 
 
 @app.route('/api/create/<key>', methods=['POST'])
