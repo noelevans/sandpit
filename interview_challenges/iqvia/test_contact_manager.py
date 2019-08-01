@@ -83,7 +83,7 @@ def test_create(client):
 
 def test_delete_contact(client):
     fake_redis = {'user:anna': 1, 'email:anna@hotmail.com': 1}
-    mock_delete = lambda _, keys: fake_redis.get(keys[0], 0)
+    mock_delete = lambda _, keys: fake_redis.get(keys, 0)
 
     with mock.patch('redis.StrictRedis.delete', mock_delete):
         assert client.delete('/api/delete/user:anna').status_code == 200

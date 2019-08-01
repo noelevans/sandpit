@@ -85,7 +85,7 @@ def delete_contact(key):
     """
     Generic delete where key can be 'user:abc' or 'email:f@g.com'
     """
-    count = rdb.delete([key])
+    count = rdb.delete(key)
     if not count:
         return make_response(
             jsonify({'error': 'Non-existant key'}), 409)
