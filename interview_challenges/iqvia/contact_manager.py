@@ -1,132 +1,144 @@
-from flask import Flask, jsonify, make_response, request, abort
+from flask import Flask, request, abort, jsonify
 import json
-import redis
+from sqlalchemy import create_engine, orm
+
+from contact_model import Base, Contact, Email
 
 
 app = Flask(__name__)
-rdb = redis.StrictRedis(
-    db=0,
-    encoding='utf-8',
-    decode_responses=True)
+app.config['JSON_AS_ASCII'] = False
+
+engine = create_engine('sqlite:///contact_manager.db')
+Base.metadata.create_all(engine)
+Base.metadata.bind = engine
+ 
+DBSession = orm.sessionmaker(bind=engine)
+session = DBSession()
 
 
-def _get(key, value):
-    if key.startswith('email'):
-        # recursively call fn with corresponding username to save duplication
-        user_key = 'user:{}'.format(value)
-        return _get(user_key, rdb.get(user_key)) 
-
-    all_email_keys = {
-        k: rdb.get(k)
-        for k in rdb.scan_iter('email:*') or []}
-    email_keys = [
-        k for k, v in all_email_keys.items() 
-        if 'user:{}'.format(v) == key]
-
-    combo_response = json.loads(value)
-    combo_response.update({
-        'email': email_keys})
-    return combo_response
-
-
-@app.route('/api/get/<key>', methods=['GET'])
-def get(key):
+def get(key, entity):
+    """ Generic get 
+    
+        key: a contact's username or email address
+        entity: Contact or Email class
     """
-    Generic get, expecting key to be
-    user:anna, user:bill, email:clare@gmail.com, email:dan@outlook.com, etc
-    """
-    response = rdb.get(key)
-    if not response:
-        return abort(404, '{} not found'.format(key))
-    return jsonify(_get(key, response))
+    obj = session.query(entity).get(key)
+    if not obj:
+        abort(404, '{} not found'.format(key))
+    return jsonify(obj.to_dict())
 
 
-@app.route('/api/get_all/<entity>', methods=['GET'])
-def get_all(entity):
-    """
-    Get all where entity is either 'user' or 'email'
-    """
-    def get_value(k, v):
-        return v if entity == 'email' else _get(k, v)
-
-    keys = rdb.scan_iter('{}:*'.format(entity)) or []
-    return jsonify({k: get_value(k, rdb.get(k)) for k in keys})
+@app.route('/api/get/contact/<username>', methods=['GET'])
+def get_contact(username):
+    return get(username, Contact)
 
 
-@app.route('/api/create/<key>', methods=['POST'])
-def create(key):
-    """
-    Generic create where key is either
-    user:abc or email:f@g.com
+@app.route('/api/get/email/<address>', methods=['GET'])
+def get_email(address):
+    return get(address, Email)
 
-    For user:anna, the request json should be like so:
-        {
-            'email': ['anna@gmail.com', 'anna@aol.com'],
-            'first_name': 'Anna',
-            'last_name': 'Zander'
-        }
 
-    For email:anna@cisco.com, the request json should be like so:
-        {'user': 'anna'}
+def gets(entity):
+    return jsonify([o.to_dict() for o in session.query(entity).all()])
 
+@app.route('/api/get/contacts', methods=['GET'])
+def get_contacts():
+    return gets(Contact)
+
+
+@app.route('/api/get/emails', methods=['GET'])
+def get_emails():
+    return gets(Email)
+
+
+def create(obj_factory):
+    """ Generic create which handles the HTTP response and DB but gives the 
+        request's json to obj_factory to build the particular object
     """
     if not request.json:
         abort(400, 'Bad request')
-    value = {jk: request.json[jk] for jk in request.json.keys()}
-    if key.startswith('user'):
-        for email in request.json.get('email', []):
-            rdb.set('email:{}'.format(email), key[key.index(':')+1:])
-        if 'email' in value:
-            del value['email']
-    rdb.set(key, json.dumps(value))
-    return json.dumps(value), 201
+    obj = obj_factory(request.json)
+    session.add(obj)
+    session.commit()
+    return request.json, 201
 
 
-@app.route('/api/delete/<key>', methods=['DELETE'])
-def delete_contact(key):
+@app.route('/api/create/contact', methods=['POST'])
+def create_contact():
     """
-    Generic delete where key can be 'user:abc' or 'email:f@g.com'
+    For contact, the request json should be like so:
+        {
+            'username': 'anna',
+            'first_name': 'Anna',
+            'last_name': 'Zander'
+        }
+        
     """
-    count = rdb.delete(key)
-    if not count:
-        return make_response(
-            jsonify({'error': 'Non-existant key'}), 409)
+    def make_contact(req_json):
+        return Contact(
+            username=req_json['username'],
+            first_name=req_json['first_name'],
+            last_name=req_json['last_name'])
+
+    return create(make_contact)
+
+
+@app.route('/api/create/email', methods=['POST'])
+def create_email():
+    """
+    The request json should be like so:
+        {
+            'username': 'anna',
+            'address': 'anna@cisco.com'
+        }
+
+    """
+    def make_email(req_json):
+        contact = Contact.get(req_json['username'])
+        return Email(
+            address=req_json['address'],
+            contact=contact)
+
+    return create(make_email)
+
+
+def delete(key, entity):
+    obj = session.query(entity).get(key)
+    if not obj:
+        abort(400, 'Invalid key')
+    session.delete(obj)
+    session.commit()
     return json.dumps({'result': True})
 
 
-@app.route('/api/update/<key>', methods=['PUT'])
-def update(key):
-    """
-    As with create, this expects a key:
-    'user:abc' or 'email:f@g.com'
+@app.route('/api/delete/contact/<username>', methods=['DELETE'])
+def delete_contact(username):
+    return delete(username, Contact)
 
-    For user:anna, the request json should have *some* of these fields
+
+@app.route('/api/delete/email/<address>', methods=['DELETE'])
+def delete_email(address):
+    return delete(address, Email)
+
+
+# No update for email - it's too short - delete and create a new one.
+@app.route('/api/update/contact/<username>', methods=['PUT'])
+def update_contact(username):
+    """
+    For username anna, the request json should have one or both fields
         {
-            'email': ['anna@gmail.com', 'anna@aol.com'],
             'first_name': 'Anna',
             'last_name': 'Zander'
         }
 
-    For email:anna@cisco.com, the request json should be like so:
-        {'user': 'anna'}
-
-    If an update is made to emails, old email addresses will not be deleted
     """
-    raw_json = rdb.get(key)
-    if not raw_json:
+    contact = session.query(Contact).get(username)
+    if not contact:
         abort(400, 'Bad key')
-    old_value = json.loads(raw_json)
-    all_keys = set(old_value.keys()).union(set(request.json.keys()))
-    value = {
-        jk: request.json.get(jk, old_value[jk])
-        for jk in all_keys}
-    if key.startswith('user') and 'email' in value:
-        del value['email']
-    rdb.set(key, json.dumps(value))
-    if key.startswith('user'):
-        for email in request.json['email']:
-            rdb.set('email:{}'.format(email), key[key.index(':')+1:])
-    return json.dumps(value)
+    contact.first_name = request.json.get('first_name', contact.first_name)
+    contact.last_name = request.json.get('last_name', contact.last_name)
+    session.commit()
+    return jsonify(contact.to_dict())
 
 
 if __name__ == '__main__':
