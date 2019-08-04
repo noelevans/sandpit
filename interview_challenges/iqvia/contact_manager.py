@@ -1,6 +1,6 @@
 from flask import Flask, request, abort, jsonify
 import json
-from sqlalchemy import create_engine, orm
+from sqlalchemy import create_engine, exc, orm
 
 from contact_model import Base, Contact, Email
 
@@ -8,7 +8,9 @@ from contact_model import Base, Contact, Email
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-engine = create_engine('sqlite:///contact_manager.db')
+engine = create_engine(
+    'sqlite:///contact_manager.db',
+    connect_args={'check_same_thread': False})
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
  
@@ -59,7 +61,14 @@ def create(obj_factory):
         abort(400, 'Bad request')
     obj = obj_factory(request.json)
     session.add(obj)
-    session.commit()
+    try:
+        session.commit()
+    except exc.InvalidRequestError as err:
+        app.logger.error('InvalidRequestError: Failed to create %s', 
+            obj.to_dict())
+        session.rollback()
+        session.flush()
+        return abort(500, 'Invalid request error')
     return request.json, 201
 
 
@@ -94,7 +103,7 @@ def create_email():
 
     """
     def make_email(req_json):
-        contact = Contact.get(req_json['username'])
+        contact = session.query(Contact).get(req_json['username'])
         return Email(
             address=req_json['address'],
             contact=contact)
