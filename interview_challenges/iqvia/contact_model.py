@@ -15,17 +15,18 @@ class Contact(Base):
     username = Column(String(128), primary_key=True)
     first_name = Column(String(128))
     last_name = Column(String(128))
-    emails = relationship('Email', back_populates='contact')
+    emails = relationship(
+        'Email', 
+        back_populates='contact',
+        cascade='all, delete, delete-orphan')
 
     def to_dict(self):
-        result = {
+        return {
             'username': self.username,
             'first_name': self.first_name,
-            'last_name': self.last_name}
-        result.update({
+            'last_name': self.last_name,
             'emails': [e.address for e in self.emails]
-        })
-        return result
+        }
 
  
 class Email(Base):

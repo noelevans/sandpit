@@ -56,6 +56,13 @@ def test_create(client):
                 'last_name': 'Zander'}))
         assert sm.add.called_with(CONTACTS['anna'])
 
+        client.post(
+            '/api/create/email', 
+            data=json.dumps({
+                'username': 'anna', 
+                'address': 'anna@hotmail.com'}))
+        assert sm.add.called_with(CONTACTS['anna'])
+
 
 def test_delete_contact(client):
     with mock.patch('contact_manager.session') as sm:
