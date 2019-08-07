@@ -7,6 +7,10 @@ import requests
 import time
 import unicornhat
 
+"""
+Need to first run 
+    curl -sS https://get.pimoroni.com/unicornhat | bash
+"""
 
 LINES = ['central',  'circle',
          'central',  'circle',
@@ -112,11 +116,14 @@ def main():
     parser.add_argument('--init_wait', type=int, default=0)
     args = parser.parse_args()
     time.sleep(args.init_wait)
+    start = datetime.datetime.now()
 
     while True:
         status = layout(tube_status())
         update_hat(status)
         time.sleep(300)
+        if (datetime.datetime.now() - start).seconds > 60*60*24 - 10 * 60:
+            return
 
 
 if __name__ == '__main__':
