@@ -116,13 +116,12 @@ def main():
     parser.add_argument('--init_wait', type=int, default=0)
     args = parser.parse_args()
     time.sleep(args.init_wait)
-    start = datetime.datetime.now()
 
     while True:
         status = layout(tube_status())
         update_hat(status)
         time.sleep(300)
-        if (datetime.datetime.now() - start).seconds > 60*60*24 - 10 * 60:
+        if time.localtime().tm_hour == 23:
             return
 
 
