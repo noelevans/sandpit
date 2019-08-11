@@ -13,3 +13,4 @@ ln -s ~/repo/sandpit/matplotlibrc .config/matplotlib/matplotlibrc
 ln -s ~/repo/sandpit/.vimrc ~/.vimrc
 ln -s ~/repo/sandpit/.gitconfig ~/.gitconfig
 ln -s ~/repo/sandpit/.bashrc ~/.bashrc
+ln -s ~/repo/sandpit/.cocnvimrc ~/.cocnvimrc

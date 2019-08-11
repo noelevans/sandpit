@@ -1,35 +1,26 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'itchyny/lightline.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-startify'
+Plug 'sjl/gundo.vim'
+Plug 'alfredodeza/pytest.vim'
+Plug 'w0rp/ale'
+Plug 'jpalardy/vim-slime'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'itchyny/lightline.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'mhinz/vim-startify'
-Plugin 'sjl/gundo.vim'
+call plug#end()
 
-" Plugin 'w0rp/ale'
-" Plugin 'neoclide/coc.nvim'
-
-" After updating plugins, do:
-"   :PluginUpdate
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Put your non-Plugin stuff after this line
-
+filetype on
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -97,6 +88,8 @@ set tabstop=4
 set ai "Auto indent
 set wrap "Wrap lines
 
+let g:ale_enabled = 0
+
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
@@ -141,6 +134,31 @@ endif
 " Necessary for python-mode plugin to supress red 80 chars marker
 hi ColorColumn ctermbg=8
 
+" Backup settings from
+" https://begriffs.com/posts/2019-07-19-history-use-vim.html?hn=3
+
+" Protect changes between writes. Default values of
+" updatecount (200 keystrokes) and updatetime
+" (4 seconds) are fine
+set swapfile
+set directory^=~/.vim/swap//
+
+" protect against crash-during-write
+set writebackup
+" but do not persist backup after successful write
+set nobackup
+" use rename-and-write-new method whenever safe
+set backupcopy=auto
+" patch required to honor double slash at end
+if has("patch-8.1.0251")
+	" consolidate the writebackups -- not a big
+		" deal either way, since they usually get deleted
+			set backupdir^=~/.vim/backup//
+			end
+" persist the undo tree for each file
+set undofile
+set undodir^=~/.vim/undo//
+
 
 noremap <Up> <Nop>
 noremap <Down> <Nop>
@@ -163,6 +181,13 @@ function! FixLastSpellingError()
 endfunction
 nnoremap <leader>sp :call FixLastSpellingError()<cr>
 
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+nnoremap <leader>wspace :call TrimWhitespace()<cr>
+
 " Toggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
@@ -171,10 +196,18 @@ nnoremap <leader>h :nohl<cr>
 nnoremap <leader>lint :ALEToggle<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 nnoremap <leader>u :GundoToggle<CR>
-nnoremap <leader>- :vert edit %:h<cr>
+nnoremap <leader>- :Lex %:h<cr>
+nnoremap <leader>gb :ls<CR>:b<Space>
+nnoremap <leader>v :vert sfind
+nnoremap <leader>gg :vimgrep \\ **/*.py | clist 
+"repeat("<Left>", 16)
+
+nmap <silent><Leader>f <Esc>:Pytest file<CR>
+nmap <silent><Leader>c <Esc>:Pytest class<CR>
+nmap <silent><Leader>m <Esc>:Pytest method<CR>
 
 
-let g:netrw_winsize = -28               " absolute width of netrw window
+let g:netrw_winsize = 28                " absolute width of netrw window
 let g:netrw_banner = 0                  " do not display info on the top of window
 let g:netrw_liststyle = 3               " tree-view
 let g:netrw_sort_sequence = '[\/]$,*'   " sort is affecting only: directories on the top, files below
@@ -186,3 +219,5 @@ if has('nvim')
     set inccommand=nosplit
     tnoremap <Esc> <C-\><C-n>
 endif
+
+source ~/.cocnvimrc
