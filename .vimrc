@@ -16,7 +16,7 @@ Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
 Plug 'w0rp/ale'
 Plug 'jpalardy/vim-slime'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-python'}
 
 call plug#end()
 
@@ -55,7 +55,6 @@ set showmatch
 " Tenths of second to blink when matching brackets
 set mat=2
 
-" No annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
@@ -98,7 +97,7 @@ else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
-hi CursorLine term=bold cterm=bold guibg=Grey40
+" hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " Enable syntax highlighting
 syntax enable 
@@ -124,15 +123,7 @@ augroup vimrc_autocmds
   autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
 
-" Quickly open a markdown buffer for scribble
-"map <leader>x :e ~/buffer.md<cr>
-
-if has('unix')
-    set clipboard=unnamedplus
-endif
-
-" Necessary for python-mode plugin to supress red 80 chars marker
-hi ColorColumn ctermbg=8
+" hi ColorColumn ctermbg=8
 
 " Backup settings from
 " https://begriffs.com/posts/2019-07-19-history-use-vim.html?hn=3
@@ -167,6 +158,12 @@ noremap <Right> <Nop>
 noremap <PageUp> <Nop>
 noremap <PageDown> <Nop>
 
+
+nnoremap <Left> :bprevious<CR>
+nnoremap <Right> :bnext<CR>
+nnoremap <C-Left> :cprevious<CR>
+nnoremap <C-Right> :cnext<CR>
+
 let mapleader="\<Space>"
 
 " :W sudo saves the file 
@@ -199,8 +196,7 @@ nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>- :Lex %:h<cr>
 nnoremap <leader>gb :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
-nnoremap <leader>gg :vimgrep \\ **/*.py | clist 
-"repeat("<Left>", 16)
+nnoremap <leader>gg :vimgrep  **/*.py \| clist<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
