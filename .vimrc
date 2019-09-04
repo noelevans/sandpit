@@ -196,7 +196,7 @@ nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>- :Lex %:h<cr>
 nnoremap <leader>gb :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
-nnoremap <leader>gg :vimgrep // **/*.py \| clist \| cc<C-R>=setcmdpos(10)<CR><BS>
+nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
 
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
