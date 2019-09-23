@@ -6,7 +6,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'     " Git tools
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'itchyny/lightline.vim'
@@ -14,9 +14,11 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
-Plug 'w0rp/ale'
-Plug 'jpalardy/vim-slime'
+" Plug 'w0rp/ale'
+" Plug 'jpalardy/vim-slime'      " Copying code to another tmux pane for repl interaction
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-python'}
+Plug 'nanotech/jellybeans.vim'
+Plug 'kalekundert/vim-coiled-snake'
 
 call plug#end()
 
@@ -102,28 +104,11 @@ endif
 " Enable syntax highlighting
 syntax enable 
 
-try
-    colorscheme torte
-catch
-endtry
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-"map <leader>e :edit <c-r>=expand("%:p:h")<cr>/
-
-" Switch CWD to the directory of the open buffer
-"map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Return to last edit position when opening files (You want this!)
-"au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
 " Mark lines going past 80 characters
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
   autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
-
-" hi ColorColumn ctermbg=8
 
 " Backup settings from
 " https://begriffs.com/posts/2019-07-19-history-use-vim.html?hn=3
@@ -189,7 +174,7 @@ nnoremap <leader>wspace :call TrimWhitespace()<cr>
 map <leader>ss :setlocal spell!<cr>
 
 nnoremap <leader>sop :source %<cr>
-nnoremap <leader>h :nohl<cr>
+nnoremap <leader>h :set hlsearch!<cr>
 nnoremap <leader>lint :ALEToggle<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 nnoremap <leader>u :GundoToggle<CR>
