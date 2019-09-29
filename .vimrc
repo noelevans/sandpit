@@ -11,7 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
 " Plug 'w0rp/ale'
@@ -19,6 +19,9 @@ Plug 'alfredodeza/pytest.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-python'}
 Plug 'nanotech/jellybeans.vim'
 Plug 'kalekundert/vim-coiled-snake'
+Plug 'xolox/vim-misc'            " Dependency of vim-session
+Plug 'xolox/vim-session'
+Plug 'ntpeters/vim-better-whitespace'
 
 call plug#end()
 
@@ -34,7 +37,7 @@ set autowrite
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
-let $LANG='en' 
+let $LANG='en'
 set langmenu=en
 
 " Turn on the Wild menu
@@ -46,13 +49,13 @@ set ruler
 set hidden
 set smartcase
 set hlsearch
-set incsearch 
+set incsearch
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 
 " Show matching brackets under cursor
-set showmatch 
+set showmatch
 
 " Tenths of second to blink when matching brackets
 set mat=2
@@ -67,9 +70,11 @@ set showcmd
 set undofile     " Persistent undo
 set number
 set relativenumber
+set splitright
+set splitbelow
 
 " Allows you to do 'gf' on config which opens config.py
-set suffixesadd=.py 
+set suffixesadd=.py
 
 " Add a bit extra margin to the left
 " set foldcolumn=1
@@ -102,7 +107,7 @@ endif
 " hi CursorLine term=bold cterm=bold guibg=Grey40
 
 " Enable syntax highlighting
-syntax enable 
+syntax enable
 
 " Mark lines going past 80 characters
 augroup vimrc_autocmds
@@ -151,7 +156,7 @@ nnoremap <C-Right> :cnext<CR>
 
 let mapleader="\<Space>"
 
-" :W sudo saves the file 
+" :W sudo saves the file
 " (useful for handling the permission-denied error)
 "command W w !sudo tee % > /dev/null
 
@@ -174,7 +179,8 @@ nnoremap <leader>wspace :call TrimWhitespace()<cr>
 map <leader>ss :setlocal spell!<cr>
 
 nnoremap <leader>sop :source %<cr>
-nnoremap <leader>h :set hlsearch!<cr>
+" nnoremap <leader>h :set hlsearch!<cr>
+nnoremap <leader>h :nohlsearch<cr>
 nnoremap <leader>lint :ALEToggle<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 nnoremap <leader>u :GundoToggle<CR>
@@ -195,6 +201,12 @@ let g:netrw_sort_sequence = '[\/]$,*'   " sort is affecting only: directories on
 let g:netrw_browse_split = 4            " use the previous window to open file
 
 let g:gundo_prefer_python3 = 1
+
+let g:session_autosave="yes"
+let g:session_autoload="yes"
+
+let g:better_whitespace_enabled=1
+" let g:strip_whitespace_on_save=1
 
 if has('nvim')
     set inccommand=nosplit
