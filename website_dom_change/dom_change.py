@@ -3,6 +3,8 @@ from typing import Callable
 from bs4 import BeautifulSoup
 import requests
 
+import email
+
 
 @dataclass
 class Monitor:
@@ -20,18 +22,24 @@ MONITORS = [
 ]
 
 
-def alert():
-    pass
+def alert(name, before, after):
+    email.send(name, 'Before: {}\n\nAfter: {}'.format(before, after))
 
 
 def main():
     for m in MONITORS:
         filename = m.name.replace(' ', '_').lower() + '.txt'
-        old_text = open(filename).read()
-        soup = BeautifulSoup(requests.get(m.url).content)
-        current_text = m.dom_obj(soup)
-        if old_text != current_text:
-            alert(m)
+        try:
+            old_text = open(filename).read()
+        except FileNotFoundError:
+            old_text = None
+
+        soup = BeautifulSoup(requests.get(m.url).content, features='lxml')
+        current_text_raw = m.dom_obj(soup)
+        current_text = current_text_raw.replace('\\n', ' ').strip()
+
+        if old_text != current_text and old_text is not None:
+            alert(m.name, old_text, current_text)
 
         # Write to file each time to assure code is being run
         with open(filename, 'w') as f:
