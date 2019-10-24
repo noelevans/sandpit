@@ -24,6 +24,7 @@ MONITORS = [
 
 def alert(name, before, after):
     email.send(name, 'Before: {}\n\nAfter: {}'.format(before, after))
+    print('Email sent for {}'.format(name))
 
 
 def main():
