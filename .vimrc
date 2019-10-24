@@ -6,7 +6,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Plug 'tpope/vim-fugitive'     " Git tools
+Plug 'tpope/vim-fugitive'     " Git tools
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'itchyny/lightline.vim'
