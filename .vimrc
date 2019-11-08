@@ -47,6 +47,7 @@ set wildmenu
 "Always show current position
 set ruler
 set hidden
+set ignorecase
 set smartcase
 set hlsearch
 set incsearch
