@@ -16,7 +16,8 @@ df = pd.read_csv('statement.csv')
 conversions = json.load(open('description_conversion.json'))
 output = df[['Date']]
 output['Type'] = df.apply(fn, axis=1)
-output['Description'] = (df['Counter Party'] + ' ' + df['Reference']).replace(conversions)
+description = (df['Counter Party'] + ' ' + df['Reference'])
+output['Description'] = description.replace(conversions)
 output['Paid Out'] = df['Amount (GBP)'].copy()
 output['Paid In'] = df['Amount (GBP)'].copy()
 output['Paid Out'] = output['Paid Out'] * -1
