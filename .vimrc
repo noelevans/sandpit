@@ -155,6 +155,8 @@ nnoremap <Right> :bnext<CR>
 nnoremap <C-Left> :cprevious<CR>
 nnoremap <C-Right> :cnext<CR>
 
+imap hh <Esc>
+
 let mapleader="\<Space>"
 
 " :W sudo saves the file
@@ -213,5 +215,7 @@ if has('nvim')
     set inccommand=nosplit
     tnoremap <Esc> <C-\><C-n>
 endif
+
+abbreviate breakpoint import pdb; pdb.set_trace()
 
 source ~/.cocnvimrc

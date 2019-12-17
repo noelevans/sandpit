@@ -19,8 +19,9 @@
     added = yellow
     changed = green
     untracked = cyan
-
 [core]
     pager =
 	editor = vim
-
+[alias]
+    st = status
+    log = log --decorate --oneline --graph
