@@ -18,10 +18,13 @@ Plug 'alfredodeza/pytest.vim'
 " Plug 'jpalardy/vim-slime'      " Copying code to another tmux pane for repl interaction
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-python'}
 Plug 'nanotech/jellybeans.vim'
-Plug 'kalekundert/vim-coiled-snake'
+" Plug 'kalekundert/vim-coiled-snake'
 Plug 'xolox/vim-misc'            " Dependency of vim-session
 Plug 'xolox/vim-session'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'rrethy/vim-illuminate'
+Plug 'mileszs/ack.vim'
+Plug 'majutsushi/tagbar'
 
 call plug#end()
 
@@ -106,6 +109,7 @@ else
 endif
 
 " hi CursorLine term=bold cterm=bold guibg=Grey40
+hi link illuminatedWord Visual
 
 " Enable syntax highlighting
 syntax enable
@@ -195,6 +199,7 @@ nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=s
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
+nmap <F8> :TagbarToggle<CR>
 
 
 let g:netrw_winsize = 28                " absolute width of netrw window
