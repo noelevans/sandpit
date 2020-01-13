@@ -24,6 +24,7 @@ Plug 'xolox/vim-session'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'rrethy/vim-illuminate'
 Plug 'mileszs/ack.vim'
+" Plug 'liuchengxu/vista.vim'
 Plug 'majutsushi/tagbar'
 
 call plug#end()
@@ -200,7 +201,6 @@ nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
 nmap <F8> :TagbarToggle<CR>
-
 
 let g:netrw_winsize = 28                " absolute width of netrw window
 let g:netrw_banner = 0                  " do not display info on the top of window
