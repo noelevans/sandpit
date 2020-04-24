@@ -1,5 +1,6 @@
 #!/bin/sh
 
+mkdir ~/.vim
 mkdir ~/.vim/swap
 mkdir ~/.vim/backup
 mkdir ~/.vim/undo
