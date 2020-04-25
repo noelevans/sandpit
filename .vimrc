@@ -26,6 +26,8 @@ Plug 'rrethy/vim-illuminate'
 Plug 'mileszs/ack.vim'
 " Plug 'liuchengxu/vista.vim'
 Plug 'majutsushi/tagbar'
+Plug 'psf/black'
+" Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -121,6 +123,8 @@ augroup vimrc_autocmds
   autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
 
+autocmd BufWritePost *.py execute ':Black'
+
 " Backup settings from
 " https://begriffs.com/posts/2019-07-19-history-use-vim.html?hn=3
 
@@ -196,6 +200,8 @@ nnoremap <leader>- :Lex %:h<cr>
 nnoremap <leader>gb :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
 nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
+
+inoremap jh <Esc>
 
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
