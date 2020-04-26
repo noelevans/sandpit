@@ -100,6 +100,7 @@ set tabstop=4
 
 set ai "Auto indent
 set wrap "Wrap lines
+set clipboard+=unnamedplus
 
 let g:ale_enabled = 0
 
@@ -202,6 +203,18 @@ nnoremap <leader>v :vert sfind
 nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
 
 inoremap jh <Esc>
+
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy   " Necessary?
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
