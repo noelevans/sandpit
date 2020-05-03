@@ -11,7 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
-" Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
 " Plug 'w0rp/ale'
@@ -27,7 +27,9 @@ Plug 'mileszs/ack.vim'
 " Plug 'liuchengxu/vista.vim'
 Plug 'majutsushi/tagbar'
 Plug 'psf/black'
-" Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'takac/vim-hardtime'
 
 call plug#end()
 
@@ -76,7 +78,7 @@ set tags=tags
 set showcmd
 set undofile     " Persistent undo
 set number
-set relativenumber
+" set relativenumber
 set splitright
 set splitbelow
 
@@ -100,7 +102,7 @@ set tabstop=4
 
 set ai "Auto indent
 set wrap "Wrap lines
-set clipboard+=unnamedplus
+set clipboard=unnamedplus
 
 let g:ale_enabled = 0
 
@@ -194,11 +196,9 @@ map <leader>ss :setlocal spell!<cr>
 nnoremap <leader>sop :source %<cr>
 " nnoremap <leader>h :set hlsearch!<cr>
 nnoremap <leader>h :nohlsearch<cr>
-nnoremap <leader>lint :ALEToggle<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
-nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>- :Lex %:h<cr>
-nnoremap <leader>gb :ls<CR>:b<Space>
+nnoremap <leader>b :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
 nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
 
@@ -215,6 +215,12 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
+
+" resize window CTRL+(h|j|k|l)
+noremap <C-j> :resize +1<CR>
+noremap <C-k> :resize -1<CR>
+noremap <C-h> :vertical resize -1<CR>
+noremap <C-l> :vertical resize +1<CR>
 
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
@@ -234,6 +240,8 @@ let g:session_autoload="yes"
 
 let g:better_whitespace_enabled=1
 " let g:strip_whitespace_on_save=1
+
+let g:hardtime_default_on = 1
 
 if has('nvim')
     set inccommand=nosplit
