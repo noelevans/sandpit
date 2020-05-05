@@ -5,10 +5,12 @@ import pandas as pd
 def fn(row):
     if row['Type'] == 'DIRECT DEBIT':
         return 'DD'
-    if row['Type'] == 'DIRECT CREDIT' or row['Spending Category'] == 'INCOME':
+    if (row['Type'] == 'DIRECT CREDIT' or 
+            row['Spending Category'] in ('INCOME', 'REVENUE')):
         return 'BP'
     if row['Amount (GBP)'] < 0:
         return 'SO'
+    print(row)
     raise Exception('Unintended state')
 
 
@@ -16,8 +18,7 @@ df = pd.read_csv('statement.csv')
 conversions = json.load(open('description_conversion.json'))
 output = df[['Date']]
 output['Type'] = df.apply(fn, axis=1)
-description = (df['Counter Party'] + ' ' + df['Reference'])
-output['Description'] = description.replace(conversions)
+output['Description'] = (df['Counter Party'] + ' ' + df['Reference']).replace(conversions)
 output['Paid Out'] = df['Amount (GBP)'].copy()
 output['Paid In'] = df['Amount (GBP)'].copy()
 output['Paid Out'] = output['Paid Out'] * -1
