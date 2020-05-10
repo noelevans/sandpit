@@ -20,6 +20,8 @@ def update(lines):
 
 
 def email(delays):
+    # While tube is on shuttle service, don't email
+    return
     os.chdir(sys.path[0])
     with open('curl_raw_command.sh') as f:
         raw_command = f.read()
