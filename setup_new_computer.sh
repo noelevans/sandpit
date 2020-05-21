@@ -17,3 +17,4 @@ ln -s ~/repo/sandpit/.vimrc ~/.config/nvim/init.vim
 ln -s ~/repo/sandpit/.gitconfig ~/.gitconfig
 ln -s ~/repo/sandpit/.bashrc ~/.bashrc
 ln -s ~/repo/sandpit/.cocnvimrc ~/.cocnvimrc
+ln -s ~/repo/sandpit/coc-settings.json ~/.config/nvim/coc-settings.json
