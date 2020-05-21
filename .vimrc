@@ -14,7 +14,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
-" Plug 'w0rp/ale'
 " Plug 'jpalardy/vim-slime'      " Copying code to another tmux pane for repl interaction
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-python'}
 Plug 'nanotech/jellybeans.vim'
@@ -26,10 +25,11 @@ Plug 'rrethy/vim-illuminate'
 Plug 'mileszs/ack.vim'
 " Plug 'liuchengxu/vista.vim'
 Plug 'majutsushi/tagbar'
-Plug 'psf/black'
+Plug 'psf/black', { 'tag': '19.10b0' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'takac/vim-hardtime'
+Plug 'puremourning/vimspector'
 
 call plug#end()
 
@@ -102,9 +102,7 @@ set tabstop=4
 
 set ai "Auto indent
 set wrap "Wrap lines
-set clipboard=unnamedplus
-
-let g:ale_enabled = 0
+set clipboard+=unnamedplus
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
@@ -122,8 +120,8 @@ syntax enable
 
 " Mark lines going past 80 characters
 augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#111111
-  autocmd BufEnter * match OverLength /\%80v.*/
+  autocmd BufEnter *.py highlight OverLength ctermbg=darkgrey guibg=#111111
+  autocmd BufEnter *.py match OverLength /\%80v.*/
 augroup END
 
 autocmd BufWritePost *.py execute ':Black'
@@ -248,6 +246,6 @@ if has('nvim')
     tnoremap <Esc> <C-\><C-n>
 endif
 
-abbreviate breakpoint import pdb; pdb.set_trace()
+abbreviate bp import pdb; pdb.set_trace()
 
 source ~/.cocnvimrc
