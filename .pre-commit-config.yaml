@@ -1,0 +1,8 @@
+- repo: local
+  hooks:
+    - id: file-fixer
+      name: file-fixer
+      types: [python]
+      pass_filenames: true
+      entry: file_tidy.sh
+      language: script
