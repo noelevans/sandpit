@@ -4,5 +4,5 @@
       name: file-fixer
       types: [python]
       pass_filenames: true
-      entry: file_tidy.sh
+      entry: file_fixer.sh
       language: script
