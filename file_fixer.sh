@@ -1,9 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
 
 # Remove pdb uses
-sed -i '/.*import pdb/d' $1
-sed -i '/.*pdb.set_trace/d' $1
+if grep -q "import .*pdb" $1; then
+    sed -i '/.*import .*pdb/d' $1
+fi
+if grep -q "pdb.set_trace" $1; then
+    sed -i '/.*pdb.set_trace/d' $1
+fi
 
-isort $1
-black $1
+# Get rid of unused imports
+if ! autoflake --check $1; then
+    autoflake --in-place $1
+fi
+
+# Format module
+if ! black --check $1; then
+    black $1
+fi
+
