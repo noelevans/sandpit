@@ -11,7 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
 Plug 'alfredodeza/pytest.vim'
 " Plug 'jpalardy/vim-slime'      " Copying code to another tmux pane for repl interaction
@@ -24,12 +24,13 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'rrethy/vim-illuminate'
 Plug 'mileszs/ack.vim'
 " Plug 'liuchengxu/vista.vim'
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 Plug 'psf/black', { 'tag': '19.10b0' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'takac/vim-hardtime'
-Plug 'puremourning/vimspector'
+" Plug 'puremourning/vimspector'
+Plug 'gioele/vim-autoswap'
 
 call plug#end()
 
