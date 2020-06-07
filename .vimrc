@@ -9,7 +9,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'     " Git tools
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 " Plug 'mhinz/vim-startify'
 Plug 'sjl/gundo.vim'
@@ -22,13 +22,13 @@ Plug 'xolox/vim-misc'            " Dependency of vim-session
 Plug 'xolox/vim-session'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'rrethy/vim-illuminate'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 " Plug 'liuchengxu/vista.vim'
 " Plug 'majutsushi/tagbar'
 Plug 'psf/black', { 'tag': '19.10b0' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'takac/vim-hardtime'
+" Plug 'takac/vim-hardtime'
 " Plug 'puremourning/vimspector'
 Plug 'gioele/vim-autoswap'
 
@@ -240,7 +240,7 @@ let g:session_autoload="yes"
 let g:better_whitespace_enabled=1
 " let g:strip_whitespace_on_save=1
 
-let g:hardtime_default_on = 1
+" let g:hardtime_default_on = 1
 
 if has('nvim')
     set inccommand=nosplit

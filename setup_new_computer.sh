@@ -18,3 +18,4 @@ ln -s ~/repo/sandpit/.gitconfig ~/.gitconfig
 ln -s ~/repo/sandpit/.bashrc ~/.bashrc
 ln -s ~/repo/sandpit/.cocnvimrc ~/.cocnvimrc
 ln -s ~/repo/sandpit/coc-settings.json ~/.config/nvim/coc-settings.json
+ln -s ~/repo/sandpit/.pdbrc.py ~/.pdbrc.py
