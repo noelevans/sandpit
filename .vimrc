@@ -202,6 +202,7 @@ nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 nnoremap <leader>b :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
 nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
+nnoremap <leader>f :FZF -q <C-R><C-W><CR>
 
 " resize window CTRL+(h|j|k|l)
 noremap <C-j> :resize +1<CR>
