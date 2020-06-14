@@ -124,10 +124,10 @@ hi link illuminatedWord Visual
 " Enable syntax highlighting
 syntax enable
 
-" Mark lines going past 80 characters
+" Mark lines going past 88 characters
 augroup vimrc_autocmds
   autocmd BufEnter *.py highlight OverLength ctermbg=darkgrey guibg=#111111
-  autocmd BufEnter *.py match OverLength /\%80v.*/
+  autocmd BufEnter *.py match OverLength /\%88v.*/
 augroup END
 
 autocmd BufWritePost *.py execute ':Black'
@@ -204,11 +204,13 @@ nnoremap <leader>v :vert sfind
 nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
 nnoremap <leader>f :FZF -q <C-R><C-W><CR>
 
-" resize window CTRL+(h|j|k|l)
-noremap <C-j> :resize +1<CR>
-noremap <C-k> :resize -1<CR>
-noremap <C-h> :vertical resize -1<CR>
-noremap <C-l> :vertical resize +1<CR>
+nnoremap <C-l> <C-i>
+
+" " resize window CTRL+(h|j|k|l)
+" noremap <C-j> :resize +1<CR>
+" noremap <C-k> :resize -1<CR>
+" noremap <C-h> :vertical resize -1<CR>
+" noremap <C-l> :vertical resize +1<CR>
 
 " nmap <silent><Leader>f <Esc>:Pytest file<CR>
 " nmap <silent><Leader>c <Esc>:Pytest class<CR>
@@ -240,5 +242,8 @@ abbreviate bp import pdb; pdb.set_trace()
 
 " :vertical ball
 " :ball
+
+" let g:airline_section_x = ''
+" let g:airline_section_z = ''
 
 source ~/.cocnvimrc
