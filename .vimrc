@@ -243,7 +243,7 @@ abbreviate bp import pdb; pdb.set_trace()
 " :vertical ball
 " :ball
 
-" let g:airline_section_x = ''
-" let g:airline_section_z = ''
+let g:airline_section_x = ''
+let g:airline_section_z = ''
 
 source ~/.cocnvimrc
