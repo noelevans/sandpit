@@ -41,6 +41,8 @@ filetype on
 
 let g:OmniSharp_server_stdio = 1  " For c-sharp, using Ctrl-x o to auto-complete
 
+colorscheme jellybeans
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
