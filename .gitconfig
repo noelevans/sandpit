@@ -22,6 +22,7 @@
 [core]
     pager =
 	editor = vim
+	excludesfile = /home/noel/.gitignore
 [alias]
     st = status
     log = log --decorate --oneline --graph
