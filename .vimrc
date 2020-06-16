@@ -41,6 +41,8 @@ filetype on
 
 let g:OmniSharp_server_stdio = 1  " For c-sharp, using Ctrl-x o to auto-complete
 
+colorscheme jellybeans
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -243,7 +245,7 @@ abbreviate bp import pdb; pdb.set_trace()
 " :vertical ball
 " :ball
 
-" let g:airline_section_x = ''
-" let g:airline_section_z = ''
+let g:airline_section_x = ''
+let g:airline_section_z = ''
 
 source ~/.cocnvimrc
