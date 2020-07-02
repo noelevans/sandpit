@@ -9,6 +9,8 @@ mkdir -p ~/.config/nvim
 mkdir ~/repo/
 (cd /home/repo/; git clone https://github.com/noelevans/sandpit.git)
 
+git clone --bare https://github.com/noelevans/dotfiles
+
 ln -s ~/repo/sandpit/pylint ~/.pylintrc
 ln -s ~/repo/sandpit/start_ipython.py  ~/.ipython/profile_default/startup/start_ipython.py
 ln -s ~/repo/sandpit/matplotlibrc .config/matplotlib/matplotlibrc
