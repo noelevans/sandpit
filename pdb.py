@@ -1183,7 +1183,7 @@ except for when using the function decorator.
         filepath = os.path.abspath(frame.f_code.co_filename)
         if not filepath:
             return True
-        if not filepath.endswith('.py'):
+        if not re.search('.pyi?$', filepath):
             return False
         import distutils
         python_paths = filter(None, distutils.sys.path[1:])
