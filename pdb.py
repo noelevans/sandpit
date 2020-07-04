@@ -1179,22 +1179,16 @@ except for when using the function decorator.
                 break
             removed_bdb_context = removed_bdb_context.__context__
 
-    def _is_library_code(self, path):
-        import distutils.sysconfig
-        std_python_path = distutils.sysconfig.get_python_lib(standard_lib=True)
-        return path.startswith(std_python_path)
-
     def stop_here(self, frame):
         filepath = os.path.abspath(frame.f_code.co_filename)
         if not filepath:
             return True
-        if 'site-packages' in filepath:
+        if not filepath.endswith('.py'):
             return False
-        if self._is_library_code(filepath):
+        import distutils
+        python_paths = filter(None, distutils.sys.path[1:])
+        if any(filepath.startswith(path) for path in python_paths):
             return False
-        if not frame.f_code.co_filename.endswith('.py'):
-            return False
-        print(frame.f_code.co_filename)
         return True
 
 
