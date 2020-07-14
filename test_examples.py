@@ -10,7 +10,11 @@ def fake_get(url, headers=None):
 
 @mock.patch('org.company.frobnicator.requests.get', side_effect=fake_get)
 def test_queries(requests_get):
-    """Shows how requests.get is mocked in a test"""
+    """ Shows how requests.get is mocked in a test.
+
+        NB:
+        requests is not instantiated in a constructor
+    """
     Frobnicator().queries()
 
 
