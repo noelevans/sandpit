@@ -1,28 +1,18 @@
 {
     "python.jediEnabled": false,
-    "MPLS": {
-      "command": "dotnet",
-      "args": [
-        "exec",
-        "/home/noel/repo/python-language-server/output/bin/Debug/Microsoft.Python.LanguageServer.dll"
-      ],
-      "trace.server": "verbose",
-      "filetypes": ["python"],
-      "initializationOptions": {
-        "interpreter": {
-          "properties": {
-            "InterpreterPath": "/usr/bin/python3",
-            "Version": "3.7",
-            "DatabasePath": "/home/noel/repo/python-language-server/output/bin/Debug/"
-          }
-        },
-        "searchPaths": [
-          "/usr/bin/python3",
-          "/usr/local/bin"
-        ],
-        "testEnvironment": false,
-        "analysisUpdates": true,
-        "asyncStartup": true
-      }
+    "pylance": {
+    "enable": true,
+    "filetypes": ["python"],
+    "module": "/home/noel/.vscode/extensions/ms-python.vscode-pylance-2020.7.3/server/server.bundle.js",
+    "initializationOptions": {},
+    "settings": {
+        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.diagnosticMode": "openFilesOnly",
+        "python.analysis.stubPath": "./typings",
+        "python.analysis.autoSearchPaths": true,
+        "python.analysis.extraPaths": [],
+        "python.analysis.diagnosticSeverityOverrides": {},
+        "python.analysis.useLibraryCodeForTypes": true
     }
+}
 }
