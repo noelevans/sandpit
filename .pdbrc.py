@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 class Config(pdb.DefaultConfig):
+    just_my_code = True
     sticky_by_default = True
 
 history_path = os.path.expanduser("~/.pdb_history")
@@ -20,7 +21,7 @@ Path(history_path).touch()
 def save_history(history_path=history_path):
     readline.write_history_file(history_path)
 
-    
+
 if os.path.exists(history_path):
     readline.read_history_file(history_path)
 

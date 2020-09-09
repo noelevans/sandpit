@@ -31,6 +31,7 @@ Plug 'junegunn/fzf.vim'
 " Plug 'takac/vim-hardtime'
 " Plug 'puremourning/vimspector'
 Plug 'gioele/vim-autoswap'
+Plug 'mhinz/vim-grepper'
 
 Plug 'OmniSharp/omnisharp-vim'    " For c-sharp
 Plug 'dense-analysis/ale'         " For c-sharp
@@ -132,7 +133,8 @@ augroup vimrc_autocmds
   autocmd BufEnter *.py match OverLength /\%88v.*/
 augroup END
 
-autocmd BufWritePost *.py execute ':Black'
+" autocmd BufWritePost *.py execute ':Black'
+" autocmd BufWritePost *.py execute ':OR | !autoflake --in-place % | Black'
 
 " Backup settings from
 " https://begriffs.com/posts/2019-07-19-history-use-vim.html?hn=3
@@ -179,6 +181,11 @@ let mapleader="\<Space>"
 " (useful for handling the permission-denied error)
 "command W w !sudo tee % > /dev/null
 
+" The echo comamnd tells you the id of the terminal running in nvim
+" You can then use the id to call something like the restart command below
+" :echo b:terminal_job_id
+:command! Restart call jobsend(1, "\<C-c>npm run server\<CR>")
+
 " Correct spelling error on this line with first dictionary choice
 "nnoremap <leader>sp :normal! mf[s1z=`f<cr>
 " or...
@@ -193,7 +200,7 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 nnoremap <leader>wspace :call TrimWhitespace()<cr>
-
+ 
 " Toggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
@@ -203,11 +210,11 @@ nnoremap <leader>h :nohlsearch<cr>
 nnoremap <leader>r :%s/<C-r><C-w>//g<Left><Left>
 nnoremap <leader>b :ls<CR>:b<Space>
 nnoremap <leader>v :vert sfind
-nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
+" nnoremap <leader>gg :vimgrep // **/*.py \| clist \| call feedkeys(":cc ")<C-R>=setcmdpos(10)<CR><BS>
 nnoremap <leader>f :FZF -q <C-R><C-W><CR>
 
 nnoremap <C-l> <C-i>
-
+ 
 " " resize window CTRL+(h|j|k|l)
 " noremap <C-j> :resize +1<CR>
 " noremap <C-k> :resize -1<CR>
@@ -245,7 +252,7 @@ abbreviate bp import pdb; pdb.set_trace()
 " :vertical ball
 " :ball
 
-let g:airline_section_x = ''
-let g:airline_section_z = ''
+" let g:airline_section_x = ''
+" let g:airline_section_z = ''
 
 source ~/.cocnvimrc

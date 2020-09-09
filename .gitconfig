@@ -25,6 +25,7 @@
     excludesfile = /home/noel/.gitignore
 [alias]
     st = status
+    co = checkout
     log = log --decorate --oneline --graph
     hide = update-index –skip-worktree
     unhide = update-index –no-skip-worktree
