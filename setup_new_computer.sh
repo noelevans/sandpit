@@ -1,22 +1,19 @@
 #!/bin/sh
 
-mkdir ~/.vim
-mkdir ~/.vim/swap
-mkdir ~/.vim/backup
-mkdir ~/.vim/undo
-mkdir -p ~/.config/nvim
+mkdir -p ~/.vim/swap
+mkdir -p ~/.vim/backup
+mkdir -p ~/.vim/undo
 
 mkdir ~/repo/
 (cd /home/repo/; git clone https://github.com/noelevans/sandpit.git)
 
 git clone --bare https://github.com/noelevans/dotfiles
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 
-ln -s ~/repo/sandpit/pylint ~/.pylintrc
-ln -s ~/repo/sandpit/start_ipython.py  ~/.ipython/profile_default/startup/start_ipython.py
-ln -s ~/repo/sandpit/matplotlibrc .config/matplotlib/matplotlibrc
-ln -s ~/repo/sandpit/.vimrc ~/.vimrc
-ln -s ~/repo/sandpit/.gitconfig ~/.gitconfig
-ln -s ~/repo/sandpit/.bashrc ~/.bashrc
-ln -s ~/repo/sandpit/.cocnvimrc ~/.cocnvimrc
-ln -s ~/repo/sandpit/coc-settings.json ~/.config/nvim/coc-settings.json
-ln -s ~/repo/sandpit/.pdbrc.py ~/.pdbrc.py
+pip install numpy pandas pylint pyls mypy
+pip install git+https://github.com/psf/black.git
+pip install pylint mypy pytest
+
+pacman -S tmux git curl
+git clone https://aur.archlinux.org/yay-git.git
+yay -S neovim-nightly asdf
