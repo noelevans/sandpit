@@ -1,8 +1,11 @@
 import copy
-import itertools
+import functools
+import multiprocessing
 
 
 class Board:
+    __slots__ = ["columns", "rows", "positions"]
+
     def __init__(self, columns, rows):
         self.columns = columns
         self.rows = rows
@@ -30,13 +33,13 @@ class Board:
         return new_board
 
     def __hash__(self):
-        # As we are using sets to omit duplicate boards (2 Kings on same
-        # square are equal) we need to implement __hash__
+        # Using sets to omit duplicate boards (2 Kings on same square
+        # are equal) hence __hash__ implementation
         return sum(
             [
-                39 * self.columns,
-                39 * self.rows,
-                39 * sum(hash(k) for k in self.positions.keys()),
+                37 * self.columns,
+                37 * self.rows,
+                37 * sum(hash(k) for k in self.positions.keys()),
             ]
         )
 
@@ -148,33 +151,51 @@ class Rook(Piece):
         yield from self.straight_moves(position, board)
 
 
-def _free_positions(board, piece):
-    for row in range(board.rows):
-        for column in range(board.columns):
-            if board.free((column, row), piece):
-                yield board.place((column, row), piece)
+def _allocate_piece(piece, board):
+    return {
+        board.place((column, row), piece)
+        for row in range(board.rows)
+        for column in range(board.columns)
+        if board.free((column, row), piece)
+    }
 
 
 def configurations(pieces, board):
-    boards = [board]
+    boards = {board}
     for piece in pieces:
-        next_boards = []
-        for board in boards:
-            next_boards.append(set(_free_positions(board, piece)))
-        boards = itertools.chain(*next_boards)
-    return set(boards)
+        import datetime
+
+        print(piece, len(boards), datetime.datetime.now())
+        partial_allocate_piece = functools.partial(_allocate_piece, piece)
+        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
+            result = pool.map(partial_allocate_piece, boards)
+        boards = {el for r in result for el in r}
+    return boards
 
 
-if __name__ == "__main__":
+def run():
     import time
 
     start = time.time()
     print(
         len(
             configurations(
+                # [
+                #     Queen(),
+                #     Rook(),
+                #     Bishop(),
+                #     King(),
+                # ],
                 [Queen(), Rook(), Bishop(), King(), King(), Knight()],
                 Board(6, 9),
             )
         )
     )
-    print(time.time() - start)
+    print((time.time() - start), (time.time() - start) / 60)
+
+
+if __name__ == "__main__":
+    import cProfile
+
+    # cProfile.run("run()")
+    run()
