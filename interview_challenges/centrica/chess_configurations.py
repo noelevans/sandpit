@@ -1,6 +1,4 @@
 import copy
-import functools
-import multiprocessing
 
 
 class Board:
@@ -17,7 +15,9 @@ class Board:
         for occupied_position, piece in self.positions.items():
             if position in piece.moves(occupied_position, self):
                 return False
-        if set.intersection(set(new_piece.moves(position, self)), self.positions):
+        if new_piece and set.intersection(
+            set(new_piece.moves(position, self)), self.positions
+        ):
             return False
         return True
 
@@ -28,9 +28,10 @@ class Board:
         return dupe
 
     def place(self, position, piece):
-        new_board = self._copy(self)
-        new_board.positions[position] = piece
-        return new_board
+        if position not in self.positions:
+            new_board = self._copy(self)
+            new_board.positions[position] = piece
+            return new_board
 
     def __hash__(self):
         # Using sets to omit duplicate boards (2 Kings on same square
@@ -55,26 +56,9 @@ class Board:
                 return False
         return True
 
-    def __str__(self):
-        result = []
-        for x in range(self.columns):
-            portion = []
-            for y in range(self.rows):
-                if (x, y) in self.positions:
-                    portion.append(self.positions[(x, y)].__class__.__name__[0])
-                else:
-                    portion.append(" ")
-            result.append("|".join(portion))
-
-        return "\n".join(result)
-
-    def __repr__(self):
-        return self.__str__()
-
 
 class Piece:
     def _vector(self, board, x, y, xp, yp):
-        stop = False
         while (0 <= (x + xp) < board.columns) and (0 <= (y + yp) < board.rows):
             yield x + xp, y + yp
             x += xp
@@ -99,6 +83,12 @@ class Piece:
 
     def __eq__(self, other):
         return type(self) == type(other)
+
+    def __hash__(self):
+        return hash(type(self).__name__)
+
+    def __repr__(self):
+        return type(self).__name__
 
 
 class King(Piece):
@@ -151,51 +141,44 @@ class Rook(Piece):
         yield from self.straight_moves(position, board)
 
 
-def _allocate_piece(piece, board):
+def _all_coords(board):
     return {
-        board.place((column, row), piece)
-        for row in range(board.rows)
-        for column in range(board.columns)
-        if board.free((column, row), piece)
+        (n % board.columns, n // board.rows) for n in range(board.rows * board.columns)
     }
 
 
-def configurations(pieces, board):
-    boards = {board}
+def _potential_positions(empty_board, pieces):
+    positions = {}
+    for piece in set(pieces):
+        free_positions = {}
+        for piece_coord in _all_coords(empty_board):
+            board = empty_board.place(piece_coord, piece)
+            free_cells = {
+                coord for coord in _all_coords(board) if board.free(coord, None)
+            }
+            free_positions[piece_coord] = free_cells
+        positions[piece] = free_positions
+    return positions
+
+
+def configurations(pieces, original_board):
+    potential_positions = _potential_positions(original_board, pieces)
+    boards_to_free_spaces = {original_board: _all_coords(original_board)}
     for piece in pieces:
-        import datetime
-
-        print(piece, len(boards), datetime.datetime.now())
-        partial_allocate_piece = functools.partial(_allocate_piece, piece)
-        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            result = pool.map(partial_allocate_piece, boards)
-        boards = {el for r in result for el in r}
-    return boards
-
-
-def run():
-    import time
-
-    start = time.time()
-    print(
-        len(
-            configurations(
-                # [
-                #     Queen(),
-                #     Rook(),
-                #     Bishop(),
-                #     King(),
-                # ],
-                [Queen(), Rook(), Bishop(), King(), King(), Knight()],
-                Board(6, 9),
-            )
-        )
-    )
-    print((time.time() - start), (time.time() - start) / 60)
+        new_boards = {}
+        for board, free_spaces in boards_to_free_spaces.items():
+            for free_space in free_spaces:
+                if board.free(free_space, piece):
+                    new_board = board.place(free_space, piece)
+                    new_boards[new_board] = set.intersection(
+                        potential_positions[piece][free_space], free_spaces
+                    )
+            boards_to_free_spaces = new_boards
+    return boards_to_free_spaces
 
 
 if __name__ == "__main__":
-    import cProfile
-
-    # cProfile.run("run()")
-    run()
+    configurations(
+        [King(), King(), Queen(), Bishop(), Rook(), Knight()],
+        Board(6, 9),
+    )
