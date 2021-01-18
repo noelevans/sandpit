@@ -10,8 +10,10 @@ class Klass:
         return self.name[key]
 
     def foo(self):
+        # Putative return statement for foo(self)...
         # return self[self.value]
         namespace = inspect.currentframe().f_locals
+        print(namespace)
         completer = rlcompleter.Completer(namespace)
         print(completer.complete('self[ self.', 0))
         print(completer.complete('self[self.', 0))
