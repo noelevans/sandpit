@@ -1,19 +1,43 @@
 #!/bin/sh
 
-mkdir -p ~/.vim/swap
-mkdir -p ~/.vim/backup
-mkdir -p ~/.vim/undo
+# Run this on new computer with:
+# wget -O - https://raw.githubusercontent.com/noelevans/sandpit/master/setup_new_computer.sh | bash
 
-mkdir ~/repo/
-(cd /home/repo/; git clone https://github.com/noelevans/sandpit.git)
+sudo pacman -S git
+
+mkdir -p /home/noel/.vim/swap
+mkdir -p /home/noel/.vim/backup
+mkdir -p /home/noel/.vim/undo
+mkdir /home/noel/repo/
+
+(
+    cd /home/noel/repo/;
+    git clone https://aur.archlinux.org/yay-git.git;
+    git clone https://github.com/noelevans/sandpit.git;
+    git clone https://github.com/noelevans/pydantic.git;
+    git clone https://github.com/noelevans/pdbpp.git;
+    git clone https://github.com/noelevans/black.git;
+    git clone https://github.com/noelevans/typing.git;
+    git clone https://github.com/noelevans/cpython.git;
+    git clone https://github.com/noelevans/neovim.git;
+    git clone https://github.com/noelevans/completion-nvim.git;
+    git clone https://github.com/noelevans/fancycompleter.git;
+    git clone https://github.com/noelevans/noelevans.github.io.git;
+    git clone https://github.com/poseidon-coding/poseidon-coding.github.io.git;
+)
+
+(
+    cd /home/noel/repo/yay-git/;
+    makepkg -si
+)
+
+# yay won't be available until dotfiles repo has been cloned
+source /home/noel/.bash_aliases
 
 git clone --bare https://github.com/noelevans/dotfiles
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 
-pip install numpy pandas pylint pyls mypy
+pip install numpy pandas pylint pyls mypy pylint mypy pytest pdbpp
 pip install git+https://github.com/psf/black.git
-pip install pylint mypy pytest
+pip install jedi-language-server
 
-pacman -S tmux git curl
-git clone https://aur.archlinux.org/yay-git.git
-yay -S neovim-nightly asdf
+yay -S neovim-git asdf tmux curl pyenv httpie
