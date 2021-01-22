@@ -8,9 +8,9 @@ class Board:
     rows = len(shape)
     columns = len(shape[0])
 
-    def __init__(self, coord, path=None):
+    def __init__(self, coord):
         self.coord = coord
-        self.path = path if path else ""
+        self.path = self.shape[coord[1]][coord[0]]
 
     @classmethod
     def cells(self):
@@ -25,7 +25,7 @@ class Board:
         return sum(1 for c in self.path if c in "AEIOU") < 3
 
     def move(self, coord):
-        dupe = self.__class__(coord, self.path)
+        dupe = self.__class__(coord)
         dupe.path = self.path + self.shape[coord[1]][coord[0]]
         if dupe._is_legal():
             return dupe
@@ -51,7 +51,7 @@ class Board:
 
 
 def sequences(steps=10):
-    boards = [Board(coord, value) for coord, value in Board.cells().items()]
+    boards = [Board(coord) for coord, value in Board.cells().items()]
     for n in range(steps - 1):
         new_boards = list()
         for board in boards:
@@ -64,4 +64,4 @@ def sequences(steps=10):
 
 
 if __name__ == "__main__":
-    print(len(sequences(10)))
+    print(len(sequences()))
