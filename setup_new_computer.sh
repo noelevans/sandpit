@@ -40,4 +40,4 @@ pip install numpy pandas pylint pyls mypy pylint mypy pytest pdbpp
 pip install git+https://github.com/psf/black.git
 pip install jedi-language-server
 
-yay -S neovim-git asdf tmux curl pyenv httpie
+yay -S neovim-git asdf tmux curl pyenv httpie xclip
