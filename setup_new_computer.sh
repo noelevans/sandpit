@@ -36,8 +36,11 @@ source /home/noel/.bash_aliases
 
 git clone --bare https://github.com/noelevans/dotfiles
 
-pip install numpy pandas pylint pyls mypy pylint mypy pytest pdbpp
+pip install numpy pandas pylint pyls mypy pylint mypy pytest pdbpp pyautogui
 pip install git+https://github.com/psf/black.git
 pip install jedi-language-server
 
-yay -S neovim-git asdf tmux curl pyenv httpie xclip
+yay -S neovim-git asdf tmux curl pyenv httpie xclip fzf ag rg
+
+# For lichess development
+yay -S sbt yarn docker-compose jre12 jdk12
